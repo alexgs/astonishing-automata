@@ -4,7 +4,7 @@
 
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { MoveStepCommand } from './commands/move-step.command';
+import { ChangeStepCommand } from './commands/change-step.command';
 import { CharacterBuilderService } from './character-builder.service';
 
 @Controller('character-builder')
@@ -29,7 +29,7 @@ export class CharacterBuilderController {
     @Body() body: { event: 'NEXT' | 'PREV' | 'CONFIRM' },
   ) {
     return await this.commandBus.execute(
-      new MoveStepCommand(sessionId, body.event),
+      new ChangeStepCommand(sessionId, body.event),
     );
   }
 

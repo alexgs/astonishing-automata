@@ -3,6 +3,7 @@
  */
 
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
 import { AppController } from './app.controller';
@@ -11,7 +12,11 @@ import { CharacterBuilderModule } from './character-builder/character-builder.mo
 
 @Module({
   controllers: [AppController],
-  imports: [CqrsModule.forRoot(), CharacterBuilderModule],
+  imports: [
+    CharacterBuilderModule,
+    ConfigModule.forRoot(),
+    CqrsModule.forRoot(),
+  ],
   providers: [AppService],
 })
 export class AppModule {}

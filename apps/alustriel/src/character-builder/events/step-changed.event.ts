@@ -4,9 +4,9 @@
 
 import { IEvent } from '@nestjs/cqrs';
 
-export class StepMovedEvent implements IEvent {
+export class StepChangedEvent implements IEvent {
   constructor(
-    public readonly sessionId: string,
-    public readonly newState: string,
+    public readonly characterId: string,
+    public readonly step: string,
   ) {}
 }

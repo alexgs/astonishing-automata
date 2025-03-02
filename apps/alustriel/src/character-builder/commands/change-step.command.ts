@@ -4,9 +4,9 @@
 
 import { ICommand } from '@nestjs/cqrs';
 
-export class MoveStepCommand implements ICommand {
+export class ChangeStepCommand implements ICommand {
   constructor(
-    public readonly sessionId: string,
+    public readonly characterId: string,
     public readonly event: 'NEXT' | 'PREV' | 'CONFIRM',
   ) {}
 }

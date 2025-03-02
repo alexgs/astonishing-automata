@@ -6,7 +6,7 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CharacterBuilderService } from './character-builder.service';
 import { CharacterBuilderController } from './character-builder.controller';
-import { MoveStepHandler } from './commands/move-step.command-handler';
+import { MoveStepHandler } from './commands/change-step.command-handler';
 
 @Module({
   controllers: [CharacterBuilderController],
