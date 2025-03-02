@@ -1,0 +1,44 @@
+version: '3'
+
+tasks:
+  clean:
+    cmds:
+      - docker run --rm
+        -e FLYWAY_PASSWORD={{.DATABASE_PASSWORD}}
+        -e FLYWAY_URL=jdbc:postgresql://{{.FLYWAY_DB_HOST}}:{{.DATABASE_PORT}}/{{.DATABASE_NAME}}
+        -e FLYWAY_USER={{.DATABASE_USER}}
+        -v {{.PWD}}/flyway/sql:/flyway/sql
+        -v {{.PWD}}/flyway/conf:/flyway/conf
+        flyway/flyway clean
+    desc: Drops all objects (tables, views, procedures, triggers, etc.) in the configured schemas.
+    silent: true
+    vars:
+      PWD: $(pwd)
+
+  info:
+    cmds:
+      - docker run --rm
+        -e FLYWAY_PASSWORD={{.DATABASE_PASSWORD}}
+        -e FLYWAY_URL=jdbc:postgresql://{{.FLYWAY_DB_HOST}}:{{.DATABASE_PORT}}/{{.DATABASE_NAME}}
+        -e FLYWAY_USER={{.DATABASE_USER}}
+        -v {{.PWD}}/flyway/sql:/flyway/sql
+        -v {{.PWD}}/flyway/conf:/flyway/conf
+        flyway/flyway info
+    desc: Prints the details and status information about all the migrations.
+    silent: true
+    vars:
+      PWD: $(pwd)
+
+  migrate:
+    cmds:
+      - docker run --rm
+        -e FLYWAY_PASSWORD={{.DATABASE_PASSWORD}}
+        -e FLYWAY_URL=jdbc:postgresql://{{.FLYWAY_DB_HOST}}:{{.DATABASE_PORT}}/{{.DATABASE_NAME}}
+        -e FLYWAY_USER={{.DATABASE_USER}}
+        -v {{.PWD}}/flyway/sql:/flyway/sql
+        -v {{.PWD}}/flyway/conf:/flyway/conf
+        flyway/flyway migrate
+    desc: Migrates the schema to the latest version.
+    silent: true
+    vars:
+      PWD: $(pwd)
