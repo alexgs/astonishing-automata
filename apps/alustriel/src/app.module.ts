@@ -3,12 +3,15 @@
  */
 
 import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CharacterBuilderModule } from './character-builder/character-builder.module';
 
 @Module({
   controllers: [AppController],
-  imports: [],
+  imports: [CqrsModule.forRoot(), CharacterBuilderModule],
   providers: [AppService],
 })
 export class AppModule {}
