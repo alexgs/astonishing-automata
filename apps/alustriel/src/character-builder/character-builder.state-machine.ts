@@ -18,7 +18,7 @@ interface CharacterContext {
   spells?: string[];
 }
 
-export const characterCreationMachine = setup({
+export const characterBuilderStateMachine = setup({
   types: {} as {
     context: CharacterContext;
   },

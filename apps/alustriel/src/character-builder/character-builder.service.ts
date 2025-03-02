@@ -4,7 +4,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { createActor } from 'xstate';
-import { characterCreationMachine } from './state/character-creation.machine';
+import { characterBuilderStateMachine } from './character-builder.state-machine';
 
 @Injectable()
 export class CharacterBuilderService {
@@ -13,7 +13,7 @@ export class CharacterBuilderService {
 
   createCharacterSession(sessionId: string) {
     if (!this.stateMachines.has(sessionId)) {
-      const actor = createActor(characterCreationMachine);
+      const actor = createActor(characterBuilderStateMachine);
       actor.start(); // Start the actor
       this.stateMachines.set(sessionId, actor);
     }
