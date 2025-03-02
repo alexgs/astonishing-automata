@@ -1,3 +1,7 @@
+/*
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
+ */
+
 import prettier from 'eslint-config-prettier';
 import js from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/compat';
