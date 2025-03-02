@@ -19,6 +19,7 @@
   },
   "workspaces": [
     "apps/alustriel",
+    "apps/bruenor",
     "packages/*"
   ]
 }

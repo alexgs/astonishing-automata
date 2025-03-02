@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved.
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved.
  */
 
 --[ # EXTENSIONS # ]--
