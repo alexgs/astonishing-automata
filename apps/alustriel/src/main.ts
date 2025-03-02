@@ -7,6 +7,8 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableShutdownHooks(); // Consider disabling for tests; see https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown
   await app.listen(3000);
 }
-bootstrap();
+
+void bootstrap();
