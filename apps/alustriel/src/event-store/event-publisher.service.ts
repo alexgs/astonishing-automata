@@ -18,7 +18,7 @@ import { EventReadModel } from './interfaces';
 @Injectable()
 export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(EventPublisherService.name);
-  private unsubscribe: () => void;
+  private unsubscribe: () => void = () => {};
 
   constructor(
     private readonly configService: ConfigService,
@@ -26,31 +26,57 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async onModuleDestroy() {
-    this.unsubscribe();
+    try {
+      this.unsubscribe();
+      this.logger.debug('Unsubscribed from PostgreSQL event stream.');
+    } catch (error) {
+      this.logger.error(
+        'Error unsubscribing from PostgreSQL event stream:',
+        error,
+      );
+    }
   }
 
   async onModuleInit() {
-    const sql = postgres({
-      database: this.configService.get<string>('DATABASE_NAME'),
-      host: this.configService.get<string>('DATABASE_HOST'),
-      password: this.configService.get<string>('DATABASE_PASSWORD'),
-      port: this.configService.get<number>('DATABASE_PORT'),
-      publications: 'event_publication',
-      user: this.configService.get<string>('DATABASE_USER'),
-    });
-    const subscriptionHandle = await sql.subscribe(
-      'insert:events',
-      (row: EventReadModel) => {
-        this.logger.debug(`Publishing event: ${JSON.stringify(row)}`);
-        const event = this.createEventFromRow(row);
-        this.eventBus.publish(event);
-      },
-      () => {
-        // Callback on initial connect and potential reconnects
-        this.logger.debug('Connected to PostgreSQL');
-      },
-    );
-    this.unsubscribe = subscriptionHandle.unsubscribe;
+    const maxRetries = 5;
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const sql = postgres({
+          database: this.configService.get<string>('DATABASE_NAME'),
+          host: this.configService.get<string>('DATABASE_HOST'),
+          password: this.configService.get<string>('DATABASE_PASSWORD'),
+          port: this.configService.get<number>('DATABASE_PORT'),
+          publications: 'event_publication',
+          user: this.configService.get<string>('DATABASE_USER'),
+        });
+
+        const subscriptionHandle = await sql.subscribe(
+          'insert:events',
+          (row: EventReadModel) => {
+            this.logger.debug(`Publishing event: ${JSON.stringify(row)}`);
+            try {
+              const event = this.createEventFromRow(row);
+              this.eventBus.publish(event);
+            } catch (error) {
+              this.logger.error('Error creating event from row:', error);
+            }
+          },
+          () => {
+            this.logger.debug('Connected to PostgreSQL event stream.');
+          },
+        );
+
+        this.unsubscribe = subscriptionHandle.unsubscribe;
+        return;
+      } catch (error) {
+        this.logger.error(
+          `Event subscription failed (attempt ${attempt}):`,
+          error,
+        );
+        if (attempt === maxRetries) throw error;
+        await new Promise((res) => setTimeout(res, 2000 * attempt)); // Exponential backoff
+      }
+    }
   }
 
   private createEventFromRow(row: EventReadModel) {
