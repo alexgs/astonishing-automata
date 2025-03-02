@@ -1,0 +1,63 @@
+services:
+  database:
+    image: postgres:13-alpine
+    command: "-c 'config_file=/etc/postgresql/postgresql.conf'"
+    container_name: database
+    restart: unless-stopped
+    networks:
+      - aaa-network
+    ports:
+      - "${DATABASE_PORT}:5432"
+    volumes:
+      - "${DATABASE_HOST_DIRECTORY}:/var/lib/postgresql/data"
+      - ./database/conf/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./database/host:/host
+    working_dir: /host
+    labels:
+      - "traefik.enable=false"
+
+  # https://github.com/Tecnativa/docker-socket-proxy
+  soxy:
+    image: tecnativa/docker-socket-proxy
+    container_name: soxy
+    networks:
+      - soxy-net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      CONTAINERS: 1
+      NETWORKS: 1
+      SERVICES: 1
+      TASKS: 1
+    labels:
+      - "traefik.enable=false"
+
+  traefik:
+    image: traefik:v2.10.7
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "${TRAEFIK_DASHBOARD_PORT}:8080"
+    volumes:
+      - ./traefik/etc:/etc/traefik
+      - ./traefik/host:/host
+    networks:
+      - aaa-network
+      - soxy-net
+    depends_on:
+      - soxy
+#      - webapp
+    labels:
+      - "traefik.enable=false"
+
+networks:
+  aaa-network:
+    driver: bridge
+    name: aaa-network
+  soxy-net:
+    driver: bridge
+    driver_opts:
+      encrypted: 'true' # We're passing Docker socket stuff over TCP, so encrypt
+    name: soxy-net

@@ -1,0 +1,25 @@
+{
+  "name": "astonishing-automata",
+  "version": "0.0.0",
+  "description": "Character builder for TTRPGs",
+  "author": {
+    "email": "alex.nebula99@gmail.com",
+    "name": "Alex Gates-Shannon"
+  },
+  "license": "OSL-3.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexgs/astonishing-automata.git"
+  },
+  "scripts": {},
+  "volta": {
+    "node": "22.14.0",
+    "npm": "11.1.0"
+  },
+  "workspaces": [
+    "apps/alustriel",
+    "apps/bruenor",
+    "packages/*"
+  ]
+}

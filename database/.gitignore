@@ -1,0 +1,2 @@
+# Postgres will create this directory when it starts up for integration tests
+/integration-tests
