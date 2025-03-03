@@ -1,0 +1,27 @@
+services:
+  database:
+    image: postgres:13-alpine
+    command: "-c 'config_file=/etc/postgresql/postgresql.conf'"
+    container_name: database
+    restart: unless-stopped
+    networks:
+      - aaa-network
+    ports:
+      - target: 5432
+        published: "${DATABASE_PORT}"
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: "--auth=scram-sha-256"
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+    volumes:
+      - ./database/integration-tests:/var/lib/postgresql/data
+      - ./database/conf/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./database/host:/host
+    working_dir: /host
+
+networks:
+  aaa-network:
+    driver: bridge
+    name: aaa-network

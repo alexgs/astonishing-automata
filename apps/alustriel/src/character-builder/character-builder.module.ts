@@ -6,11 +6,11 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CharacterBuilderService } from './character-builder.service';
 import { CharacterBuilderController } from './character-builder.controller';
-import { MoveStepHandler } from './commands/change-step.command-handler';
+import { ChangeStepCommandHandler } from './commands/change-step.command-handler';
 
 @Module({
   controllers: [CharacterBuilderController],
   imports: [CqrsModule],
-  providers: [CharacterBuilderService, MoveStepHandler],
+  providers: [ChangeStepCommandHandler, CharacterBuilderService],
 })
 export class CharacterBuilderModule {}
