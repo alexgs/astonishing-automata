@@ -7,10 +7,11 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { CharacterBuilderService } from './character-builder.service';
 import { CharacterBuilderController } from './character-builder.controller';
 import { ChangeStepCommandHandler } from './commands/change-step.command-handler';
+import { EventStoreModule } from '../event-store/event-store.module';
 
 @Module({
   controllers: [CharacterBuilderController],
-  imports: [CqrsModule],
+  imports: [CqrsModule, EventStoreModule],
   providers: [ChangeStepCommandHandler, CharacterBuilderService],
 })
 export class CharacterBuilderModule {}

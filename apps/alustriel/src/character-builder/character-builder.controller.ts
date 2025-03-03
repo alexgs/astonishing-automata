@@ -7,7 +7,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { ChangeStepCommand } from './commands/change-step.command';
 import { CharacterBuilderService } from './character-builder.service';
 
-@Controller('character-builder')
+@Controller({ path: 'character-builder', version: '1' })
 export class CharacterBuilderController {
   constructor(
     private readonly characterBuilderService: CharacterBuilderService,

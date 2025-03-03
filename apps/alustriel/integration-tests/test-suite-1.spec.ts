@@ -14,6 +14,7 @@ import { AppModule } from '../src/app.module';
 import { KnexClient, resetDb } from './helpers';
 
 describe('Character Builder Integration Test Suite 1', () => {
+  const CHARACTER_ID = '53239dc3-1dfd-464c-9469-5cfcfb30be86';
   let app: INestApplication;
   let knex: Knex;
   let module: TestingModule;
@@ -36,12 +37,10 @@ describe('Character Builder Integration Test Suite 1', () => {
   });
 
   it('should move forward in the character creation workflow', async () => {
-    const characterId = 'test-character-123';
-
     let response: AxiosResponse;
     try {
       response = await axios(
-        `http://localhost:3000/api/v1/characters/move/${characterId}`,
+        `http://localhost:3000/api/v1/character-builder/move/${CHARACTER_ID}`,
         {
           method: 'POST',
           data: { event: 'NEXT' },
@@ -51,27 +50,25 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = e.response;
     }
 
-    expect(response.status).toEqual(HttpStatus.OK);
+    expect(response.status).toEqual(HttpStatus.CREATED);
 
     const events = await knex('events').where({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: characterId,
+      stream_id: CHARACTER_ID,
     });
     expect(events).toHaveLength(1);
     expect(events[0]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: characterId,
+      stream_id: CHARACTER_ID,
       data: expect.objectContaining({ step: 'NEXT' }),
     });
   });
 
   it('should move backward in the character creation workflow', async () => {
-    const characterId = 'test-character-123';
-
     let response: AxiosResponse;
     try {
       response = await axios(
-        `http://localhost:3000/api/v1/characters/move/${characterId}`,
+        `http://localhost:3000/api/v1/character-builder/move/${CHARACTER_ID}`,
         {
           method: 'POST',
           data: { event: 'PREV' },
@@ -81,16 +78,16 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = e.response;
     }
 
-    expect(response.status).toEqual(HttpStatus.OK);
+    expect(response.status).toEqual(HttpStatus.CREATED);
 
     const events = await knex('events').where({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: characterId,
+      stream_id: CHARACTER_ID,
     });
     expect(events).toHaveLength(2);
     expect(events[1]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: characterId,
+      stream_id: CHARACTER_ID,
       data: expect.objectContaining({ step: 'PREV' }),
     });
   });
