@@ -2,13 +2,14 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { knex } from 'knex';
 
 @Injectable()
-export class KnexService {
+export class KnexService implements OnModuleDestroy {
   private knexObject: knex.Knex;
+  private readonly logger = new Logger(KnexService.name);
 
   constructor(private readonly configService: ConfigService) {}
 
@@ -28,8 +29,16 @@ export class KnexService {
 
   getKnex(): knex.Knex {
     if (!this.knexObject) {
+      this.logger.debug('Initializing Knex connection.');
       this.initializeKnex();
     }
     return this.knexObject;
+  }
+
+  async onModuleDestroy() {
+    if (this.knexObject) {
+      await this.knexObject.destroy();
+      this.logger.debug('Knew connection destroyed.');
+    }
   }
 }

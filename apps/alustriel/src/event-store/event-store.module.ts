@@ -7,10 +7,16 @@ import { ConfigModule } from '@nestjs/config';
 import { EventPublisherService } from './event-publisher.service';
 import { EventStoreService } from './event-store.service';
 import { KnexService } from './knex.service';
+import { PostgresService } from './postgres.service';
 
 @Module({
   exports: [EventStoreService],
   imports: [ConfigModule],
-  providers: [EventPublisherService, EventStoreService, KnexService],
+  providers: [
+    EventPublisherService,
+    EventStoreService,
+    KnexService,
+    PostgresService,
+  ],
 })
 export class EventStoreModule {}

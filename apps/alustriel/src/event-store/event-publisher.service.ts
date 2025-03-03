@@ -8,12 +8,11 @@ import {
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { EventBus } from '@nestjs/cqrs';
-import * as postgres from 'postgres';
 import { EVENT_TYPES } from '../character-builder/constants';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { EventReadModel } from './interfaces';
+import { PostgresService } from './postgres.service';
 
 @Injectable()
 export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
@@ -21,13 +20,14 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
   private unsubscribe: () => void = () => {};
 
   constructor(
-    private readonly configService: ConfigService,
     private readonly eventBus: EventBus,
+    private readonly postgresService: PostgresService,
   ) {}
 
   async onModuleDestroy() {
     try {
       this.unsubscribe();
+      await this.postgresService.close();
       this.logger.debug('Unsubscribed from PostgreSQL event stream.');
     } catch (error) {
       this.logger.error(
@@ -41,27 +41,18 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
     const maxRetries = 5;
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        const sql = postgres({
-          database: this.configService.get<string>('DATABASE_NAME'),
-          host: this.configService.get<string>('DATABASE_HOST'),
-          password: this.configService.get<string>('DATABASE_PASSWORD'),
-          port: this.configService.get<number>('DATABASE_PORT'),
-          publications: 'event_publication',
-          user: this.configService.get<string>('DATABASE_USER'),
-        });
-
+        const sql = this.postgresService.getSql();
         const subscriptionHandle = await sql.subscribe(
           'insert:events',
           (row: EventReadModel) => {
             this.logger.debug(`Publishing event: ${JSON.stringify(row)}`);
-            try {
-              const event = this.createEventFromRow(row);
+            const event = this.createEventFromRow(row);
+            if (event) {
               this.eventBus.publish(event);
-            } catch (error) {
-              this.logger.error('Error creating event from row:', error);
             }
           },
           () => {
+            // Callback on initial connect and potential reconnects
             this.logger.debug('Connected to PostgreSQL event stream.');
           },
         );

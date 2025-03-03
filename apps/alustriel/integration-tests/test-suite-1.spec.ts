@@ -34,6 +34,9 @@ describe('Character Builder Integration Test Suite 1', () => {
   afterAll(async () => {
     await app.close();
     await module.close();
+    if (knex) {
+      await knex.destroy();
+    }
   });
 
   it('should move forward in the character creation workflow', async () => {
