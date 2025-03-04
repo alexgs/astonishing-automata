@@ -1,7 +1,13 @@
 {
 	"name": "bruenor",
+	"version": "0.0.0",
+	"description": "Front-end for _Alex's Astonishing Automata_",
+	"author": {
+		"email": "alex.nebula99@gmail.com",
+		"name": "Alex Gates-Shannon"
+	},
+	"license": "OSL-3.0",
 	"private": true,
-	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
@@ -36,5 +42,9 @@
 		"typescript-eslint": "^8.20.0",
 		"vite": "^6.0.0",
 		"vitest": "^3.0.0"
+	},
+	"volta": {
+		"node": "22.14.0",
+		"npm": "11.1.0"
 	}
 }

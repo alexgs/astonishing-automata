@@ -1,0 +1,105 @@
+{
+  "collectCoverageFrom": [
+    "<rootDir>/src/**/*.{js,jsx,ts,tsx}",
+    "!**/*.spec.ts",
+    "!**/*.d.ts",
+    "!**/node_modules/**"
+  ],
+  "coverageDirectory": "./coverage/integration-tests",
+  "coveragePathIgnorePatterns": [
+    "\\.command\\.ts$",
+    "\\.event\\.ts$",
+    "\\.query\\.ts$",
+    "\\.read-model\\.ts$",
+    "/src/main.ts"
+  ],
+  "coverageThreshold": {
+    "./src/accounts/commands/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/accounts/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/auth/": {
+      "branches": 35,
+      "functions": 80,
+      "lines": 80,
+      "statements": 85
+    },
+    "./src/budgets/commands/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/budgets/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/categories/commands/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/categories/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/categories/tasks/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/event-store/": {
+      "branches": 75,
+      "functions": 80,
+      "lines": 90,
+      "statements": 90
+    },
+    "./src/projections/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/task-bus/": {
+      "branches": 75,
+      "functions": 100,
+      "lines": 98,
+      "statements": 98
+    },
+    "./src/transactions/commands/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/transactions/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "maxWorkers": 1,
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "setupFilesAfterEnv": ["<rootDir>/integration-tests/helpers/setup.ts"],
+  "testEnvironment": "node",
+  "testMatch": ["<rootDir>/integration-tests/**/*.spec.ts"],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  }
+}

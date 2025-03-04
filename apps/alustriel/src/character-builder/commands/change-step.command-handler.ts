@@ -1,0 +1,34 @@
+/*
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
+ */
+
+import { Logger } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { ChangeStepCommand } from './change-step.command';
+import { EventStoreService } from '../../event-store/event-store.service';
+import { EVENT_TYPES, STREAM_TYPES } from '../constants';
+
+@CommandHandler(ChangeStepCommand)
+export class ChangeStepCommandHandler
+  implements ICommandHandler<ChangeStepCommand>
+{
+  private readonly logger = new Logger(ChangeStepCommandHandler.name);
+
+  constructor(private readonly eventStoreService: EventStoreService) {}
+
+  async execute(command: ChangeStepCommand) {
+    this.logger.debug(
+      `Processing "ChangeStepCommand": ${JSON.stringify(command)}`,
+    );
+
+    const event = await this.eventStoreService.createEvent(
+      command.characterId,
+      STREAM_TYPES.CHARACTER,
+      EVENT_TYPES.STEP_CHANGED,
+      { step: command.event },
+    );
+    await this.eventStoreService.appendEvent(event);
+
+    return { characterId: command.characterId, step: command.event };
+  }
+}
