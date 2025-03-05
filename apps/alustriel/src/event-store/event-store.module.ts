@@ -4,6 +4,7 @@
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
 import { EventPublisherService } from './event-publisher.service';
 import { EventStoreService } from './event-store.service';
 import { KnexService } from './knex.service';

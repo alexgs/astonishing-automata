@@ -4,6 +4,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
+
 import { StartCharacterCreationCommand } from './commands/start-character-creation.command';
 
 @Injectable()
