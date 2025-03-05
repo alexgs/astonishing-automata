@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { knex } from 'knex';
 import { ulid } from 'ulidx';
 import { appendEvent } from './append-event';
-import {
-  EventReadModel,
-  EventWriteModel,
-  StreamRecord,
-} from './interfaces';
+import { EventReadModel, EventWriteModel, StreamRecord } from './interfaces';
 import { KnexService } from './knex.service';
 
 @Injectable()
