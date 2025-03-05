@@ -4,6 +4,7 @@
 
 export const EVENT_TYPES = {
   STEP_CHANGED: 'event-types.step-changed',
+  STARTED: 'event-types.character-builder.character-creation-started',
 } as const;
 
 export const STREAM_TYPES = {

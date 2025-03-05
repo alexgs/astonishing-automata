@@ -4,7 +4,7 @@
 
 import { setup } from 'xstate';
 
-interface CharacterContext {
+export interface CharacterContext {
   species?: string;
   culture?: string;
   class?: string;
