@@ -5,7 +5,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { createActor } from 'xstate';
 import { StartCharacterCreationCommand } from './start-character-creation.command';
-import { characterBuilderStateMachine } from '../character-builder.state-machine';
+import { characterBuilderMachine } from '../state-machine';
 import { EventStoreService } from '../../event-store/event-store.service';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 
@@ -20,22 +20,22 @@ export class StartCharacterCreationHandler
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(_command: StartCharacterCreationCommand) {
-    const sessionId = crypto.randomUUID();
+    const characterId = crypto.randomUUID();
 
     // Initialize the state machine
-    const actor = createActor(characterBuilderStateMachine);
+    const actor = createActor(characterBuilderMachine);
     actor.start();
     const step = actor.getSnapshot().value; // Get state name
     const data = actor.getSnapshot().context; // Get initial context
 
     // Create and store the event
     const event = await this.eventFactory.createCharacterCreationStartedEvent(
-      sessionId,
+      characterId,
       step,
       data,
     );
     await this.eventStore.appendEvent(event);
 
-    return { sessionId };
+    return { characterId };
   }
 }

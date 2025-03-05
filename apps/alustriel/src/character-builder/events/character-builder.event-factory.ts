@@ -5,7 +5,7 @@
 import { Injectable } from '@nestjs/common';
 import { EventStoreService } from '../../event-store/event-store.service';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
-import { CharacterContext } from '../character-builder.state-machine';
+import { CharacterContext } from '../state-machine';
 
 @Injectable()
 export class CharacterBuilderEventFactory {
