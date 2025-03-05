@@ -3,32 +3,14 @@
  */
 
 import { Injectable } from '@nestjs/common';
-import { createActor } from 'xstate';
-import { characterBuilderStateMachine } from './character-builder.state-machine';
+import { CommandBus } from '@nestjs/cqrs';
+import { StartCharacterCreationCommand } from './commands/start-character-creation.command';
 
 @Injectable()
 export class CharacterBuilderService {
-  private stateMachines: Map<string, ReturnType<typeof createActor>> =
-    new Map();
+  constructor(private readonly commandBus: CommandBus) {}
 
-  createCharacterSession(sessionId: string) {
-    if (!this.stateMachines.has(sessionId)) {
-      const actor = createActor(characterBuilderStateMachine);
-      actor.start(); // Start the actor
-      this.stateMachines.set(sessionId, actor);
-    }
-  }
-
-  sendEvent(sessionId: string, event: 'NEXT' | 'PREV' | 'CONFIRM') {
-    const actor = this.stateMachines.get(sessionId);
-    if (actor) {
-      actor.send({ type: event }); // Send event
-      return actor.getSnapshot(); // Get updated state
-    }
-    throw new Error('Session not found');
-  }
-
-  getCharacterState(sessionId: string) {
-    return this.stateMachines.get(sessionId)?.getSnapshot();
+  async startCharacterCreation() {
+    return this.commandBus.execute(new StartCharacterCreationCommand());
   }
 }

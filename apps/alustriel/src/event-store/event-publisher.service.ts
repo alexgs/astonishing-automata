@@ -74,6 +74,8 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
     switch (row.type) {
       case EVENT_TYPES.STEP_CHANGED:
         return new StepChangedEvent(row.stream_id, row.data.step as string);
+      case EVENT_TYPES.STARTED:
+        return new StepChangedEvent(row.stream_id, row.data.step as string); // TODO Replace this with the correct event type
       default:
         throw new Error(`Unknown event type: ${row.type}`);
     }

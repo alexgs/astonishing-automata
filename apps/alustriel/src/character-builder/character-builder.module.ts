@@ -8,10 +8,17 @@ import { CharacterBuilderService } from './character-builder.service';
 import { CharacterBuilderController } from './character-builder.controller';
 import { ChangeStepCommandHandler } from './commands/change-step.command-handler';
 import { EventStoreModule } from '../event-store/event-store.module';
+import { StartCharacterCreationHandler } from './commands/start-character-creation.command-handler';
+import { CharacterBuilderEventFactory } from './events/character-builder.event-factory';
 
 @Module({
   controllers: [CharacterBuilderController],
   imports: [CqrsModule, EventStoreModule],
-  providers: [ChangeStepCommandHandler, CharacterBuilderService],
+  providers: [
+    ChangeStepCommandHandler,
+    CharacterBuilderEventFactory,
+    CharacterBuilderService,
+    StartCharacterCreationHandler,
+  ],
 })
 export class CharacterBuilderModule {}
