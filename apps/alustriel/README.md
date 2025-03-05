@@ -1,6 +1,6 @@
 # Alustriel
 
-Alustriel is a NestJS backend for _Alex's Astonishing Automata_.
+Alustriel is a NestJS backend for _Automata Character Builder_.
 
 ## Description
 

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/astonishing-automata.iml" filepath="$PROJECT_DIR$/.idea/astonishing-automata.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/automata-character-builder.iml" filepath="$PROJECT_DIR$/.idea/automata-character-builder.iml" />
     </modules>
   </component>
 </project>

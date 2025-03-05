@@ -1,5 +1,5 @@
 {
-  "name": "astonishing-automata",
+  "name": "automata-character-builder",
   "version": "0.0.0",
   "description": "Character builder for TTRPGs",
   "author": {
@@ -10,7 +10,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexgs/astonishing-automata.git"
+    "url": "git+https://github.com/alexgs/automata-character-builder.git"
   },
   "scripts": {},
   "volta": {

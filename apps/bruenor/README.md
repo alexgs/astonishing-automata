@@ -1,6 +1,6 @@
 # Bruenor
 
-Bruenor is a SvelteKit front-end for _Alex's Astonishing Automata_.
+Bruenor is a SvelteKit front-end for _Automata Character Builder_.
 
 ## sv
 

@@ -43,7 +43,7 @@ The Automata Character Builder uses a state machine architecture (powered by XSt
 ## Project Structure
 
 ```
-/astonishing-automata
+/automata-character-builder
 ├── apps/
 │   ├── alustriel/      # NestJS API
 │   ├── bruenor/        # SvelteKit UI
