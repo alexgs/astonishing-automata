@@ -122,7 +122,7 @@ describe('Pure function `appendEvent`', () => {
     });
   });
 
-  describe.skip('when a stream record exists', () => {
+  describe('when a stream record exists', () => {
     const event: EventWriteModel = {
       expectedVersion: 4,
       data: { title: 'Star Wars', year: '1977' },
@@ -133,6 +133,7 @@ describe('Pure function `appendEvent`', () => {
     };
 
     it('checks for an existing stream', async () => {
+      tracker.on.insert('streams').response(undefined);
       tracker.on.select('streams').response([
         {
           id: event.streamId,
@@ -151,6 +152,7 @@ describe('Pure function `appendEvent`', () => {
     });
 
     it('inserts a new event', async () => {
+      tracker.on.insert('streams').response(undefined);
       tracker.on.select('streams').response([
         {
           id: event.streamId,
@@ -163,11 +165,11 @@ describe('Pure function `appendEvent`', () => {
 
       await appendEvent(db, event);
 
-      const insertEventQuery = tracker.history.insert[0];
+      const insertEventQuery = tracker.history.insert[1];
       expect(insertEventQuery.method).toBe('insert');
       expect(insertEventQuery.bindings).toEqual([
+        JSON.stringify(event.data),
         event.id,
-        event.data,
         event.streamId,
         event.type,
         event.expectedVersion + 1,
@@ -175,6 +177,7 @@ describe('Pure function `appendEvent`', () => {
     });
 
     it('updates the stream version', async () => {
+      tracker.on.insert('streams').response(undefined);
       tracker.on.select('streams').response([
         {
           id: event.streamId,
@@ -196,7 +199,7 @@ describe('Pure function `appendEvent`', () => {
     });
   });
 
-  describe.skip('error handling', () => {
+  describe('error handling', () => {
     const event: EventWriteModel = {
       expectedVersion: 4,
       data: { title: 'Star Wars', year: '1977' },
@@ -207,6 +210,7 @@ describe('Pure function `appendEvent`', () => {
     };
 
     it('throws error when stream not found after insertion', async () => {
+      tracker.on.insert('streams').response(undefined);
       tracker.on.select('streams').response([]);
       tracker.on.insert('streams').response(1);
       tracker.on.select('streams').response([]);
@@ -217,6 +221,7 @@ describe('Pure function `appendEvent`', () => {
     });
 
     it('throws error when stream version does not match expected version', async () => {
+      tracker.on.insert('streams').response(undefined);
       tracker.on.select('streams').response([
         {
           id: event.streamId,
