@@ -5,7 +5,7 @@
 // eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
 import { Knex } from 'knex';
 
-import { EventWriteModel, StreamRecord } from './interfaces';
+import { EventWriteModel, StreamRecord } from '../interfaces';
 
 export async function appendEvent(knex: Knex, event: EventWriteModel) {
   await knex.transaction(async (trx) => {

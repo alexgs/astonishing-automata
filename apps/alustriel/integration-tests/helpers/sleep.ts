@@ -1,5 +1,5 @@
 /*
- * Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved.
+ * Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
 import ms, { StringValue } from 'ms';

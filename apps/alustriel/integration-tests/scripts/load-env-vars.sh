@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved.
+# Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
 #
 
 # To work correctly, this file should be `source`d instead of executed.

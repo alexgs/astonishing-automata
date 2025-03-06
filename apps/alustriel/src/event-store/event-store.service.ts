@@ -1,8 +1,12 @@
+/*
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
+ */
+
 import { Injectable } from '@nestjs/common';
 import { knex } from 'knex';
 import { ulid } from 'ulidx';
 
-import { appendEvent } from './append-event';
+import { appendEvent } from './event-store.repository/append-event';
 import { EventReadModel, EventWriteModel, StreamRecord } from './interfaces';
 import { KnexService } from './knex.service';
 
