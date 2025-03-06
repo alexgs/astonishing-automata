@@ -1,7 +1,8 @@
 /*
- * Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved.
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved.
  */
 
+// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
 import { Knex } from 'knex';
 
 // Order is important here, due to foreign key constraints

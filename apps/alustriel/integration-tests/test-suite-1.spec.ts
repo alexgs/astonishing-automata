@@ -7,13 +7,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import * as cookieParser from 'cookie-parser';
+// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
 import { Knex } from 'knex';
 
+import { AppModule } from '../src/app.module';
 import {
   EVENT_TYPES as CHARACTER_EVENT_TYPES,
   STEPS,
 } from '../src/character-builder/constants';
-import { AppModule } from '../src/app.module';
+
 import { KnexClient, resetDb } from './helpers';
 
 describe('Character Builder Integration Test Suite 1', () => {

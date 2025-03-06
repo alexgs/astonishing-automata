@@ -9,8 +9,10 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
+
 import { EVENT_TYPES } from '../character-builder/constants';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
+
 import { EventReadModel } from './interfaces';
 import { PostgresService } from './postgres.service';
 

@@ -4,10 +4,12 @@
 
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { createActor } from 'xstate';
-import { StartCharacterCreationCommand } from './start-character-creation.command';
-import { characterBuilderMachine } from '../state-machine';
+
 import { EventStoreService } from '../../event-store/event-store.service';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
+import { characterBuilderMachine } from '../state-machine';
+
+import { StartCharacterCreationCommand } from './start-character-creation.command';
 
 @CommandHandler(StartCharacterCreationCommand)
 export class StartCharacterCreationHandler

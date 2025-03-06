@@ -2,7 +2,9 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
+// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
 import { Knex } from 'knex';
+
 import { EventWriteModel, StreamRecord } from './interfaces';
 
 export async function appendEvent(knex: Knex, event: EventWriteModel) {

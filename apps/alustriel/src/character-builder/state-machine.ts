@@ -3,6 +3,7 @@
  */
 
 import { setup } from 'xstate';
+
 import { STEPS } from './constants';
 
 export interface CharacterContext {

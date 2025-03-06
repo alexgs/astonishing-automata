@@ -1,8 +1,9 @@
 /*
- * Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved.
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved.
  */
 
 import * as env from 'env-var';
+// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
 import KnexDbClient, { Knex } from 'knex';
 
 let knex: Knex;

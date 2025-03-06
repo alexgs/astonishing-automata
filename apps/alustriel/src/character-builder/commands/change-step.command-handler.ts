@@ -4,9 +4,11 @@
 
 import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ChangeStepCommand } from './change-step.command';
+
 import { EventStoreService } from '../../event-store/event-store.service';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
+
+import { ChangeStepCommand } from './change-step.command';
 
 @CommandHandler(ChangeStepCommand)
 export class ChangeStepCommandHandler
