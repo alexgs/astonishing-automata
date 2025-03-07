@@ -1,0 +1,63 @@
+{
+  "collectCoverageFrom": [
+    "<rootDir>/src/**/*.{js,jsx,ts,tsx}",
+    "!**/*.spec.ts",
+    "!**/*.d.ts",
+    "!**/node_modules/**"
+  ],
+  "coverageDirectory": "./coverage/module-tests",
+  "coveragePathIgnorePatterns": [
+    "\\.command\\.ts$",
+    "\\.event\\.ts$",
+    "\\.query\\.ts$",
+    "\\.read-model\\.ts$",
+    "/src/auth/",
+    "/src/app.module.ts",
+    "/src/event-store/event-store.repository/",
+    "/src/event-store/event-publisher.service.ts",
+    "/src/event-store/event-store.service.ts",
+    "/src/event-store/postgres.service.ts",
+    "/src/projections/prisma.service.ts",
+    "/src/task-bus/task-bus.service.ts",
+    "/src/main.ts"
+  ],
+  "coverageThreshold": {
+    "./src/accounts/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/budgets/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/categories/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/categories/tasks/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    },
+    "./src/transactions/events/": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  },
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testMatch": ["<rootDir>/module-tests/**/*.spec.ts"],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  }
+}

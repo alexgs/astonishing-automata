@@ -5,6 +5,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { TOKENS } from '../provider-tokens';
+
 import { EventPublisherService } from './event-publisher.service';
 import { EventStoreService } from './event-store.service';
 import { KnexService } from './knex.service';
@@ -17,7 +19,10 @@ import { PostgresService } from './postgres.service';
     EventPublisherService,
     EventStoreService,
     KnexService,
-    PostgresService,
+    {
+      provide: TOKENS.POSTGRES_SERVICE,
+      useClass: PostgresService,
+    },
   ],
 })
 export class EventStoreModule {}
