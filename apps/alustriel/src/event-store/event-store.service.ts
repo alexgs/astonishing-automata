@@ -4,10 +4,13 @@
 
 import { Injectable } from '@nestjs/common';
 import { knex } from 'knex';
-import { ulid } from 'ulidx';
 
-import { appendEvent } from './event-store.repository/append-event';
-import { EventReadModel, EventWriteModel, StreamRecord } from './interfaces';
+import {
+  appendEvent,
+  createEvent,
+  getEventsByStreamId,
+} from './event-store.repository';
+import { EventPayloads, EventReadModel, EventWriteModel } from './interfaces';
 import { KnexService } from './knex.service';
 
 @Injectable()
@@ -26,27 +29,17 @@ export class EventStoreService {
     streamId: string,
     streamType: string,
     eventType: string,
-    data: Record<string, unknown>,
+    data: EventPayloads | Record<string, unknown>,
   ): Promise<EventWriteModel> {
-    const streamRecord = await this.knex<StreamRecord>('streams')
-      .select()
-      .where('id', streamId);
-    const expectedVersion =
-      streamRecord.length === 0 ? 0 : streamRecord[0].version;
-    return {
-      id: ulid(),
+    return createEvent(this.knex, {
+      data,
+      eventType,
       streamId,
       streamType,
-      type: eventType,
-      data,
-      expectedVersion,
-    };
+    });
   }
 
   async getEventsByStreamId(streamId: string): Promise<EventReadModel[]> {
-    return this.knex<EventReadModel>('events')
-      .select()
-      .where('stream_id', streamId)
-      .orderBy('version', 'asc');
+    return getEventsByStreamId(this.knex, streamId);
   }
 }
