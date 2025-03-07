@@ -7,8 +7,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import * as cookieParser from 'cookie-parser';
-// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
-import { Knex } from 'knex';
+import { knex } from 'knex';
 
 import { AppModule } from '../src/app.module';
 import {
@@ -21,7 +20,7 @@ import { KnexClient, resetDb } from './helpers';
 describe('Character Builder Integration Test Suite 1', () => {
   const CHARACTER_ID = '53239dc3-1dfd-464c-9469-5cfcfb30be86';
   let app: INestApplication;
-  let knex: Knex;
+  let knex: knex.Knex;
   let module: TestingModule;
 
   beforeAll(async () => {

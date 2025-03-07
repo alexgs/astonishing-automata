@@ -2,12 +2,11 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
-import { Knex } from 'knex';
+import { knex } from 'knex';
 
-import { EventWriteModel, StreamRecord } from './interfaces';
+import { EventWriteModel, StreamRecord } from '../interfaces';
 
-export async function appendEvent(knex: Knex, event: EventWriteModel) {
+export async function appendEvent(knex: knex.Knex, event: EventWriteModel) {
   await knex.transaction(async (trx) => {
     try {
       // Insert into stream table if there is no stream with provided streamId
