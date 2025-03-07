@@ -24,12 +24,7 @@ describe('Character Builder module', () => {
         }),
         CqrsModule.forRoot(),
       ],
-      providers: [
-        {
-          provide: TOKENS.POSTGRES_SERVICE,
-          useValue: mockPostgresService,
-        },
-      ],
+      providers: [],
     })
       .overrideProvider(TOKENS.POSTGRES_SERVICE)
       .useValue(mockPostgresService)

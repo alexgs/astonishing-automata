@@ -11,6 +11,9 @@ type SubscribeHandler = (
   info: postgres.ReplicationEvent,
 ) => void;
 
+// Store handlers by channel name
+const subscriptionHandlers: Record<string, SubscribeHandler> = {};
+
 export const mockPostgresService = {
   close: jest.fn(),
   getSql: jest.fn(() => ({
@@ -20,33 +23,28 @@ export const mockPostgresService = {
         handler: SubscribeHandler,
         onSubscribe?: () => void,
       ) => {
+        // Store the handler for external access
+        subscriptionHandlers[channel] = handler;
+
         if (onSubscribe) {
           onSubscribe();
         }
 
-        // Simulate an event notification
-        // const row: EventReadModel = {
-        //   id: '123',
-        //   type: 'STEP_CHANGED',
-        //   data: {},
-        //   created_at: new Date(),
-        //   stream_id: 'mock-stream',
-        //   version: 1,
-        // };
-        // const info: postgres.ReplicationEvent = {
-        //   command: 'insert',
-        //   relation: {
-        //     schema: 'public',
-        //     table: 'events',
-        //     columns: [],
-        //     keys: [],
-        //   },
-        // };
-        // setTimeout(() => handler(row, info), 100);
-
-        // Return a (mock) subscription handle
         return { unsubscribe: jest.fn() };
       },
     ),
   })),
+
+  // Method to trigger a subscription handler from outside
+  triggerSubscription: (
+    channel: string,
+    row: EventReadModel | null,
+    info: Partial<postgres.ReplicationEvent> = {},
+  ) => {
+    if (subscriptionHandlers[channel]) {
+      subscriptionHandlers[channel](row, info as postgres.ReplicationEvent);
+    } else {
+      console.warn(`No handler registered for channel: ${channel}`);
+    }
+  },
 };

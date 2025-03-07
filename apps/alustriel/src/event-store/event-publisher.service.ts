@@ -15,6 +15,7 @@ import { EVENT_TYPES } from '../character-builder/constants';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
 
+import { POSTGRES_CHANNEL } from './constants';
 import { EventReadModel } from './interfaces';
 import { PostgresService } from './postgres.service';
 
@@ -48,7 +49,7 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
       try {
         const sql = this.postgresService.getSql();
         const subscriptionHandle = await sql.subscribe(
-          'insert:events',
+          POSTGRES_CHANNEL,
           (row: EventReadModel) => {
             this.logger.debug(`Publishing event: ${JSON.stringify(row)}`);
             const event = this.createEventFromRow(row);
