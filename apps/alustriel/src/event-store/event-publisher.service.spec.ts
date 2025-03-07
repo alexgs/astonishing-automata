@@ -28,11 +28,13 @@ describe('EventPublisherService', () => {
   beforeEach(async () => {
     mockUnsubscribe = jest.fn();
     mockSql = {
-      subscribe: jest.fn().mockImplementation((channel, eventCb, connectCb) => {
-        eventCallback = eventCb;
-        connectCallback = connectCb;
-        return { unsubscribe: mockUnsubscribe };
-      }),
+      subscribe: jest
+        .fn()
+        .mockImplementation((_channel, eventCb, connectCb) => {
+          eventCallback = eventCb;
+          connectCallback = connectCb;
+          return { unsubscribe: mockUnsubscribe };
+        }),
     };
 
     mockEventBus = {
@@ -89,8 +91,8 @@ describe('EventPublisherService', () => {
     });
 
     it('should retry connection on failure', async () => {
-      // Increase timeout for this specific test
-      jest.setTimeout(10000);
+      // Save the current timer implementation and use real timers for this test
+      jest.useRealTimers();
 
       const originalSubscribe = mockSql.subscribe;
       mockSql.subscribe = jest
@@ -98,33 +100,55 @@ describe('EventPublisherService', () => {
         .mockRejectedValueOnce(new Error('Connection failed'))
         .mockImplementationOnce(originalSubscribe);
 
-      // Start initialization but don't await it yet
-      const initPromise = service.onModuleInit();
-
-      // Run one timer at a time to properly simulate the retry behavior
-      jest.runOnlyPendingTimers(); // Process the first failed attempt
-      jest.runOnlyPendingTimers(); // Process the retry timeout
-
-      // Now await completion
-      await initPromise;
+      await service.onModuleInit();
 
       expect(mockSql.subscribe).toHaveBeenCalledTimes(2);
       expect(mockLoggerError).toHaveBeenCalledWith(
         'Event subscription failed (attempt 1):',
         expect.any(Error),
       );
-    }, 10000);
+
+      // Restore fake timers for other tests
+      jest.useFakeTimers();
+    }, 15000); // Extend timeout further if needed
 
     it('should throw error after maximum retries', async () => {
+      // Use real timers for this test
+      jest.useRealTimers();
+
+      // Save original setTimeout and create a properly typed replacement
+      const originalSetTimeout = global.setTimeout;
+
+      // Create a mock that preserves the original function's properties
+      const mockSetTimeout = function (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        callback: (...args: any[]) => void,
+        _delay?: number,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...args: any[]
+      ) {
+        return originalSetTimeout(callback, 10, ...args); // Short delay for testing
+      } as typeof originalSetTimeout;
+
+      // Replace the global setTimeout
+      global.setTimeout = mockSetTimeout;
+
+      // Mock the subscribe function to always fail
       mockSql.subscribe = jest
         .fn()
         .mockRejectedValue(new Error('Connection failed'));
 
+      // Run the service
       const initPromise = service.onModuleInit();
-      jest.runAllTimers(); // Fast-forward all timeouts
       await expect(initPromise).rejects.toThrow('Connection failed');
       expect(mockSql.subscribe).toHaveBeenCalledTimes(5);
-    });
+
+      // Restore fake timers for other tests
+      jest.useFakeTimers();
+
+      // Restore original setTimeout
+      global.setTimeout = originalSetTimeout;
+    }, 15000); // Extend timeout further if needed
   });
 
   describe('onModuleDestroy', () => {
