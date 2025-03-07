@@ -3,14 +3,13 @@
  */
 
 import * as env from 'env-var';
-// eslint-disable-next-line import/named -- ESLint can't find `Knex` for some reason
-import KnexDbClient, { Knex } from 'knex';
+import { knex } from 'knex';
 
-let knex: Knex;
+let knexClient: knex.Knex;
 
 export const KnexClient = {
   getKnex: () => {
-    if (!knex) {
+    if (!knexClient) {
       const databaseName = env.get('DATABASE_NAME').required().asString();
       const databasePassword = env
         .get('DATABASE_PASSWORD')
@@ -19,7 +18,7 @@ export const KnexClient = {
       const databasePort = env.get('DATABASE_PORT').required().asPortNumber();
       const databaseUser = env.get('DATABASE_USER').required().asString();
 
-      knex = KnexDbClient({
+      knexClient = knex({
         client: 'pg',
         connection: {
           database: databaseName,
@@ -31,6 +30,6 @@ export const KnexClient = {
         debug: false,
       });
     }
-    return knex;
+    return knexClient;
   },
 };
