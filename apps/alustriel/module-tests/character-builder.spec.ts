@@ -6,10 +6,12 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
+import { WinstonModule } from 'nest-winston';
 import * as request from 'supertest';
 
 import { CharacterBuilderModule } from '../src/character-builder/character-builder.module';
 import { TOKENS } from '../src/provider-tokens';
+import { consoleLog, testLog } from '../src/winston-transports';
 
 import { mockPostgresService } from './mock-postgres-service';
 
@@ -24,6 +26,9 @@ describe('Character Builder module', () => {
           envFilePath: '../../../.env',
         }),
         CqrsModule.forRoot(),
+        WinstonModule.forRoot({
+          transports: [consoleLog, testLog],
+        }),
       ],
       providers: [],
     })

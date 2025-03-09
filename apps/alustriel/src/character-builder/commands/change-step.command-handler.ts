@@ -14,9 +14,10 @@ import { ChangeStepCommand } from './change-step.command';
 export class ChangeStepCommandHandler
   implements ICommandHandler<ChangeStepCommand>
 {
-  private readonly logger = new Logger(ChangeStepCommandHandler.name);
-
-  constructor(private readonly eventStoreService: EventStoreService) {}
+  constructor(
+    private readonly eventStoreService: EventStoreService,
+    private readonly logger: Logger,
+  ) {}
 
   async execute(command: ChangeStepCommand) {
     this.logger.debug(

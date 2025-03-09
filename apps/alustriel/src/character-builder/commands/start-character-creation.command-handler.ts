@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
+import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { createActor } from 'xstate';
 
@@ -18,11 +19,13 @@ export class StartCharacterCreationHandler
   constructor(
     private readonly eventFactory: CharacterBuilderEventFactory,
     private readonly eventStore: EventStoreService,
+    private readonly logger: Logger,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(_command: StartCharacterCreationCommand) {
     const characterId = crypto.randomUUID();
+    this.logger.debug('Processing "StartCharacterCreationCommand"');
 
     // Initialize the state machine
     const actor = createActor(characterBuilderMachine);
