@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
@@ -17,6 +17,6 @@ import { CharacterBuilderModule } from './character-builder/character-builder.mo
     ConfigModule.forRoot(),
     CqrsModule.forRoot(),
   ],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule {}

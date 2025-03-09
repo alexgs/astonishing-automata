@@ -9,9 +9,11 @@ import { knex } from 'knex';
 @Injectable()
 export class KnexService implements OnModuleDestroy {
   private knexObject: knex.Knex;
-  private readonly logger = new Logger(KnexService.name);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly logger: Logger,
+  ) {}
 
   private initializeKnex() {
     this.knexObject = knex({

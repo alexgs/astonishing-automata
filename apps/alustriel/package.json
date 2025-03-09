@@ -10,7 +10,7 @@
   "private": true,
   "scripts": {
     "build": "nest build",
-    "dev": "start:dev",
+    "dev": "npm run start:dev",
     "format": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\" \"integration-tests/**/*.ts\" \"module-tests/**/*.ts\"",
     "format:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"integration-tests/**/*.ts\" \"module-tests/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test,integration-tests,module-tests}/**/*.ts\"",
@@ -36,11 +36,13 @@
     "@nestjs/cqrs": "^11.0.2",
     "@nestjs/platform-express": "^10.0.0",
     "knex": "^3.1.0",
+    "nest-winston": "^1.10.2",
     "pg": "^8.13.3",
     "postgres": "^3.4.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "ulidx": "^2.4.1",
+    "winston": "^3.17.0",
     "xstate": "^5.19.2"
   },
   "devDependencies": {
