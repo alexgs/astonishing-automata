@@ -24,6 +24,7 @@ export const consoleLog = new winston.transports.Console({
 
 export const testLog = new winston.transports.File({
   filename: 'logs/test.log', // Ensure the "logs" directory exists
+  level: 'debug', // Log level threshold
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.printf(({ level, message, timestamp }) => {

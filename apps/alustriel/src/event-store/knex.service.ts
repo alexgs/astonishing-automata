@@ -40,7 +40,7 @@ export class KnexService implements OnModuleDestroy {
   async onModuleDestroy() {
     if (this.knexObject) {
       await this.knexObject.destroy();
-      this.logger.debug('Knew connection destroyed.');
+      this.logger.debug('Knex connection destroyed.');
     }
   }
 }

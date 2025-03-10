@@ -11,7 +11,7 @@ import * as request from 'supertest';
 
 import { CharacterBuilderModule } from '../src/character-builder/character-builder.module';
 import { TOKENS } from '../src/provider-tokens';
-import { consoleLog, testLog } from '../src/winston-transports';
+import { testLog } from '../src/winston-transports';
 
 import { mockPostgresService } from './mock-postgres-service';
 
@@ -26,9 +26,6 @@ describe('Character Builder module', () => {
           envFilePath: '../../../.env',
         }),
         CqrsModule.forRoot(),
-        WinstonModule.forRoot({
-          transports: [consoleLog, testLog],
-        }),
       ],
       providers: [],
     })
@@ -37,6 +34,11 @@ describe('Character Builder module', () => {
       .compile();
 
     app = moduleRef.createNestApplication();
+    app.useLogger(
+      WinstonModule.createLogger({
+        transports: [testLog],
+      }),
+    );
     await app.init();
   });
 
