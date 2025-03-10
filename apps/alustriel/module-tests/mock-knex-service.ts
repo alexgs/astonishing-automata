@@ -4,33 +4,23 @@
 
 import { Injectable } from '@nestjs/common';
 import { knex } from 'knex';
+import { createTracker, MockClient, Tracker } from 'knex-mock-client';
 
 @Injectable()
 export class MockKnexService {
-  // A partial mock of the Knex object with the methods you expect to call;
-  // extend this with additional methods as needed.
-  private readonly mockKnex: Partial<knex.Knex>;
+  private readonly mockKnex: knex.Knex;
+  private readonly tracker: Tracker;
 
   constructor() {
-    this.mockKnex = {
-      // These mocks return `this` to allow method chaining, similar to Knex's API.
-      select: jest.fn().mockReturnThis(),
-      from: jest.fn().mockReturnThis(),
-      where: jest.fn().mockReturnThis(),
-      insert: jest.fn().mockReturnThis(),
-      update: jest.fn().mockReturnThis(),
-      delete: jest.fn().mockReturnThis(),
-
-      // For methods that might return a promise or a value, you can customize
-      // the mock implementation.
-      raw: jest.fn().mockResolvedValue([]),
-
-      // Add any additional methods as your application requires.
-    };
+    this.mockKnex = knex({ client: MockClient, dialect: 'pg' });
+    this.tracker = createTracker(this.mockKnex);
   }
 
   getKnex(): knex.Knex {
-    // Return the mock object, cast as a full Knex instance.
-    return this.mockKnex as knex.Knex;
+    return this.mockKnex;
+  }
+
+  getTracker(): Tracker {
+    return this.tracker;
   }
 }

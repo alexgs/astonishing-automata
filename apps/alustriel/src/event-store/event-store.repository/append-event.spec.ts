@@ -14,7 +14,7 @@ describe('Pure function `appendEvent`', () => {
   let tracker: Tracker;
 
   beforeEach(() => {
-    db = knex({ client: MockClient });
+    db = knex({ client: MockClient, dialect: 'pg' });
     tracker = createTracker(db);
   });
 

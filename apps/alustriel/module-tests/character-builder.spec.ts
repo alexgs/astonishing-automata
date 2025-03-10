@@ -10,6 +10,7 @@ import { WinstonModule } from 'nest-winston';
 import * as request from 'supertest';
 
 import { CharacterBuilderModule } from '../src/character-builder/character-builder.module';
+import { StreamRecord } from '../src/event-store/interfaces';
 import { TOKENS } from '../src/provider-tokens';
 import { testLog } from '../src/winston-transports';
 
@@ -17,9 +18,13 @@ import { MockKnexService } from './mock-knex-service';
 import { mockPostgresService } from './mock-postgres-service';
 
 describe('Character Builder module', () => {
+  const UUID = 'a95c950e-1305-476b-af8a-e7e0cc4e7dc5';
   let app: INestApplication;
+  let mockKnexService: MockKnexService;
 
   beforeAll(async () => {
+    jest.spyOn(crypto, 'randomUUID').mockReturnValue(UUID);
+
     const moduleRef = await Test.createTestingModule({
       imports: [
         CharacterBuilderModule,
@@ -43,6 +48,8 @@ describe('Character Builder module', () => {
       }),
     );
     await app.init();
+
+    mockKnexService = moduleRef.get(TOKENS.KNEX_SERVICE);
   });
 
   afterAll(async () => {
@@ -55,12 +62,25 @@ describe('Character Builder module', () => {
 
   describe('Endpoints', () => {
     it('POST /character-builder/start', async () => {
+      const streamRecord: StreamRecord = {
+        id: UUID,
+        type: 'mock-event',
+        version: 0,
+      };
+
+      const tracker = mockKnexService.getTracker();
+      tracker.on.select('streams').responseOnce([]);
+      tracker.on.insert('streams').responseOnce(1);
+      tracker.on.select('streams').responseOnce([streamRecord]);
+      tracker.on.insert('events').responseOnce(1);
+      tracker.on.update('streams').responseOnce(1);
+
       const response = await request(app.getHttpServer()).post(
         '/character-builder/start',
       );
-      expect(response.status).toEqual(HttpStatus.OK);
+      expect(response.status).toEqual(HttpStatus.CREATED);
       expect(response.body).toEqual({
-        data: { characterId: '01HJ659NEF95QMJHSMGN36VA7J' },
+        data: { characterId: UUID },
       });
     });
   });

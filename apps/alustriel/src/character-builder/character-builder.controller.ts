@@ -18,6 +18,7 @@ export class CharacterBuilderController {
   @Post('start')
   async startCharacterCreation() {
     this.logger.debug('Received POST request to /character-builder/start');
-    return this.characterBuilderService.startCharacterCreation();
+    const data = await this.characterBuilderService.startCharacterCreation();
+    return { data };
   }
 }

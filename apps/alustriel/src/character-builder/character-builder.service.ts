@@ -12,6 +12,9 @@ export class CharacterBuilderService {
   constructor(private readonly commandBus: CommandBus) {}
 
   async startCharacterCreation() {
-    return this.commandBus.execute(new StartCharacterCreationCommand());
+    return this.commandBus.execute<
+      StartCharacterCreationCommand,
+      { characterId: string }
+    >(new StartCharacterCreationCommand());
   }
 }
