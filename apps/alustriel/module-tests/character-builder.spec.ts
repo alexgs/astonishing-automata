@@ -13,6 +13,7 @@ import { CharacterBuilderModule } from '../src/character-builder/character-build
 import { TOKENS } from '../src/provider-tokens';
 import { testLog } from '../src/winston-transports';
 
+import { MockKnexService } from './mock-knex-service';
 import { mockPostgresService } from './mock-postgres-service';
 
 describe('Character Builder module', () => {
@@ -23,7 +24,7 @@ describe('Character Builder module', () => {
       imports: [
         CharacterBuilderModule,
         ConfigModule.forRoot({
-          envFilePath: '../../../.env',
+          envFilePath: '../.env',
         }),
         CqrsModule.forRoot(),
       ],
@@ -31,6 +32,8 @@ describe('Character Builder module', () => {
     })
       .overrideProvider(TOKENS.POSTGRES_SERVICE)
       .useValue(mockPostgresService)
+      .overrideProvider(TOKENS.KNEX_SERVICE)
+      .useClass(MockKnexService)
       .compile();
 
     app = moduleRef.createNestApplication();

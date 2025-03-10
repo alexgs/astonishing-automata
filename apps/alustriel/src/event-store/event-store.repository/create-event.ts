@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
+import { Logger } from '@nestjs/common';
 import { knex } from 'knex';
 import { ulid } from 'ulidx';
 
@@ -14,12 +15,25 @@ import {
 export async function createEvent(
   knex: knex.Knex,
   payload: CreateEventPayload,
+  logger: Logger,
 ): Promise<EventWriteModel> {
-  const streamRecord = await knex<StreamRecord>('streams')
-    .select()
-    .where('id', payload.streamId);
+  logger.debug('>> Reading existing stream');
+  let streamRecord = [];
+  try {
+    streamRecord = await knex<StreamRecord>('streams')
+      .select()
+      .where('id', payload.streamId);
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error(`Error reading stream: ${error.message}`);
+      logger.error(`Stack: ${error.stack}`);
+      throw error;
+    }
+  }
+  logger.debug('>> Determining expected version');
   const expectedVersion =
     streamRecord.length === 0 ? 0 : streamRecord[0].version;
+  logger.debug('>> Returning event');
   return {
     id: ulid(),
     streamId: payload.streamId,

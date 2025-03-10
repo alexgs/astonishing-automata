@@ -28,18 +28,22 @@ export class StartCharacterCreationHandler
     this.logger.debug('Processing "StartCharacterCreationCommand"');
 
     // Initialize the state machine
+    this.logger.debug('Initializing state machine');
     const actor = createActor(characterBuilderMachine);
     actor.start();
     const step = actor.getSnapshot().value; // Get state name
     const data = actor.getSnapshot().context; // Get initial context
 
     // Create and store the event
+    this.logger.debug('Creating and storing event');
     const event = await this.eventFactory.createCharacterCreationStartedEvent(
       characterId,
       step,
       data,
     );
+    this.logger.debug(`Appending event: ${JSON.stringify(event)}`);
     await this.eventStore.appendEvent(event);
+    this.logger.debug('Event appended');
 
     return { characterId };
   }

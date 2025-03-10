@@ -3,5 +3,6 @@
  */
 
 export const TOKENS = {
+  KNEX_SERVICE: 'automata-character-builder.alustriel.KnexService',
   POSTGRES_SERVICE: 'automata-character-builder.alustriel.PostgresService',
 } as const;

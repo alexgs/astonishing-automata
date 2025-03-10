@@ -2,11 +2,16 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
+import { Logger } from '@nestjs/common';
 import { knex } from 'knex';
 
 import { EventWriteModel, StreamRecord } from '../interfaces';
 
-export async function appendEvent(knex: knex.Knex, event: EventWriteModel) {
+export async function appendEvent(
+  knex: knex.Knex,
+  event: EventWriteModel,
+  logger: Logger,
+) {
   await knex.transaction(async (trx) => {
     try {
       // Insert into stream table if there is no stream with provided streamId
@@ -46,7 +51,7 @@ export async function appendEvent(knex: knex.Knex, event: EventWriteModel) {
         .where('id', event.streamId)
         .update({ version: event.expectedVersion + 1 });
     } catch (error) {
-      console.error('Error appending event:', error);
+      logger.error('Error appending event:', error);
       throw error; // Ensure transaction rollback
     }
   });

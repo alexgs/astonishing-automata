@@ -19,7 +19,10 @@ import { PostgresService } from './postgres.service';
   providers: [
     EventPublisherService,
     EventStoreService,
-    KnexService,
+    {
+      provide: TOKENS.KNEX_SERVICE,
+      useClass: KnexService,
+    },
     Logger,
     {
       provide: TOKENS.POSTGRES_SERVICE,
