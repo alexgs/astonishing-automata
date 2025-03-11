@@ -31,7 +31,7 @@ export class KnexService implements OnModuleDestroy {
 
   getKnex(): knex.Knex {
     if (!this.knexObject) {
-      this.logger.debug('Initializing Knex connection.');
+      this.logger.debug('Initializing Knex connection.', KnexService.name);
       this.initializeKnex();
     }
     return this.knexObject;
@@ -40,7 +40,7 @@ export class KnexService implements OnModuleDestroy {
   async onModuleDestroy() {
     if (this.knexObject) {
       await this.knexObject.destroy();
-      this.logger.debug('Knex connection destroyed.');
+      this.logger.debug('Knex connection destroyed.', KnexService.name);
     }
   }
 }

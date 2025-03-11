@@ -20,7 +20,6 @@ export class CharacterBuilderEventFactory {
     step: string,
     data: CharacterContext,
   ) {
-    this.logger.debug('Creating "CharacterCreationStarted" event');
     return this.eventStore.createEvent(
       characterId,
       STREAM_TYPES.CHARACTER,

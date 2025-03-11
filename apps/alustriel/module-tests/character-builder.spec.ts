@@ -41,12 +41,11 @@ describe('Character Builder module', () => {
       .useClass(MockKnexService)
       .compile();
 
-    app = moduleRef.createNestApplication();
-    app.useLogger(
-      WinstonModule.createLogger({
+    app = moduleRef.createNestApplication({
+      logger: WinstonModule.createLogger({
         transports: [testLog],
       }),
-    );
+    });
     await app.init();
 
     mockKnexService = moduleRef.get(TOKENS.KNEX_SERVICE);

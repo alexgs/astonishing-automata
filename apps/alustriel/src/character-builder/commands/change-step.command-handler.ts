@@ -20,10 +20,6 @@ export class ChangeStepCommandHandler
   ) {}
 
   async execute(command: ChangeStepCommand) {
-    this.logger.debug(
-      `Processing "ChangeStepCommand": ${JSON.stringify(command)}`,
-    );
-
     const event = await this.eventStoreService.createEvent(
       command.characterId,
       STREAM_TYPES.CHARACTER,

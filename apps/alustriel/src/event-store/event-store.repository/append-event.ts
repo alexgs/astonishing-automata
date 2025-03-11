@@ -10,7 +10,7 @@ import { EventWriteModel, StreamRecord } from '../interfaces';
 export async function appendEvent(
   knex: knex.Knex,
   event: EventWriteModel,
-  logger?: Logger,
+  logger: Logger,
 ) {
   await knex.transaction(async (trx) => {
     try {
@@ -51,7 +51,7 @@ export async function appendEvent(
         .where('id', event.streamId)
         .update({ version: event.expectedVersion + 1 });
     } catch (error) {
-      logger && logger.error('Error appending event:', error);
+      logger.error(`Error appending event: ${error}`, appendEvent.name);
       throw error; // Ensure transaction rollback
     }
   });

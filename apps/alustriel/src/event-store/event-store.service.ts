@@ -36,20 +36,18 @@ export class EventStoreService {
     eventType: string,
     data: EventPayloads | Record<string, unknown>,
   ): Promise<EventWriteModel> {
-    this.logger.debug('Creating event');
     try {
-      return createEvent(
-        this.knex,
-        {
-          data,
-          eventType,
-          streamId,
-          streamType,
-        },
-        this.logger,
-      );
+      return createEvent(this.knex, {
+        data,
+        eventType,
+        streamId,
+        streamType,
+      });
     } catch (error) {
-      this.logger.error(`Error creating event: ${error}`);
+      this.logger.error(
+        `Error creating event: ${error}`,
+        EventStoreService.name,
+      );
       throw error;
     }
   }

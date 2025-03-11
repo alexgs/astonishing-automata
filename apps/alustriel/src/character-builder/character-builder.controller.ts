@@ -11,13 +11,14 @@ export class CharacterBuilderController {
   constructor(
     private readonly characterBuilderService: CharacterBuilderService,
     private readonly logger: Logger,
-  ) {
-    this.logger.debug(CharacterBuilderController.name);
-  }
+  ) {}
 
   @Post('start')
   async startCharacterCreation() {
-    this.logger.debug('Received POST request to /character-builder/start');
+    this.logger.debug(
+      'Received POST request to /character-builder/start',
+      CharacterBuilderController.name,
+    );
     const data = await this.characterBuilderService.startCharacterCreation();
     return { data };
   }
