@@ -7,6 +7,7 @@ import { EventBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { EVENT_TYPES } from '../character-builder/constants';
+import { TOKENS } from '../provider-tokens';
 
 import { EventPublisherService } from './event-publisher.service';
 import { EventReadModel } from './interfaces';
@@ -57,7 +58,7 @@ describe('EventPublisherService', () => {
       providers: [
         EventPublisherService,
         { provide: EventBus, useValue: mockEventBus },
-        { provide: PostgresService, useValue: mockPostgresService },
+        { provide: TOKENS.POSTGRES_SERVICE, useValue: mockPostgresService },
       ],
     }).compile();
 
