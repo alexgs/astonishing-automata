@@ -2,12 +2,21 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
+import { Logger } from '@nestjs/common';
 import { knex } from 'knex';
 import { createTracker, MockClient, Tracker } from 'knex-mock-client';
 
 import { EventWriteModel } from '../interfaces';
 
 import { appendEvent } from './append-event';
+
+const mockLogger = {
+  debug: jest.fn(),
+  error: jest.fn(),
+  info: jest.fn(),
+  log: jest.fn(),
+  warn: jest.fn(),
+} as unknown as Logger;
 
 describe('Pure function `appendEvent`', () => {
   let db: knex.Knex;
@@ -44,7 +53,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const firstQuery = tracker.history.select[0];
       expect(firstQuery.method).toBe('select');
@@ -63,7 +72,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const insertQuery = tracker.history.insert[0];
       expect(insertQuery.method).toBe('insert');
@@ -86,7 +95,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const insertEventQuery = tracker.history.insert[1];
       expect(insertEventQuery.method).toBe('insert');
@@ -111,7 +120,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const updateQuery = tracker.history.update[0];
       expect(updateQuery.method).toBe('update');
@@ -144,7 +153,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const firstQuery = tracker.history.select[0];
       expect(firstQuery.method).toBe('select');
@@ -163,7 +172,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const insertEventQuery = tracker.history.insert[1];
       expect(insertEventQuery.method).toBe('insert');
@@ -188,7 +197,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('events').response(1);
       tracker.on.update('streams').response(1);
 
-      await appendEvent(db, event);
+      await appendEvent(db, event, mockLogger);
 
       const updateQuery = tracker.history.update[0];
       expect(updateQuery.method).toBe('update');
@@ -215,7 +224,7 @@ describe('Pure function `appendEvent`', () => {
       tracker.on.insert('streams').response(1);
       tracker.on.select('streams').response([]);
 
-      await expect(appendEvent(db, event)).rejects.toThrow(
+      await expect(appendEvent(db, event, mockLogger)).rejects.toThrow(
         `Stream not found after insertion: ${event.streamId}`,
       );
     });
@@ -230,7 +239,7 @@ describe('Pure function `appendEvent`', () => {
         },
       ]);
 
-      await expect(appendEvent(db, event)).rejects.toThrow(
+      await expect(appendEvent(db, event, mockLogger)).rejects.toThrow(
         `Stream version ${event.expectedVersion + 1} and expected version ${event.expectedVersion} do not match.`,
       );
     });
