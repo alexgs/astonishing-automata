@@ -2,6 +2,13 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
+import * as postgres from 'postgres';
+
+export interface IPostgresService {
+  getSql(): postgres.Sql;
+  close(): Promise<void>;
+}
+
 // --- E V E N T   S T O R E ---
 
 export interface CreateEventPayload {

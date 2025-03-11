@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 import { EventStoreService } from '../../event-store/event-store.service';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
@@ -10,7 +10,10 @@ import { CharacterContext } from '../state-machine';
 
 @Injectable()
 export class CharacterBuilderEventFactory {
-  constructor(private readonly eventStore: EventStoreService) {}
+  constructor(
+    private readonly eventStore: EventStoreService,
+    private readonly logger: Logger,
+  ) {}
 
   public async createCharacterCreationStartedEvent(
     characterId: string,

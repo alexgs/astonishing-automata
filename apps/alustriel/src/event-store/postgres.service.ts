@@ -6,8 +6,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as postgres from 'postgres';
 
+import { IPostgresService } from './interfaces';
+
 @Injectable()
-export class PostgresService {
+export class PostgresService implements IPostgresService {
   private sqlObject: postgres.Sql;
 
   constructor(private readonly configService: ConfigService) {}

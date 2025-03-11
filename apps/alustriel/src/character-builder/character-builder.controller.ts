@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Logger, Post } from '@nestjs/common';
 
 import { CharacterBuilderService } from './character-builder.service';
 
@@ -10,10 +10,16 @@ import { CharacterBuilderService } from './character-builder.service';
 export class CharacterBuilderController {
   constructor(
     private readonly characterBuilderService: CharacterBuilderService,
+    private readonly logger: Logger,
   ) {}
 
   @Post('start')
   async startCharacterCreation() {
-    return this.characterBuilderService.startCharacterCreation();
+    this.logger.debug(
+      'Received POST request to /character-builder/start',
+      CharacterBuilderController.name,
+    );
+    const data = await this.characterBuilderService.startCharacterCreation();
+    return { data };
   }
 }

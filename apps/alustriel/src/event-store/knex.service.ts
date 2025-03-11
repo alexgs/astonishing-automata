@@ -9,9 +9,11 @@ import { knex } from 'knex';
 @Injectable()
 export class KnexService implements OnModuleDestroy {
   private knexObject: knex.Knex;
-  private readonly logger = new Logger(KnexService.name);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly logger: Logger,
+  ) {}
 
   private initializeKnex() {
     this.knexObject = knex({
@@ -29,7 +31,7 @@ export class KnexService implements OnModuleDestroy {
 
   getKnex(): knex.Knex {
     if (!this.knexObject) {
-      this.logger.debug('Initializing Knex connection.');
+      this.logger.debug('Initializing Knex connection.', KnexService.name);
       this.initializeKnex();
     }
     return this.knexObject;
@@ -38,7 +40,7 @@ export class KnexService implements OnModuleDestroy {
   async onModuleDestroy() {
     if (this.knexObject) {
       await this.knexObject.destroy();
-      this.logger.debug('Knew connection destroyed.');
+      this.logger.debug('Knex connection destroyed.', KnexService.name);
     }
   }
 }

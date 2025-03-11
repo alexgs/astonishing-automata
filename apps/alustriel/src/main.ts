@@ -4,12 +4,18 @@
 
 import { VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { WinstonModule } from 'nest-winston';
 
 import { AppModule } from './app.module';
+import { appLog, consoleLog } from './winston-transports';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableShutdownHooks(); // Consider disabling for tests; see https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown
+  const app = await NestFactory.create(AppModule, {
+    logger: WinstonModule.createLogger({
+      transports: [appLog, consoleLog],
+    }),
+  });
+  app.enableShutdownHooks();
   app.enableVersioning({ type: VersioningType.URI });
   app.setGlobalPrefix('api');
 

@@ -42,6 +42,8 @@ Refer to [the instructions][2] in the :lock: devops repo.
 
 [2]: https://github.com/alexgs/devops/blob/develop/documentation/postgresql-securing-databases.md
 
+You will also need to do `ALTER USER $DATABASE_USER REPLICATION;` to enable WAL replication and push events from the database.
+
 ### Backing up the database
 
 Refer to [the instructions][3] in the :lock: devops repo.

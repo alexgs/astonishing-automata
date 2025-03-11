@@ -2,8 +2,9 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { WinstonModule } from 'nest-winston';
 
 import { EventStoreModule } from '../event-store/event-store.module';
 
@@ -15,11 +16,12 @@ import { CharacterBuilderEventFactory } from './events/character-builder.event-f
 
 @Module({
   controllers: [CharacterBuilderController],
-  imports: [CqrsModule, EventStoreModule],
+  imports: [CqrsModule, EventStoreModule, WinstonModule],
   providers: [
     ChangeStepCommandHandler,
     CharacterBuilderEventFactory,
     CharacterBuilderService,
+    Logger,
     StartCharacterCreationHandler,
   ],
 })

@@ -16,7 +16,7 @@ describe('Pure function `createEvent`', () => {
   const mockUlid = '01HJ659NEF95QMJHSMGN36VA7J';
 
   beforeEach(() => {
-    db = knex({ client: MockClient });
+    db = knex({ client: MockClient, dialect: 'pg' });
     tracker = createTracker(db);
     jest.spyOn(ulidModule, 'ulid').mockReturnValue(mockUlid);
   });

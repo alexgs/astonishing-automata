@@ -15,9 +15,16 @@ export async function createEvent(
   knex: knex.Knex,
   payload: CreateEventPayload,
 ): Promise<EventWriteModel> {
-  const streamRecord = await knex<StreamRecord>('streams')
-    .select()
-    .where('id', payload.streamId);
+  let streamRecord = [];
+  try {
+    streamRecord = await knex<StreamRecord>('streams')
+      .select()
+      .where('id', payload.streamId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
   const expectedVersion =
     streamRecord.length === 0 ? 0 : streamRecord[0].version;
   return {
