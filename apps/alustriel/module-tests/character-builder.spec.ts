@@ -83,4 +83,10 @@ describe('Character Builder module', () => {
       });
     });
   });
+
+  describe('Event handlers', () => {
+    describe('some-event-handler', () => {
+      it.todo(`handles the "some-event" event by creating a projection`);
+    });
+  });
 });
