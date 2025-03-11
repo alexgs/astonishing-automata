@@ -5,11 +5,21 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
+import { ChangeStepCommand } from './commands/change-step.command';
 import { StartCharacterCreationCommand } from './commands/start-character-creation.command';
+import { ChangeStepDto } from './dto/change-step.dto';
+import { StepName } from './types';
 
 @Injectable()
 export class CharacterBuilderService {
   constructor(private readonly commandBus: CommandBus) {}
+
+  async changeStep(changeStepDto: ChangeStepDto) {
+    return this.commandBus.execute<
+      ChangeStepCommand,
+      { characterId: string; step: StepName }
+    >(new ChangeStepCommand(changeStepDto.characterId, changeStepDto.step));
+  }
 
   async startCharacterCreation() {
     return this.commandBus.execute<

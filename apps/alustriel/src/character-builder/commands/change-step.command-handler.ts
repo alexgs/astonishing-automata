@@ -24,10 +24,10 @@ export class ChangeStepCommandHandler
       command.characterId,
       STREAM_TYPES.CHARACTER,
       EVENT_TYPES.STEP_CHANGED,
-      { step: command.event },
+      { step: command.step },
     );
     await this.eventStoreService.appendEvent(event);
 
-    return { characterId: command.characterId, step: command.event };
+    return { characterId: command.characterId, step: command.step };
   }
 }

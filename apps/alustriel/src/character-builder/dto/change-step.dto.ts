@@ -1,0 +1,20 @@
+/*
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
+ */
+
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
+
+import { STEPS } from '../constants';
+import { StepName } from '../types';
+
+// Convert STEPS object values to a tuple type required by z.enum()
+const stepValues = Object.values(STEPS) as [string, ...string[]];
+
+const changeStepSchema = z.object({
+  characterId: z.string().uuid(),
+  step: z.enum(stepValues) as z.ZodType<StepName>, // Zod enum that only accepts values from STEPS
+});
+
+// Type inference from the schema
+export class ChangeStepDto extends createZodDto(changeStepSchema) {}
