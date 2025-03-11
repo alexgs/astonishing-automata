@@ -7,9 +7,9 @@
 # Get the current directory
 current_dir=$(pwd)
 
-# Check if the current directory ends with 'apps/arrokoth'
-if [[ "$current_dir" != *"apps/arrokoth" ]]; then
-    echo "Not running from the \`apps/arrokoth\` directory. Exiting."
+# Check if the current directory ends with 'apps/alustriel'
+if [[ "$current_dir" != *"apps/alustriel" ]]; then
+    echo "Not running from the \`apps/alustriel\` directory. Exiting."
     exit 1
 fi
 
@@ -23,9 +23,11 @@ fi
 # Start the integration test environment
 ./integration-tests/scripts/start-test-env.sh
 
-# Get an access token and run the integration tests
-TOKEN=$(./integration-tests/scripts/get-access-token.sh)
-export TOKEN
+# Get an access token
+#TOKEN=$(./integration-tests/scripts/get-access-token.sh)
+#export TOKEN
+
+# Run the integration tests
 npm run test:int
 return_code=$?
 

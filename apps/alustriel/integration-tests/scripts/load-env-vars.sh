@@ -9,4 +9,4 @@
 export NODE_ENV="integration-test"
 
 # shellcheck disable=SC2046
-export $(sed -e '/^\s*#/d' -e 's/\s*#.*$//' ../.env | xargs)
+export $(sed -e '/^\s*#/d' -e 's/\s*#.*$//' ../../.env | xargs)
