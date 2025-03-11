@@ -24,6 +24,8 @@ describe('Character Builder Integration Test Suite 1', () => {
   let module: TestingModule;
 
   beforeAll(async () => {
+    jest.spyOn(crypto, 'randomUUID').mockReturnValue(CHARACTER_ID);
+
     knex = KnexClient.getKnex();
     await resetDb(knex);
 
@@ -57,7 +59,7 @@ describe('Character Builder Integration Test Suite 1', () => {
     }
 
     expect(response.status).toEqual(HttpStatus.CREATED);
-    const { characterId } = response.data;
+    const { characterId } = response.data.data;
 
     const events = await knex('events').where({
       type: CHARACTER_EVENT_TYPES.STARTED,
