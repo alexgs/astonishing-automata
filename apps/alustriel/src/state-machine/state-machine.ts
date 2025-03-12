@@ -5,20 +5,7 @@
 import { setup } from 'xstate';
 
 import { STEPS } from './constants';
-
-export interface CharacterContext {
-  species?: string;
-  culture?: string;
-  class?: string;
-  subclass?: string;
-  abilityScores?: Record<string, number>;
-  background?: string;
-  skills?: string[];
-  tools?: string[];
-  languages?: string[];
-  equipment?: string[];
-  spells?: string[];
-}
+import { CharacterContext } from './interfaces';
 
 export const characterBuilderMachine = setup({
   types: {} as {
