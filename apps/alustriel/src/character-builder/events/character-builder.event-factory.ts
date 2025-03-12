@@ -5,8 +5,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { EventStoreService } from '../../event-store/event-store.service';
+import { CharacterContext } from '../../state-machine/state-machine';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
-import { CharacterContext } from '../state-machine';
 
 @Injectable()
 export class CharacterBuilderEventFactory {
