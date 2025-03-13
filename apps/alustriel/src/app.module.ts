@@ -9,6 +9,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CharacterBuilderModule } from './character-builder/character-builder.module';
+import { StateMachineModule } from './state-machine/state-machine.module';
 
 @Module({
   controllers: [AppController],
@@ -16,6 +17,7 @@ import { CharacterBuilderModule } from './character-builder/character-builder.mo
     CharacterBuilderModule,
     ConfigModule.forRoot(),
     CqrsModule.forRoot(),
+    StateMachineModule,
   ],
   providers: [AppService, Logger],
 })

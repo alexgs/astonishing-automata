@@ -10,10 +10,8 @@ import * as cookieParser from 'cookie-parser';
 import { knex } from 'knex';
 
 import { AppModule } from '../src/app.module';
-import {
-  EVENT_TYPES as CHARACTER_EVENT_TYPES,
-  STEPS,
-} from '../src/character-builder/constants';
+import { EVENT_TYPES as CHARACTER_EVENT_TYPES } from '../src/character-builder/constants';
+import { STEPS } from '../src/state-machine/constants';
 
 import { KnexClient, resetDb } from './helpers';
 
