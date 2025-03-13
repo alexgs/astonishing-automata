@@ -6,6 +6,7 @@ import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { EventStoreService } from '../../event-store/event-store.service';
+import { ActorFactory } from '../../state-machine/actor.factory';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
 import { StepChangedEvent } from '../events/step-changed.event';
 
@@ -16,11 +17,16 @@ export class ChangeStepCommandHandler
   implements ICommandHandler<ChangeStepCommand>
 {
   constructor(
+    private readonly actorFactory: ActorFactory,
     private readonly eventStoreService: EventStoreService,
     private readonly logger: Logger,
   ) {}
 
   async execute(command: ChangeStepCommand) {
+    const actor = await this.actorFactory.getActor(command.characterId);
+    const previousStep = actor.getSnapshot().value;
+    this.logger.debug(`Previous step: ${previousStep}`, ChangeStepCommandHandler.name);
+
     const payload: StepChangedEvent = {
       characterId: command.characterId,
       nextStep: command.targetStep,

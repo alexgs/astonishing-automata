@@ -24,3 +24,5 @@ export const STEPS = {
   FINAL_REVIEW: 'character-builder:steps:final-review',
   FINISH: 'character-builder:steps:finish',
 } as const;
+
+export const INITIAL_STEP = STEPS.SELECT_SPECIES;
