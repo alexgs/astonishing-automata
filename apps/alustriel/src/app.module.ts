@@ -6,19 +6,17 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CharacterBuilderModule } from './character-builder/character-builder.module';
 import { StateMachineModule } from './state-machine/state-machine.module';
 
 @Module({
-  controllers: [AppController],
+  controllers: [],
   imports: [
     CharacterBuilderModule,
     ConfigModule.forRoot(),
     CqrsModule.forRoot(),
     StateMachineModule,
   ],
-  providers: [AppService, Logger],
+  providers: [Logger],
 })
 export class AppModule {}
