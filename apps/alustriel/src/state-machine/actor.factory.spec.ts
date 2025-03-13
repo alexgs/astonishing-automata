@@ -7,15 +7,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { createActor } from 'xstate';
 
 import { EVENT_TYPES } from '../character-builder/constants';
-import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { EventStoreService } from '../event-store/event-store.service';
 
 import { ActorFactory } from './actor.factory';
-import { characterBuilderMachine } from './state-machine';
-
-const mockEventStoreService = {
-  getEventsByStreamId: jest.fn(),
-};
 
 jest.mock('xstate', () => {
   const mockCharacterBuilderMachine = {
@@ -40,7 +34,11 @@ jest.mock('xstate', () => {
   };
 });
 
-const { mockCharacterBuilderMachine } = jest.requireMock('xstate');
+const mockEventStoreService = {
+  getEventsByStreamId: jest.fn(),
+};
+
+const mockXState = jest.requireMock('xstate');
 
 describe('ActorFactory', () => {
   let actorFactory: ActorFactory;
@@ -69,14 +67,16 @@ describe('ActorFactory', () => {
   it('should create a new actor if no past events', async () => {
     mockEventStoreService.getEventsByStreamId.mockResolvedValue([]);
     const mockActor = { start: jest.fn() };
-    (createActor as jest.Mock).mockReturnValue(mockActor);
+    mockXState.createActor.mockReturnValue(mockActor);
 
     const actor = await actorFactory.getActor('characterId');
 
     expect(eventStoreService.getEventsByStreamId).toHaveBeenCalledWith(
       'characterId',
     );
-    expect(createActor).toHaveBeenCalledWith(mockCharacterBuilderMachine);
+    expect(createActor).toHaveBeenCalledWith(
+      mockXState.mockCharacterBuilderMachine,
+    );
     expect(mockActor.start).toHaveBeenCalled();
     expect(actor).toBe(mockActor);
   });
@@ -89,21 +89,26 @@ describe('ActorFactory', () => {
     ];
     mockEventStoreService.getEventsByStreamId.mockResolvedValue(pastEvents);
     const mockActor = { start: jest.fn() };
-    (createActor as jest.Mock).mockReturnValue(mockActor);
+    mockXState.createActor.mockReturnValue(mockActor);
 
     const resolvedState = { value: 'step2', context: {} };
-    mockCharacterBuilderMachine.resolveState.mockReturnValue(resolvedState);
+    mockXState.mockCharacterBuilderMachine.resolveState.mockReturnValue(
+      resolvedState,
+    );
 
     const actor = await actorFactory.getActor('characterId');
 
     expect(eventStoreService.getEventsByStreamId).toHaveBeenCalledWith(
       'characterId',
     );
-    expect(createActor).toHaveBeenCalledWith(mockCharacterBuilderMachine, {
-      snapshot: expect.objectContaining({
-        value: 'step2',
-      }),
-    });
+    expect(createActor).toHaveBeenCalledWith(
+      mockXState.mockCharacterBuilderMachine,
+      {
+        snapshot: expect.objectContaining({
+          value: 'step2',
+        }),
+      },
+    );
     expect(mockActor.start).toHaveBeenCalled();
     expect(actor).toBe(mockActor);
   });
