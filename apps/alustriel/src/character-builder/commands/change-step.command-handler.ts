@@ -7,6 +7,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { EventStoreService } from '../../event-store/event-store.service';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
+import { StepChangedEvent } from '../events/step-changed.event';
 
 import { ChangeStepCommand } from './change-step.command';
 
@@ -20,14 +21,20 @@ export class ChangeStepCommandHandler
   ) {}
 
   async execute(command: ChangeStepCommand) {
+    const payload: StepChangedEvent = {
+      characterId: command.characterId,
+      nextStep: command.targetStep,
+      previousStep,
+    };
+
     const event = await this.eventStoreService.createEvent(
       command.characterId,
       STREAM_TYPES.CHARACTER,
       EVENT_TYPES.STEP_CHANGED,
-      { step: command.step },
+      { ...payload }, // Use spread operator for type compatibility
     );
     await this.eventStoreService.appendEvent(event);
 
-    return { characterId: command.characterId, step: command.step };
+    return { characterId: command.characterId, targetStep: command.targetStep };
   }
 }

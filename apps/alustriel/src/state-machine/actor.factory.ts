@@ -40,7 +40,7 @@ export class ActorFactory {
     for (const event of pastEvents) {
       if (event.type === EVENT_TYPES.STEP_CHANGED) {
         const payload = event.data as unknown as StepChangedEvent; // TODO Improve types
-        step = payload.step;
+        step = payload.nextStep;
       }
     }
 

@@ -9,6 +9,6 @@ import { StepName } from '../../state-machine/types';
 export class ChangeStepCommand implements ICommand {
   constructor(
     public readonly characterId: string,
-    public readonly step: StepName,
+    public readonly targetStep: StepName,
   ) {}
 }

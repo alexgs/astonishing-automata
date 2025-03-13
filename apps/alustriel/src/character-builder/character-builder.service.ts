@@ -18,8 +18,13 @@ export class CharacterBuilderService {
   async changeStep(changeStepDto: ChangeStepDto) {
     return this.commandBus.execute<
       ChangeStepCommand,
-      { characterId: string; step: StepName }
-    >(new ChangeStepCommand(changeStepDto.characterId, changeStepDto.step));
+      { characterId: string; targetStep: StepName }
+    >(
+      new ChangeStepCommand(
+        changeStepDto.characterId,
+        changeStepDto.targetStep,
+      ),
+    );
   }
 
   async startCharacterCreation() {

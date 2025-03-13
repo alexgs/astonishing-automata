@@ -13,7 +13,7 @@ const stepValues = Object.values(STEPS) as [string, ...string[]];
 
 const changeStepSchema = z.object({
   characterId: z.string().uuid(),
-  step: z.enum(stepValues) as z.ZodType<StepName>, // Zod enum that only accepts values from STEPS
+  targetStep: z.enum(stepValues) as z.ZodType<StepName>, // Zod enum that only accepts values from STEPS
 });
 
 // Type inference from the schema

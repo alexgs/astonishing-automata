@@ -31,6 +31,6 @@ export class CharacterBuilderController {
       CharacterBuilderController.name,
     );
     const data = await this.characterBuilderService.startCharacterCreation();
-    return { data };
+    return { data }; // TODO This should return the step name, too
   }
 }
