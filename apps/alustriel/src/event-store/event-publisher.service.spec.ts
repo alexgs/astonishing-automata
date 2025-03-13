@@ -8,6 +8,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { EVENT_TYPES } from '../character-builder/constants';
 import { TOKENS } from '../provider-tokens';
+import { STEPS } from '../state-machine/constants';
 
 import { EventPublisherService } from './event-publisher.service';
 import { EventReadModel } from './interfaces';
@@ -199,12 +200,18 @@ describe('EventPublisherService', () => {
 
   describe('event publishing', () => {
     it('should publish StepChangedEvent for STEP_CHANGED event type', async () => {
+      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
+
       await service.onModuleInit();
 
       const mockEvent: EventReadModel = {
         id: '123',
-        stream_id: 'stream-1',
-        data: { step: 'character-creation' },
+        stream_id: characterId,
+        data: {
+          characterId,
+          previousStep: STEPS.SELECT_SPECIES,
+          nextStep: STEPS.SELECT_CLASS,
+        },
         type: EVENT_TYPES.STEP_CHANGED,
         version: 1,
         created_at: new Date(),
@@ -217,19 +224,26 @@ describe('EventPublisherService', () => {
       );
       expect(mockEventBus.publish).toHaveBeenCalledWith(
         expect.objectContaining({
-          characterId: 'stream-1',
-          step: 'character-creation',
+          characterId,
+          previousStep: STEPS.SELECT_SPECIES,
+          nextStep: STEPS.SELECT_CLASS,
         }),
       );
     });
 
     it('should publish StepChangedEvent for STARTED event type (temporary behavior)', async () => {
+      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
+
       await service.onModuleInit();
 
       const mockEvent: EventReadModel = {
         id: '123',
-        stream_id: 'stream-1',
-        data: { step: 'initial-step' },
+        stream_id: characterId,
+        data: {
+          characterId,
+          previousStep: STEPS.SELECT_SPECIES,
+          nextStep: STEPS.SELECT_CLASS,
+        },
         type: EVENT_TYPES.STARTED,
         version: 1,
         created_at: new Date(),
@@ -239,8 +253,9 @@ describe('EventPublisherService', () => {
 
       expect(mockEventBus.publish).toHaveBeenCalledWith(
         expect.objectContaining({
-          characterId: 'stream-1',
-          step: 'initial-step',
+          characterId,
+          previousStep: STEPS.SELECT_SPECIES,
+          nextStep: STEPS.SELECT_CLASS,
         }),
       );
     });
