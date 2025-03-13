@@ -5,9 +5,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { createActor, Actor } from 'xstate';
 
+import { EVENT_TYPES } from '../character-builder/constants';
+import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { EventStoreService } from '../event-store/event-store.service';
 
-import { CharacterContext } from './interfaces';
 import { characterBuilderMachine } from './state-machine';
 
 @Injectable()
@@ -25,6 +26,7 @@ export class ActorFactory {
       await this.eventStoreService.getEventsByStreamId(characterId);
 
     // No events? Start fresh
+    // TODO There will never be zero events, so we should initialize when there's only the start event
     if (pastEvents.length === 0) {
       const actor = createActor(characterBuilderMachine);
       actor.start();
@@ -34,20 +36,17 @@ export class ActorFactory {
     // Rehydrate the actor with past events, getting the step and data
     let step = characterBuilderMachine.definition.initial.source.id;
     this.logger.debug(`Initial step: ${step}`);
-    let data: CharacterContext = {};
     for (const event of pastEvents) {
-      // TODO Use constants and types
-      if (event.type === 'STATE_TRANSITION') {
-        step = event.toState;
-      } else {
-        data = this.applyEventToContext(data, event);
+      if (event.type === EVENT_TYPES.STEP_CHANGED) {
+        const payload = event.data as unknown as StepChangedEvent; // TODO Improve types
+        step = payload.step;
       }
     }
 
     // Resolve the state of the machine based on the rehydrated step and data
     const resolvedState = characterBuilderMachine.resolveState({
       value: step,
-      context: data,
+      context: {}, // TODO Eventually the restored data will go here
     });
 
     // Restore the actor from the resolved state

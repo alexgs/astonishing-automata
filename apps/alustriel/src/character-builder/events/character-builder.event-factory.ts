@@ -5,7 +5,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { EventStoreService } from '../../event-store/event-store.service';
-import { CharacterContext } from '../../state-machine/state-machine';
+import { CharacterContext } from '../../state-machine/interfaces';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class CharacterBuilderEventFactory {
       EVENT_TYPES.STARTED,
       {
         step,
-        data,
+        data, // TODO Don't store data here, but do store the characterId
       },
     );
   }
