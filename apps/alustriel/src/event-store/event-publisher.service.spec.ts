@@ -241,8 +241,8 @@ describe('EventPublisherService', () => {
         stream_id: characterId,
         data: {
           characterId,
-          previousStep: STEPS.SELECT_SPECIES,
-          nextStep: STEPS.SELECT_CLASS,
+          previousStep: undefined,
+          nextStep: STEPS.SELECT_SPECIES,
         },
         type: EVENT_TYPES.STARTED,
         version: 1,
@@ -254,8 +254,8 @@ describe('EventPublisherService', () => {
       expect(mockEventBus.publish).toHaveBeenCalledWith(
         expect.objectContaining({
           characterId,
-          previousStep: STEPS.SELECT_SPECIES,
-          nextStep: STEPS.SELECT_CLASS,
+          previousStep: undefined,
+          nextStep: STEPS.SELECT_SPECIES,
         }),
       );
     });
