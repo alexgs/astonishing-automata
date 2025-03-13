@@ -71,14 +71,17 @@ describe('Character Builder Integration Test Suite 1', () => {
     });
   });
 
-  it.skip('should move forward in the character creation workflow', async () => {
+  it('The user moves forward in the character creation workflow', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
-        `http://localhost:3000/api/v1/character-builder/move/${CHARACTER_ID}`,
+        `http://localhost:3000/api/v1/character-builder/change-step`,
         {
           method: 'POST',
-          data: { event: 'NEXT' },
+          data: {
+            characterId: CHARACTER_ID,
+            targetStep: STEPS.SELECT_CLASS,
+          },
         },
       );
     } catch (e) {
@@ -95,35 +98,46 @@ describe('Character Builder Integration Test Suite 1', () => {
     expect(events[0]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
-      data: expect.objectContaining({ step: 'NEXT' }),
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        previousStep: STEPS.SELECT_SPECIES,
+        nextStep: STEPS.SELECT_CLASS,
+      }),
     });
   });
 
-  it.skip('should move backward in the character creation workflow', async () => {
+  it('The user tries to make an invalid transition', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
-        `http://localhost:3000/api/v1/character-builder/move/${CHARACTER_ID}`,
+        `http://localhost:3000/api/v1/character-builder/change-step`,
         {
           method: 'POST',
-          data: { event: 'PREV' },
+          data: {
+            characterId: CHARACTER_ID,
+            targetStep: STEPS.EQUIPMENT_GOLD_BUY,
+          },
         },
       );
     } catch (e) {
       response = e.response;
     }
 
-    expect(response.status).toEqual(HttpStatus.CREATED);
+    expect(response.status).toEqual(HttpStatus.CONFLICT);
 
     const events = await knex('events').where({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
     });
-    expect(events).toHaveLength(2);
-    expect(events[1]).toMatchObject({
+    expect(events).toHaveLength(1);
+    expect(events[0]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
-      data: expect.objectContaining({ step: 'PREV' }),
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        previousStep: STEPS.SELECT_SPECIES,
+        nextStep: STEPS.SELECT_CLASS,
+      }),
     });
   });
 });
