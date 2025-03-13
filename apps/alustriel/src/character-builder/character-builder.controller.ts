@@ -2,10 +2,17 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
  */
 
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  InternalServerErrorException,
+  Logger,
+  Post,
+} from '@nestjs/common';
 
 import { CharacterBuilderService } from './character-builder.service';
 import { ChangeStepDto } from './dto/change-step.dto';
+import { InvalidStateTransitionException } from './exceptions/invalid-state-transition.exception';
 
 @Controller({ path: 'character-builder', version: '1' })
 export class CharacterBuilderController {
@@ -20,8 +27,15 @@ export class CharacterBuilderController {
       'Received POST request to /character-builder/change-step',
       CharacterBuilderController.name,
     );
-    const data = await this.characterBuilderService.changeStep(changeStepDto);
-    return { data };
+    try {
+      const data = await this.characterBuilderService.changeStep(changeStepDto);
+      return { data };
+    } catch (error) {
+      if (error instanceof InvalidStateTransitionException) {
+        throw error; // NestJS will automatically return a 409 response
+      }
+      throw new InternalServerErrorException(); // Generic fallback
+    }
   }
 
   @Post('start')

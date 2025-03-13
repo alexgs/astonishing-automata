@@ -9,6 +9,7 @@ import { EventStoreService } from '../../event-store/event-store.service';
 import { ActorFactory } from '../../state-machine/actor.factory';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
 import { StepChangedEvent } from '../events/step-changed.event';
+import { InvalidStateTransitionException } from '../exceptions/invalid-state-transition.exception';
 
 import { ChangeStepCommand } from './change-step.command';
 
@@ -25,7 +26,14 @@ export class ChangeStepCommandHandler
   async execute(command: ChangeStepCommand) {
     const actor = await this.actorFactory.getActor(command.characterId);
     const previousStep = actor.getSnapshot().value;
-    this.logger.debug(`Previous step: ${previousStep}`, ChangeStepCommandHandler.name);
+
+    // Check that this is a valid step change for the actor
+    const currentState = actor.getSnapshot();
+    if (!currentState.can({ type: command.targetStep })) {
+      throw new InvalidStateTransitionException(
+        `Cannot transition from step "${previousStep}" to step "${command.targetStep}"`,
+      );
+    }
 
     const payload: StepChangedEvent = {
       characterId: command.characterId,
