@@ -17,13 +17,30 @@ const mockEventStoreService = {
   getEventsByStreamId: jest.fn(),
 };
 
-jest.mock('xstate', () => ({
-  createActor: jest.fn(),
-  createMachine: jest.fn(),
-  setup: jest.fn(() => ({
+jest.mock('xstate', () => {
+  const mockCharacterBuilderMachine = {
+    definition: {
+      initial: {
+        source: {
+          id: 'initialStep',
+        },
+      },
+    },
+    resolveState: jest.fn(),
+  };
+
+  return {
+    createActor: jest.fn(),
     createMachine: jest.fn(),
-  })),
-}));
+    setup: jest.fn(() => ({
+      createMachine: jest.fn(() => mockCharacterBuilderMachine),
+    })),
+    __esModule: true,
+    mockCharacterBuilderMachine,
+  };
+});
+
+const { mockCharacterBuilderMachine } = jest.requireMock('xstate');
 
 describe('ActorFactory', () => {
   let actorFactory: ActorFactory;
@@ -59,12 +76,12 @@ describe('ActorFactory', () => {
     expect(eventStoreService.getEventsByStreamId).toHaveBeenCalledWith(
       'characterId',
     );
-    expect(createActor).toHaveBeenCalledWith(characterBuilderMachine);
+    expect(createActor).toHaveBeenCalledWith(mockCharacterBuilderMachine);
     expect(mockActor.start).toHaveBeenCalled();
     expect(actor).toBe(mockActor);
   });
 
-  it.skip('should rehydrate actor with past events', async () => {
+  it('should rehydrate actor with past events', async () => {
     const pastEvents = [
       { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step1' } },
       { type: 'data-changed', data: { skills: ['perception'] } },
@@ -74,12 +91,15 @@ describe('ActorFactory', () => {
     const mockActor = { start: jest.fn() };
     (createActor as jest.Mock).mockReturnValue(mockActor);
 
+    const resolvedState = { value: 'step2', context: {} };
+    mockCharacterBuilderMachine.resolveState.mockReturnValue(resolvedState);
+
     const actor = await actorFactory.getActor('characterId');
 
     expect(eventStoreService.getEventsByStreamId).toHaveBeenCalledWith(
       'characterId',
     );
-    expect(createActor).toHaveBeenCalledWith(characterBuilderMachine, {
+    expect(createActor).toHaveBeenCalledWith(mockCharacterBuilderMachine, {
       snapshot: expect.objectContaining({
         value: 'step2',
       }),
