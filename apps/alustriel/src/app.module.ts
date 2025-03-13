@@ -4,7 +4,9 @@
 
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_PIPE } from '@nestjs/core';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 import { CharacterBuilderModule } from './character-builder/character-builder.module';
 import { StateMachineModule } from './state-machine/state-machine.module';
@@ -17,6 +19,12 @@ import { StateMachineModule } from './state-machine/state-machine.module';
     CqrsModule.forRoot(),
     StateMachineModule,
   ],
-  providers: [Logger],
+  providers: [
+    Logger,
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe,
+    },
+  ],
 })
 export class AppModule {}

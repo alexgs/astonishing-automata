@@ -17,9 +17,9 @@ sequenceDiagram
     API->>CommandBus: Dispatch Command
     CommandBus->>Handler: Deliver Command
     Handler->>EventStore: Create Event
+    EventStore->>Postgres: Save Event
     Handler->>API: Acknowledge Command
     API->>Client: Return Response
-    EventStore->>Postgres: Save Event
     Postgres-->>EventPublisher: Push Notification (New Event Added)
     EventPublisher->>EventBus: Publish Event
 ```

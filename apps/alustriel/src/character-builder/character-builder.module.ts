@@ -7,6 +7,7 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { WinstonModule } from 'nest-winston';
 
 import { EventStoreModule } from '../event-store/event-store.module';
+import { StateMachineModule } from '../state-machine/state-machine.module';
 
 import { CharacterBuilderController } from './character-builder.controller';
 import { CharacterBuilderService } from './character-builder.service';
@@ -16,7 +17,7 @@ import { CharacterBuilderEventFactory } from './events/character-builder.event-f
 
 @Module({
   controllers: [CharacterBuilderController],
-  imports: [CqrsModule, EventStoreModule, WinstonModule],
+  imports: [CqrsModule, EventStoreModule, StateMachineModule, WinstonModule],
   providers: [
     ChangeStepCommandHandler,
     CharacterBuilderEventFactory,

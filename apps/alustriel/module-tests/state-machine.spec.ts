@@ -80,33 +80,36 @@ describe('State Machine module', () => {
     describe('when there are events in the stream', () => {
       // TODO Add more events and test the actor's data
       it('creates an actor', async () => {
+        const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
         const tracker = mockKnexService.getTracker();
         tracker.on.select('events').responseOnce([
           {
             id: '1',
-            streamId: '1',
+            streamId: characterId,
             type: EVENT_TYPES.STEP_CHANGED,
             data: {
-              step: STEPS.SELECT_CLASS,
+              characterId,
+              previousStep: undefined,
+              nextStep: STEPS.SELECT_SPECIES,
             },
             createdAt: new Date(),
           },
           {
             id: '2',
-            streamId: '1',
+            streamId: characterId,
             type: EVENT_TYPES.STEP_CHANGED,
             data: {
-              step: STEPS.CHOOSE_ABILITY_SCORE_METHOD,
+              characterId,
+              previousStep: STEPS.SELECT_SPECIES,
+              nextStep: STEPS.SELECT_CLASS,
             },
             createdAt: new Date(),
           },
         ]);
 
-        const actor = await actorFactory.getActor('1');
+        const actor = await actorFactory.getActor(characterId);
         expect(actor).toBeDefined();
-        expect(actor.getSnapshot().value).toEqual(
-          STEPS.CHOOSE_ABILITY_SCORE_METHOD,
-        );
+        expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_CLASS);
       });
     });
   });

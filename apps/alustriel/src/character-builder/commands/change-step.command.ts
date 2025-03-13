@@ -4,9 +4,11 @@
 
 import { ICommand } from '@nestjs/cqrs';
 
+import { StepName } from '../../state-machine/types';
+
 export class ChangeStepCommand implements ICommand {
   constructor(
     public readonly characterId: string,
-    public readonly event: 'NEXT' | 'PREV' | 'CONFIRM',
+    public readonly targetStep: StepName,
   ) {}
 }

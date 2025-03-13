@@ -14,10 +14,11 @@ export const appLog = new winston.transports.File({
 });
 
 export const consoleLog = new winston.transports.Console({
+  level: 'debug', // Log level threshold
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.printf(({ level, message, timestamp }) => {
-      return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+    winston.format.printf(({ context, level, message, timestamp }) => {
+      return `${timestamp} [${level.toUpperCase()}] [${context}]: ${message}`;
     }),
   ),
 });

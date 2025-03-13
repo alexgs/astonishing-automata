@@ -4,9 +4,12 @@
 
 import { IEvent } from '@nestjs/cqrs';
 
+import { StepName } from '../../state-machine/types';
+
 export class StepChangedEvent implements IEvent {
   constructor(
     public readonly characterId: string,
-    public readonly step: string,
+    public readonly nextStep: StepName,
+    public readonly previousStep: StepName,
   ) {}
 }

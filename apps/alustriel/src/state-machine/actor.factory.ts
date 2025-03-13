@@ -9,7 +9,9 @@ import { EVENT_TYPES } from '../character-builder/constants';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { EventStoreService } from '../event-store/event-store.service';
 
+import { INITIAL_STEP } from './constants';
 import { characterBuilderMachine } from './state-machine';
+import { StepName } from './types';
 
 @Injectable()
 export class ActorFactory {
@@ -35,12 +37,11 @@ export class ActorFactory {
     }
 
     // Rehydrate the actor with past events, getting the step and data
-    let step = characterBuilderMachine.definition.initial.source.id; // TODO This returns the ID of the state machine, not the first step :-(
-    this.logger.debug(`Initial step: ${step}`);
+    let step: StepName = INITIAL_STEP;
     for (const event of pastEvents) {
       if (event.type === EVENT_TYPES.STEP_CHANGED) {
         const payload = event.data as unknown as StepChangedEvent; // TODO Improve types
-        step = payload.step;
+        step = payload.nextStep;
       }
     }
 
