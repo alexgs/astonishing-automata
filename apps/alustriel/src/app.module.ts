@@ -8,19 +8,18 @@ import { APP_PIPE } from '@nestjs/core';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ZodValidationPipe } from 'nestjs-zod';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CharacterBuilderModule } from './character-builder/character-builder.module';
+import { StateMachineModule } from './state-machine/state-machine.module';
 
 @Module({
-  controllers: [AppController],
+  controllers: [],
   imports: [
     CharacterBuilderModule,
     ConfigModule.forRoot(),
     CqrsModule.forRoot(),
+    StateMachineModule,
   ],
   providers: [
-    AppService,
     Logger,
     {
       provide: APP_PIPE,
