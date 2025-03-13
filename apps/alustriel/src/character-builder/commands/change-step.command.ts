@@ -4,7 +4,7 @@
 
 import { ICommand } from '@nestjs/cqrs';
 
-import { StepName } from '../types';
+import { StepName } from '../../state-machine/types';
 
 export class ChangeStepCommand implements ICommand {
   constructor(

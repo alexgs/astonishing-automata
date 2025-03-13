@@ -5,10 +5,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
+import { StepName } from '../state-machine/types';
+
 import { ChangeStepCommand } from './commands/change-step.command';
 import { StartCharacterCreationCommand } from './commands/start-character-creation.command';
 import { ChangeStepDto } from './dto/change-step.dto';
-import { StepName } from './types';
 
 @Injectable()
 export class CharacterBuilderService {
