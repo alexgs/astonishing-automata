@@ -18,6 +18,7 @@ export class ActorFactory {
     private readonly logger: Logger,
   ) {}
 
+  // TODO This should also return the version number of the most recent event
   async getActor(
     characterId: string,
   ): Promise<Actor<typeof characterBuilderMachine>> {
@@ -34,7 +35,7 @@ export class ActorFactory {
     }
 
     // Rehydrate the actor with past events, getting the step and data
-    let step = characterBuilderMachine.definition.initial.source.id;
+    let step = characterBuilderMachine.definition.initial.source.id; // TODO This returns the ID of the state machine, not the first step :-(
     this.logger.debug(`Initial step: ${step}`);
     for (const event of pastEvents) {
       if (event.type === EVENT_TYPES.STEP_CHANGED) {
