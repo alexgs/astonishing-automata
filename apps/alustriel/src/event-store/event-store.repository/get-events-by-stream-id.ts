@@ -13,5 +13,5 @@ export async function getEventsByStreamId(
   return knex<EventReadModel>('events')
     .select()
     .where('stream_id', streamId)
-    .orderBy('version', 'asc');
+    .orderBy('id', 'asc');
 }

@@ -59,15 +59,18 @@ describe('Character Builder Integration Test Suite 1', () => {
     expect(response.status).toEqual(HttpStatus.CREATED);
     const { characterId } = response.data.data;
 
-    const events = await knex('events').where({
-      type: CHARACTER_EVENT_TYPES.STARTED,
-      stream_id: characterId,
-    });
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
     expect(events).toHaveLength(1);
     expect(events[0]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STARTED,
       stream_id: characterId,
-      data: expect.objectContaining({ step: STEPS.SELECT_SPECIES, data: {} }),
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        nextStep: STEPS.SELECT_SPECIES,
+      }),
+      version: 1,
     });
   });
 
@@ -90,12 +93,11 @@ describe('Character Builder Integration Test Suite 1', () => {
 
     expect(response.status).toEqual(HttpStatus.CREATED);
 
-    const events = await knex('events').where({
-      type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: CHARACTER_ID,
-    });
-    expect(events).toHaveLength(1);
-    expect(events[0]).toMatchObject({
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
+    expect(events).toHaveLength(2);
+    expect(events[1]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
       data: expect.objectContaining({
@@ -103,6 +105,7 @@ describe('Character Builder Integration Test Suite 1', () => {
         previousStep: STEPS.SELECT_SPECIES,
         nextStep: STEPS.SELECT_CLASS,
       }),
+      version: 2,
     });
   });
 
@@ -125,12 +128,11 @@ describe('Character Builder Integration Test Suite 1', () => {
 
     expect(response.status).toEqual(HttpStatus.CONFLICT);
 
-    const events = await knex('events').where({
-      type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: CHARACTER_ID,
-    });
-    expect(events).toHaveLength(1);
-    expect(events[0]).toMatchObject({
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
+    expect(events).toHaveLength(2);
+    expect(events[1]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
       data: expect.objectContaining({
@@ -138,6 +140,7 @@ describe('Character Builder Integration Test Suite 1', () => {
         previousStep: STEPS.SELECT_SPECIES,
         nextStep: STEPS.SELECT_CLASS,
       }),
+      version: 2,
     });
   });
 });

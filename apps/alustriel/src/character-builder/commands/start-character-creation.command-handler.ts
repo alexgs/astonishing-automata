@@ -4,10 +4,8 @@
 
 import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { createActor } from 'xstate';
 
 import { EventStoreService } from '../../event-store/event-store.service';
-import { characterBuilderMachine } from '../../state-machine/state-machine';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 
 import { StartCharacterCreationCommand } from './start-character-creation.command';
@@ -26,18 +24,9 @@ export class StartCharacterCreationHandler
   async execute(_command: StartCharacterCreationCommand) {
     const characterId = crypto.randomUUID();
 
-    // Initialize the state machine
-    const actor = createActor(characterBuilderMachine);
-    actor.start();
-    const step = actor.getSnapshot().value; // Get state name
-    const data = actor.getSnapshot().context; // Get initial context
-
     // Create and store the event
-    const event = await this.eventFactory.createCharacterCreationStartedEvent(
-      characterId,
-      step,
-      data,
-    );
+    const event =
+      await this.eventFactory.createCharacterStartedEvent(characterId);
     await this.eventStore.appendEvent(event);
 
     return { characterId };

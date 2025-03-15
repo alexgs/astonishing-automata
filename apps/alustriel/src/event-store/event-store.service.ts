@@ -53,6 +53,7 @@ export class EventStoreService {
   }
 
   async getEventsByStreamId(streamId: string): Promise<EventReadModel[]> {
+    // TODO Make sure events are returned in order
     return getEventsByStreamId(this.knex, streamId);
   }
 }

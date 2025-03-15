@@ -42,10 +42,10 @@ describe('Pure function `getEventsByStreamId`', () => {
     expect(result).toEqual([]);
   });
 
-  it('returns events ordered by version in ascending order', async () => {
+  it('returns events ordered by ID in ascending order', async () => {
     const mockEvents: EventReadModel[] = [
       {
-        id: '01HJ659NEF95QMJHSMGN36VA7J',
+        id: '01JPDAR7NYDG205HKPVZBPZJRJ',
         data: { title: 'Star Wars', year: '1977' },
         stream_id: streamId,
         type: 'event-types.movie-created',
@@ -53,7 +53,7 @@ describe('Pure function `getEventsByStreamId`', () => {
         created_at: new Date('2023-01-01'),
       },
       {
-        id: '01HJ659NEF95QMJHSMGN36VA7K',
+        id: '01JPDAR8VXP0VECAYRN5GCP3X2',
         data: { title: 'Star Wars', year: '1977', director: 'George Lucas' },
         stream_id: streamId,
         type: 'event-types.movie-updated',
@@ -72,14 +72,14 @@ describe('Pure function `getEventsByStreamId`', () => {
     const query = tracker.history.select[0];
     const sqlString = query.sql.toUpperCase();
     expect(sqlString).toContain('ORDER BY');
-    expect(sqlString).toContain('VERSION');
+    expect(sqlString).toContain('ID');
     expect(sqlString).toContain('ASC');
   });
 
   it('returns multiple events when they exist', async () => {
     const mockEvents: EventReadModel[] = [
       {
-        id: '01HJ659NEF95QMJHSMGN36VA7J',
+        id: '01JPDAR7NYDG205HKPVZBPZJRJ',
         data: { title: 'Star Wars', year: '1977' },
         stream_id: streamId,
         type: 'event-types.movie-created',
@@ -87,7 +87,7 @@ describe('Pure function `getEventsByStreamId`', () => {
         created_at: new Date('2023-01-01'),
       },
       {
-        id: '01HJ659NEF95QMJHSMGN36VA7K',
+        id: '01JPDAR8VXP0VECAYRN5GCP3X2',
         data: { title: 'Star Wars', year: '1977', director: 'George Lucas' },
         stream_id: streamId,
         type: 'event-types.movie-updated',
