@@ -33,6 +33,7 @@ describe('Pure function `appendEvent`', () => {
 
   describe('when a stream record does not exist', () => {
     const event: EventStoreWriteModel = {
+      createdAt: new Date('2025-03-14'),
       expectedVersion: 0,
       data: { title: 'Star Wars', year: '1977' },
       id: '01HJ659NEF95QMJHSMGN36VA7J',
@@ -100,6 +101,7 @@ describe('Pure function `appendEvent`', () => {
       const insertEventQuery = tracker.history.insert[1];
       expect(insertEventQuery.method).toBe('insert');
       expect(insertEventQuery.bindings).toEqual([
+        expect.any(Date),
         JSON.stringify(event.data),
         event.id,
         event.streamId,
@@ -133,6 +135,7 @@ describe('Pure function `appendEvent`', () => {
 
   describe('when a stream record exists', () => {
     const event: EventStoreWriteModel = {
+      createdAt: new Date('2025-03-14'),
       expectedVersion: 4,
       data: { title: 'Star Wars', year: '1977' },
       id: '01HJ659NEF95QMJHSMGN36VA7J',
@@ -177,6 +180,7 @@ describe('Pure function `appendEvent`', () => {
       const insertEventQuery = tracker.history.insert[1];
       expect(insertEventQuery.method).toBe('insert');
       expect(insertEventQuery.bindings).toEqual([
+        expect.any(Date),
         JSON.stringify(event.data),
         event.id,
         event.streamId,
@@ -210,6 +214,7 @@ describe('Pure function `appendEvent`', () => {
 
   describe('error handling', () => {
     const event: EventStoreWriteModel = {
+      createdAt: new Date('2025-03-14'),
       expectedVersion: 4,
       data: { title: 'Star Wars', year: '1977' },
       id: '01HJ659NEF95QMJHSMGN36VA7J',

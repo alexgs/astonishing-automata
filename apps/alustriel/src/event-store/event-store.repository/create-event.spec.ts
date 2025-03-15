@@ -51,6 +51,7 @@ describe('Pure function `createEvent`', () => {
 
       expect(result).toEqual({
         id: mockUlid,
+        createdAt: expect.any(Date),
         data: payload.data,
         expectedVersion: 0,
         streamId: payload.streamId,
@@ -90,6 +91,7 @@ describe('Pure function `createEvent`', () => {
 
       expect(result).toEqual({
         id: mockUlid,
+        createdAt: expect.any(Date),
         data: payload.data,
         expectedVersion: 5,
         streamId: payload.streamId,
