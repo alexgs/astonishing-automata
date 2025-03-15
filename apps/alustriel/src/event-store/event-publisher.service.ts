@@ -82,11 +82,7 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
   private createEventFromRow(row: EventStoreReadModel) {
     switch (row.type) {
       case EVENT_TYPES.STEP_CHANGED:
-        return new StepChangedEvent(
-          row.stream_id,
-          row.data.nextStep as StepName,
-          row.data.previousStep as StepName,
-        );
+        return new StepChangedEvent(row);
       case EVENT_TYPES.STARTED:
         return new CharacterStartedEvent(
           row.stream_id,

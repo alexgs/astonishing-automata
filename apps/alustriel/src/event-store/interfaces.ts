@@ -11,6 +11,15 @@ export interface IPostgresService {
 
 // --- E V E N T   S T O R E ---
 
+export interface BaseEvent<T extends string = string, D = unknown> {
+  readonly id: string;
+  readonly createdAt: Date;
+  readonly data: D;
+  readonly streamId: string;
+  readonly type: T;
+  readonly version: number;
+}
+
 export interface CreateEventPayload {
   data: unknown;
   eventType: string;
