@@ -71,7 +71,7 @@ describe('State Machine module', () => {
         const tracker = mockKnexService.getTracker();
         tracker.on.select('events').responseOnce([]);
 
-        const actor = await actorFactory.getActor('1');
+        const { actor } = await actorFactory.getActor('1');
         expect(actor).toBeDefined();
         expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_SPECIES);
       });
@@ -107,7 +107,7 @@ describe('State Machine module', () => {
           },
         ]);
 
-        const actor = await actorFactory.getActor(characterId);
+        const { actor } = await actorFactory.getActor(characterId);
         expect(actor).toBeDefined();
         expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_CLASS);
       });

@@ -60,16 +60,16 @@ describe('ActorFactory', () => {
     eventStoreService = module.get<EventStoreService>(EventStoreService);
   });
 
-  it('should be defined', () => {
+  it('is defined', () => {
     expect(actorFactory).toBeDefined();
   });
 
-  it('should create a new actor if no past events', async () => {
+  it('creates a new actor if no past events', async () => {
     mockEventStoreService.getEventsByStreamId.mockResolvedValue([]);
     const mockActor = { start: jest.fn() };
     mockXState.createActor.mockReturnValue(mockActor);
 
-    const actor = await actorFactory.getActor('characterId');
+    const { actor, version } = await actorFactory.getActor('characterId');
 
     expect(eventStoreService.getEventsByStreamId).toHaveBeenCalledWith(
       'characterId',
@@ -79,13 +79,14 @@ describe('ActorFactory', () => {
     );
     expect(mockActor.start).toHaveBeenCalled();
     expect(actor).toBe(mockActor);
+    expect(version).toBe(0);
   });
 
-  it('should rehydrate actor with past events', async () => {
+  it('rehydrates an actor with past events', async () => {
     const pastEvents = [
-      { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step1' } },
-      { type: 'data-changed', data: { skills: ['perception'] } },
-      { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step2' } },
+      { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step1' }, version: 1 },
+      { type: 'data-changed', data: { skills: ['perception'] }, version: 2 },
+      { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step2' }, version: 3 },
     ];
     mockEventStoreService.getEventsByStreamId.mockResolvedValue(pastEvents);
     const mockActor = { start: jest.fn() };
@@ -96,7 +97,7 @@ describe('ActorFactory', () => {
       resolvedState,
     );
 
-    const actor = await actorFactory.getActor('characterId');
+    const { actor, version } = await actorFactory.getActor('characterId');
 
     expect(eventStoreService.getEventsByStreamId).toHaveBeenCalledWith(
       'characterId',
@@ -111,5 +112,6 @@ describe('ActorFactory', () => {
     );
     expect(mockActor.start).toHaveBeenCalled();
     expect(actor).toBe(mockActor);
+    expect(version).toBe(3);
   });
 });

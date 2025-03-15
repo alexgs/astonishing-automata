@@ -13,6 +13,11 @@ import { INITIAL_STEP } from './constants';
 import { characterBuilderMachine } from './state-machine';
 import { StepName } from './types';
 
+interface GetActorReturnType {
+  actor: Actor<typeof characterBuilderMachine>;
+  version: number;
+}
+
 @Injectable()
 export class ActorFactory {
   constructor(
@@ -20,10 +25,7 @@ export class ActorFactory {
     private readonly logger: Logger,
   ) {}
 
-  // TODO This should also return the version number of the most recent event
-  async getActor(
-    characterId: string,
-  ): Promise<Actor<typeof characterBuilderMachine>> {
+  async getActor(characterId: string): Promise<GetActorReturnType> {
     // Load past events
     const pastEvents =
       await this.eventStoreService.getEventsByStreamId(characterId);
@@ -33,12 +35,14 @@ export class ActorFactory {
     if (pastEvents.length === 0) {
       const actor = createActor(characterBuilderMachine);
       actor.start();
-      return actor;
+      return { actor, version: 0 };
     }
 
     // Rehydrate the actor with past events, getting the step and data
     let step: StepName = INITIAL_STEP;
+    let version = 0;
     for (const event of pastEvents) {
+      version = event.version;
       if (event.type === EVENT_TYPES.STEP_CHANGED) {
         const payload = event.data as unknown as StepChangedEvent; // TODO Improve types
         step = payload.nextStep;
@@ -57,6 +61,6 @@ export class ActorFactory {
     });
 
     actor.start();
-    return actor;
+    return { actor, version };
   }
 }
