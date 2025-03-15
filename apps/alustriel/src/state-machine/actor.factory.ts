@@ -60,11 +60,11 @@ export class ActorFactory {
     // Rehydrate the actor with past events, getting the step and data
     let step: StepName = INITIAL_STEP;
     let version = 0;
-    for (const event of pastEvents) {
-      version = event.version;
-      if (event.type === EVENT_TYPES.STEP_CHANGED) {
-        const payload = event.data as unknown as StepChangedEvent; // TODO Improve types
-        step = payload.nextStep;
+    for (const rawEvent of pastEvents) {
+      version = rawEvent.version;
+      if (rawEvent.type === EVENT_TYPES.STEP_CHANGED) {
+        const event = new StepChangedEvent(rawEvent);
+        step = event.data.nextStep;
       }
     }
 

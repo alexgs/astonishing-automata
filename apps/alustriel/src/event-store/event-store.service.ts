@@ -12,7 +12,7 @@ import {
   createEvent,
   getEventsByStreamId,
 } from './event-store.repository';
-import { EventPayloads, EventReadModel, EventWriteModel } from './interfaces';
+import { EventStoreReadModel, EventStoreWriteModel } from './interfaces';
 import { KnexService } from './knex.service';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class EventStoreService {
     this.knex = knexService.getKnex();
   }
 
-  async appendEvent(event: EventWriteModel) {
+  async appendEvent(event: EventStoreWriteModel) {
     return appendEvent(this.knex, event, this.logger);
   }
 
@@ -34,8 +34,8 @@ export class EventStoreService {
     streamId: string,
     streamType: string,
     eventType: string,
-    data: EventPayloads | Record<string, unknown>,
-  ): Promise<EventWriteModel> {
+    data: unknown,
+  ): Promise<EventStoreWriteModel> {
     try {
       return createEvent(this.knex, {
         data,
@@ -52,7 +52,7 @@ export class EventStoreService {
     }
   }
 
-  async getEventsByStreamId(streamId: string): Promise<EventReadModel[]> {
+  async getEventsByStreamId(streamId: string): Promise<EventStoreReadModel[]> {
     // TODO Make sure events are returned in order
     return getEventsByStreamId(this.knex, streamId);
   }

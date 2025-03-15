@@ -7,14 +7,14 @@ import { ulid } from 'ulidx';
 
 import {
   CreateEventPayload,
-  EventWriteModel,
+  EventStoreWriteModel,
   StreamRecord,
 } from '../interfaces';
 
 export async function createEvent(
   knex: knex.Knex,
   payload: CreateEventPayload,
-): Promise<EventWriteModel> {
+): Promise<EventStoreWriteModel> {
   let streamRecord = [];
   try {
     streamRecord = await knex<StreamRecord>('streams')
@@ -27,12 +27,15 @@ export async function createEvent(
   }
   const expectedVersion =
     streamRecord.length === 0 ? 0 : streamRecord[0].version;
+
+  const now = new Date();
   return {
-    id: ulid(),
+    id: ulid(now.getTime()),
+    createdAt: now,
+    data: payload.data,
+    expectedVersion,
     streamId: payload.streamId,
     streamType: payload.streamType,
     type: payload.eventType,
-    data: payload.data,
-    expectedVersion,
   };
 }

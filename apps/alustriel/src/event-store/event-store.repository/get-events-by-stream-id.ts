@@ -4,13 +4,13 @@
 
 import { knex } from 'knex';
 
-import { EventReadModel } from '../interfaces';
+import { EventStoreReadModel } from '../interfaces';
 
 export async function getEventsByStreamId(
   knex: knex.Knex,
   streamId: string,
-): Promise<EventReadModel[]> {
-  return knex<EventReadModel>('events')
+): Promise<EventStoreReadModel[]> {
+  return knex<EventStoreReadModel>('events')
     .select()
     .where('stream_id', streamId)
     .orderBy('id', 'asc');

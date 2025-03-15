@@ -5,11 +5,11 @@
 import { Logger } from '@nestjs/common';
 import { knex } from 'knex';
 
-import { EventWriteModel, StreamRecord } from '../interfaces';
+import { EventStoreWriteModel, StreamRecord } from '../interfaces';
 
 export async function appendEvent(
   knex: knex.Knex,
-  event: EventWriteModel,
+  event: EventStoreWriteModel,
   logger: Logger,
 ) {
   await knex.transaction(async (trx) => {
@@ -40,6 +40,7 @@ export async function appendEvent(
       // Insert new row into events table with version equal to expected_stream_version + 1
       await trx('events').insert({
         id: event.id,
+        created_at: event.createdAt,
         data: event.data,
         stream_id: event.streamId,
         type: event.type,

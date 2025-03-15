@@ -9,8 +9,8 @@ import { INITIAL_STEP } from '../../state-machine/constants';
 import { StepName } from '../../state-machine/types';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
 
-import { CharacterStartedEvent } from './character-started.event';
-import { StepChangedEvent } from './step-changed.event';
+import { CharacterStartedEventPayload } from './character-started.event';
+import { StepChangedEventPayload } from './step-changed.event';
 
 @Injectable()
 export class CharacterBuilderEventFactory {
@@ -20,7 +20,7 @@ export class CharacterBuilderEventFactory {
   ) {}
 
   public async createCharacterStartedEvent(characterId: string) {
-    const payload: CharacterStartedEvent = {
+    const payload: CharacterStartedEventPayload = {
       characterId,
       nextStep: INITIAL_STEP,
     };
@@ -38,7 +38,7 @@ export class CharacterBuilderEventFactory {
     nextStep: StepName,
     previousStep: StepName,
   ) {
-    const payload: StepChangedEvent = {
+    const payload: StepChangedEventPayload = {
       characterId,
       nextStep,
       previousStep,

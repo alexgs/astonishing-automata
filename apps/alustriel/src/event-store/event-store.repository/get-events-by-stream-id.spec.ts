@@ -5,7 +5,7 @@
 import { knex } from 'knex';
 import { createTracker, MockClient, Tracker } from 'knex-mock-client';
 
-import { EventReadModel } from '../interfaces';
+import { EventStoreReadModel } from '../interfaces';
 
 import { getEventsByStreamId } from './get-events-by-stream-id';
 
@@ -43,7 +43,7 @@ describe('Pure function `getEventsByStreamId`', () => {
   });
 
   it('returns events ordered by ID in ascending order', async () => {
-    const mockEvents: EventReadModel[] = [
+    const mockEvents: EventStoreReadModel[] = [
       {
         id: '01JPDAR7NYDG205HKPVZBPZJRJ',
         data: { title: 'Star Wars', year: '1977' },
@@ -77,7 +77,7 @@ describe('Pure function `getEventsByStreamId`', () => {
   });
 
   it('returns multiple events when they exist', async () => {
-    const mockEvents: EventReadModel[] = [
+    const mockEvents: EventStoreReadModel[] = [
       {
         id: '01JPDAR7NYDG205HKPVZBPZJRJ',
         data: { title: 'Star Wars', year: '1977' },
