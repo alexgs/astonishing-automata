@@ -19,7 +19,7 @@ export class CharacterBuilderEventFactory {
     private readonly logger: Logger,
   ) {}
 
-  public async createCharacterCreationStartedEvent(characterId: string) {
+  public async createCharacterStartedEvent(characterId: string) {
     const payload: CharacterStartedEvent = {
       characterId,
       nextStep: INITIAL_STEP,

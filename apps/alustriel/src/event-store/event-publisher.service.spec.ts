@@ -7,6 +7,7 @@ import { EventBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { EVENT_TYPES } from '../character-builder/constants';
+import { CharacterStartedEvent } from '../character-builder/events/character-started.event';
 import { TOKENS } from '../provider-tokens';
 import { STEPS } from '../state-machine/constants';
 
@@ -231,7 +232,7 @@ describe('EventPublisherService', () => {
       );
     });
 
-    it('should publish StepChangedEvent for STARTED event type (temporary behavior)', async () => {
+    it(`should publish ${CharacterStartedEvent.name} for STARTED event type`, async () => {
       const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
 
       await service.onModuleInit();
@@ -241,7 +242,6 @@ describe('EventPublisherService', () => {
         stream_id: characterId,
         data: {
           characterId,
-          previousStep: undefined,
           nextStep: STEPS.SELECT_SPECIES,
         },
         type: EVENT_TYPES.STARTED,
@@ -254,7 +254,6 @@ describe('EventPublisherService', () => {
       expect(mockEventBus.publish).toHaveBeenCalledWith(
         expect.objectContaining({
           characterId,
-          previousStep: undefined,
           nextStep: STEPS.SELECT_SPECIES,
         }),
       );

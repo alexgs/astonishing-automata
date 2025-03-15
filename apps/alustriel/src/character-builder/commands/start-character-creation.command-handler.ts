@@ -26,7 +26,7 @@ export class StartCharacterCreationHandler
 
     // Create and store the event
     const event =
-      await this.eventFactory.createCharacterCreationStartedEvent(characterId);
+      await this.eventFactory.createCharacterStartedEvent(characterId);
     await this.eventStore.appendEvent(event);
 
     return { characterId };
