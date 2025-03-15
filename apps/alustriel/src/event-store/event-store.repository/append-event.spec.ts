@@ -6,7 +6,7 @@ import { Logger } from '@nestjs/common';
 import { knex } from 'knex';
 import { createTracker, MockClient, Tracker } from 'knex-mock-client';
 
-import { EventWriteModel } from '../interfaces';
+import { EventStoreWriteModel } from '../interfaces';
 
 import { appendEvent } from './append-event';
 
@@ -32,7 +32,7 @@ describe('Pure function `appendEvent`', () => {
   });
 
   describe('when a stream record does not exist', () => {
-    const event: EventWriteModel = {
+    const event: EventStoreWriteModel = {
       expectedVersion: 0,
       data: { title: 'Star Wars', year: '1977' },
       id: '01HJ659NEF95QMJHSMGN36VA7J',
@@ -132,7 +132,7 @@ describe('Pure function `appendEvent`', () => {
   });
 
   describe('when a stream record exists', () => {
-    const event: EventWriteModel = {
+    const event: EventStoreWriteModel = {
       expectedVersion: 4,
       data: { title: 'Star Wars', year: '1977' },
       id: '01HJ659NEF95QMJHSMGN36VA7J',
@@ -209,7 +209,7 @@ describe('Pure function `appendEvent`', () => {
   });
 
   describe('error handling', () => {
-    const event: EventWriteModel = {
+    const event: EventStoreWriteModel = {
       expectedVersion: 4,
       data: { title: 'Star Wars', year: '1977' },
       id: '01HJ659NEF95QMJHSMGN36VA7J',

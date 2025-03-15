@@ -12,7 +12,7 @@ import { TOKENS } from '../provider-tokens';
 import { STEPS } from '../state-machine/constants';
 
 import { EventPublisherService } from './event-publisher.service';
-import { EventReadModel } from './interfaces';
+import { EventStoreReadModel } from './interfaces';
 import { PostgresService } from './postgres.service';
 
 describe('EventPublisherService', () => {
@@ -205,7 +205,7 @@ describe('EventPublisherService', () => {
 
       await service.onModuleInit();
 
-      const mockEvent: EventReadModel = {
+      const mockEvent: EventStoreReadModel = {
         id: '123',
         stream_id: characterId,
         data: {
@@ -237,7 +237,7 @@ describe('EventPublisherService', () => {
 
       await service.onModuleInit();
 
-      const mockEvent: EventReadModel = {
+      const mockEvent: EventStoreReadModel = {
         id: '123',
         stream_id: characterId,
         data: {
@@ -262,7 +262,7 @@ describe('EventPublisherService', () => {
     it('should throw error for unknown event types', async () => {
       await service.onModuleInit();
 
-      const mockEvent: EventReadModel = {
+      const mockEvent: EventStoreReadModel = {
         id: '123',
         stream_id: 'stream-1',
         data: { someData: 'value' },

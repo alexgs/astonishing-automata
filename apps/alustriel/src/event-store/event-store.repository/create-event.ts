@@ -7,14 +7,14 @@ import { ulid } from 'ulidx';
 
 import {
   CreateEventPayload,
-  EventWriteModel,
+  EventStoreWriteModel,
   StreamRecord,
 } from '../interfaces';
 
 export async function createEvent(
   knex: knex.Knex,
   payload: CreateEventPayload,
-): Promise<EventWriteModel> {
+): Promise<EventStoreWriteModel> {
   let streamRecord = [];
   try {
     streamRecord = await knex<StreamRecord>('streams')

@@ -5,11 +5,11 @@
 import { Logger } from '@nestjs/common';
 import { knex } from 'knex';
 
-import { EventWriteModel, StreamRecord } from '../interfaces';
+import { EventStoreWriteModel, StreamRecord } from '../interfaces';
 
 export async function appendEvent(
   knex: knex.Knex,
-  event: EventWriteModel,
+  event: EventStoreWriteModel,
   logger: Logger,
 ) {
   await knex.transaction(async (trx) => {

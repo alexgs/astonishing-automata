@@ -4,7 +4,7 @@
 
 import * as postgres from 'postgres';
 
-import { EventReadModel } from '../src/event-store/interfaces';
+import { EventStoreReadModel } from '../src/event-store/interfaces';
 
 type SubscribeHandler = (
   row: postgres.Row | null,
@@ -38,7 +38,7 @@ export const mockPostgresService = {
   // Method to trigger a subscription handler from outside
   triggerSubscription: (
     channel: string,
-    row: EventReadModel | null,
+    row: EventStoreReadModel | null,
     info: Partial<postgres.ReplicationEvent> = {},
   ) => {
     if (subscriptionHandlers[channel]) {
