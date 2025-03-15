@@ -225,9 +225,11 @@ describe('EventPublisherService', () => {
       );
       expect(mockEventBus.publish).toHaveBeenCalledWith(
         expect.objectContaining({
-          characterId,
-          previousStep: STEPS.SELECT_SPECIES,
-          nextStep: STEPS.SELECT_CLASS,
+          data: {
+            characterId,
+            previousStep: STEPS.SELECT_SPECIES,
+            nextStep: STEPS.SELECT_CLASS,
+          },
         }),
       );
     });
@@ -253,8 +255,10 @@ describe('EventPublisherService', () => {
 
       expect(mockEventBus.publish).toHaveBeenCalledWith(
         expect.objectContaining({
-          characterId,
-          nextStep: STEPS.SELECT_SPECIES,
+          data: {
+            characterId,
+            nextStep: STEPS.SELECT_SPECIES,
+          },
         }),
       );
     });

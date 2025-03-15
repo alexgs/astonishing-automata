@@ -15,8 +15,6 @@ import { EVENT_TYPES } from '../character-builder/constants';
 import { CharacterStartedEvent } from '../character-builder/events/character-started.event';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
-import { INITIAL_STEP } from '../state-machine/constants';
-import { StepName } from '../state-machine/types';
 
 import { POSTGRES_CHANNEL } from './constants';
 import { EventStoreReadModel } from './interfaces';
@@ -84,10 +82,7 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
       case EVENT_TYPES.STEP_CHANGED:
         return new StepChangedEvent(row);
       case EVENT_TYPES.STARTED:
-        return new CharacterStartedEvent(
-          row.stream_id,
-          row.data.nextStep as typeof INITIAL_STEP,
-        );
+        return new CharacterStartedEvent(row);
       default:
         throw new Error(`Unknown event type: ${row.type}`);
     }
