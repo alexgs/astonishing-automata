@@ -27,12 +27,15 @@ export async function createEvent(
   }
   const expectedVersion =
     streamRecord.length === 0 ? 0 : streamRecord[0].version;
+
+  const now = new Date();
   return {
-    id: ulid(),
+    id: ulid(now.getTime()),
+    createdAt: now,
+    data: payload.data,
+    expectedVersion,
     streamId: payload.streamId,
     streamType: payload.streamType,
     type: payload.eventType,
-    data: payload.data,
-    expectedVersion,
   };
 }

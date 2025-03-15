@@ -38,6 +38,7 @@ export interface EventStoreReadModel {
 
 export interface EventStoreWriteModel {
   id: string;
+  createdAt: Date;
   data: unknown;
   expectedVersion: number;
   streamId: string;
