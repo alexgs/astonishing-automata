@@ -66,7 +66,10 @@ describe('Character Builder Integration Test Suite 1', () => {
     expect(events[0]).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STARTED,
       stream_id: characterId,
-      data: expect.objectContaining({ step: STEPS.SELECT_SPECIES, data: {} }),
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        nextStep: STEPS.SELECT_SPECIES,
+      }),
       version: 1,
     });
   });

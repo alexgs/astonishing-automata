@@ -12,8 +12,10 @@ import {
 import { EventBus } from '@nestjs/cqrs';
 
 import { EVENT_TYPES } from '../character-builder/constants';
+import { CharacterStartedEvent } from '../character-builder/events/character-started.event';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
+import { INITIAL_STEP } from '../state-machine/constants';
 import { StepName } from '../state-machine/types';
 
 import { POSTGRES_CHANNEL } from './constants';
@@ -86,10 +88,9 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
           row.data.previousStep as StepName,
         );
       case EVENT_TYPES.STARTED:
-        return new StepChangedEvent( // TODO Replace this with the correct event type
+        return new CharacterStartedEvent(
           row.stream_id,
-          row.data.nextStep as StepName,
-          row.data.previousStep as StepName,
+          row.data.nextStep as typeof INITIAL_STEP,
         );
       default:
         throw new Error(`Unknown event type: ${row.type}`);

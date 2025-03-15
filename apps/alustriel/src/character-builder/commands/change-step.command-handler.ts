@@ -7,8 +7,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { EventStoreService } from '../../event-store/event-store.service';
 import { ActorFactory } from '../../state-machine/actor.factory';
-import { EVENT_TYPES, STREAM_TYPES } from '../constants';
-import { StepChangedEvent } from '../events/step-changed.event';
+import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 import { InvalidStateTransitionException } from '../exceptions/invalid-state-transition.exception';
 
 import { ChangeStepCommand } from './change-step.command';
@@ -19,6 +18,7 @@ export class ChangeStepCommandHandler
 {
   constructor(
     private readonly actorFactory: ActorFactory,
+    private readonly eventFactory: CharacterBuilderEventFactory,
     private readonly eventStoreService: EventStoreService,
     private readonly logger: Logger,
   ) {}
@@ -35,17 +35,10 @@ export class ChangeStepCommandHandler
       );
     }
 
-    const payload: StepChangedEvent = {
-      characterId: command.characterId,
-      nextStep: command.targetStep,
-      previousStep,
-    };
-
-    const event = await this.eventStoreService.createEvent(
+    const event = await this.eventFactory.createStepChangedEvent(
       command.characterId,
-      STREAM_TYPES.CHARACTER,
-      EVENT_TYPES.STEP_CHANGED,
-      { ...payload }, // Use spread operator for type compatibility
+      command.targetStep,
+      previousStep,
     );
     await this.eventStoreService.appendEvent(event);
 

@@ -5,8 +5,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import { EventStoreService } from '../../event-store/event-store.service';
-import { CharacterContext } from '../../state-machine/interfaces';
+import { INITIAL_STEP } from '../../state-machine/constants';
+import { StepName } from '../../state-machine/types';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
+
+import { CharacterStartedEvent } from './character-started.event';
+import { StepChangedEvent } from './step-changed.event';
 
 @Injectable()
 export class CharacterBuilderEventFactory {
@@ -15,19 +19,36 @@ export class CharacterBuilderEventFactory {
     private readonly logger: Logger,
   ) {}
 
-  public async createCharacterCreationStartedEvent(
-    characterId: string,
-    step: string,
-    data: CharacterContext,
-  ) {
+  public async createCharacterCreationStartedEvent(characterId: string) {
+    const payload: CharacterStartedEvent = {
+      characterId,
+      nextStep: INITIAL_STEP,
+    };
+
     return this.eventStore.createEvent(
       characterId,
       STREAM_TYPES.CHARACTER,
       EVENT_TYPES.STARTED,
-      {
-        step,
-        data, // TODO Don't store data here, but do store the characterId
-      },
+      { ...payload },
+    );
+  }
+
+  public async createStepChangedEvent(
+    characterId: string,
+    nextStep: StepName,
+    previousStep: StepName,
+  ) {
+    const payload: StepChangedEvent = {
+      characterId,
+      nextStep,
+      previousStep,
+    };
+
+    return this.eventStore.createEvent(
+      characterId,
+      STREAM_TYPES.CHARACTER,
+      EVENT_TYPES.STEP_CHANGED,
+      { ...payload },
     );
   }
 }
