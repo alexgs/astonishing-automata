@@ -67,13 +67,13 @@ describe('State Machine module', () => {
     });
 
     describe('when there are no events in the stream', () => {
-      it('creates an actor', async () => {
+      it('throws an error', async () => {
         const tracker = mockKnexService.getTracker();
         tracker.on.select('events').responseOnce([]);
 
-        const { actor } = await actorFactory.getActor('1');
-        expect(actor).toBeDefined();
-        expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_SPECIES);
+        await expect(actorFactory.getActor('1')).rejects.toThrow(
+          '[ActorFactory] No past events found! This should never happen!',
+        );
       });
     });
 

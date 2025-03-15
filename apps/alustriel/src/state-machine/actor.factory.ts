@@ -30,12 +30,31 @@ export class ActorFactory {
     const pastEvents =
       await this.eventStoreService.getEventsByStreamId(characterId);
 
-    // No events? Start fresh
-    // TODO There will never be zero events, so we should initialize when there's only the start event
+    // No events? This should never happen
     if (pastEvents.length === 0) {
+      this.logger.error(
+        'No past events found! This should never happen!',
+        ActorFactory.name,
+      );
+      throw new Error(
+        `[${ActorFactory.name}] No past events found! This should never happen!`,
+      );
+    }
+
+    // Fresh start
+    if (pastEvents.length === 1 && pastEvents[0].type === EVENT_TYPES.STARTED) {
       const actor = createActor(characterBuilderMachine);
       actor.start();
-      return { actor, version: 0 };
+      return { actor, version: 1 };
+    }
+    if (pastEvents.length === 1) {
+      this.logger.error(
+        `Illegal start event found in stream ${characterId}`,
+        ActorFactory.name,
+      );
+      throw new Error(
+        `[${ActorFactory.name}] Illegal start event found in stream ${characterId}`,
+      );
     }
 
     // Rehydrate the actor with past events, getting the step and data
