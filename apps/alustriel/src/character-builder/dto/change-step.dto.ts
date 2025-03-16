@@ -11,10 +11,10 @@ import { StepName } from '../../state-machine/types';
 // Convert STEPS object values to a tuple type required by z.enum()
 const stepValues = Object.values(STEPS) as [string, ...string[]];
 
-const changeStepSchema = z.object({
+const ChangeStepDtoSchema = z.object({
   characterId: z.string().uuid(),
   targetStep: z.enum(stepValues) as z.ZodType<StepName>, // Zod enum that only accepts values from STEPS
 });
 
 // Type inference from the schema
-export class ChangeStepDto extends createZodDto(changeStepSchema) {}
+export class ChangeStepDto extends createZodDto(ChangeStepDtoSchema) {}
