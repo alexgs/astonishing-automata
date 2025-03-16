@@ -20,11 +20,12 @@ export interface BaseEvent<T extends string = string, D = unknown> {
   readonly version: number;
 }
 
-export interface CreateEventPayload {
+export interface CreateEventWriteModelPayload {
   data: unknown;
   eventType: string;
   streamId: string;
   streamType: string;
+  expectedVersion: number;
 }
 
 export interface EventStoreReadModel {

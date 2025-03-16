@@ -25,18 +25,20 @@ export class CharacterBuilderEventFactory {
       nextStep: INITIAL_STEP,
     };
 
-    return this.eventStore.createEvent(
-      characterId,
-      STREAM_TYPES.CHARACTER,
-      EVENT_TYPES.STARTED,
-      { ...payload },
-    );
+    return this.eventStore.createEventWriteModel({
+      data: payload,
+      eventType: EVENT_TYPES.STARTED,
+      streamId: characterId,
+      streamType: STREAM_TYPES.CHARACTER,
+      expectedVersion: 0, // This should be the first event in the stream
+    });
   }
 
   public async createStepChangedEvent(
     characterId: string,
     nextStep: StepName,
     previousStep: StepName,
+    expectedVersion: number,
   ) {
     const payload: StepChangedEventPayload = {
       characterId,
@@ -44,11 +46,12 @@ export class CharacterBuilderEventFactory {
       previousStep,
     };
 
-    return this.eventStore.createEvent(
-      characterId,
-      STREAM_TYPES.CHARACTER,
-      EVENT_TYPES.STEP_CHANGED,
-      { ...payload },
-    );
+    return this.eventStore.createEventWriteModel({
+      data: payload,
+      eventType: EVENT_TYPES.STARTED,
+      expectedVersion,
+      streamId: characterId,
+      streamType: STREAM_TYPES.CHARACTER,
+    });
   }
 }
