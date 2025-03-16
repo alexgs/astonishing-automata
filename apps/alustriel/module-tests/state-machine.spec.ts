@@ -13,7 +13,7 @@ import { EventStoreModule } from '../src/event-store/event-store.module';
 import { EventStoreReadModel } from '../src/event-store/interfaces';
 import { TOKENS } from '../src/provider-tokens';
 import { ActorFactory } from '../src/state-machine/actor.factory';
-import { INITIAL_STEP, STEPS } from '../src/state-machine/constants';
+import { STEPS } from '../src/state-machine/constants';
 import { StateMachineModule } from '../src/state-machine/state-machine.module';
 import { testLog } from '../src/winston-transports';
 
