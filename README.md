@@ -2,6 +2,18 @@
 
 A modular and extensible TTRPG character builder.
 
+## License
+This software is licensed under the **Elastic License 2.0 (ELv2)**.
+
+- **Individuals and non-profits** may self-host and modify it freely.
+- **You may _NOT_ offer this software as a managed service (SaaS).**
+- The original author retains the right to run and monetize a SaaS version.
+- For **commercial SaaS usage**, a separate commercial license is available.
+
+For more details, see the full [Elastic License 2.0](LICENSE.md). For commercial licensing inquiries, contact [license@automatacodex.com][2].
+
+[2]: mailto:license@automatacodex.com
+
 ## Overview
 
 The Automata Character Builder is a web-based character creation tool designed to support D&D 5e (2014) with plans for future expansion into a customizable and generic TTRPG character builder. It follows a state machine-based approach to guide players through the character creation and leveling-up process while maintaining flexibility.
