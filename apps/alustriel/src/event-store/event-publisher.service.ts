@@ -14,9 +14,9 @@ import { EventBus } from '@nestjs/cqrs';
 import { TOKENS } from '../provider-tokens';
 
 import { POSTGRES_CHANNEL } from './constants';
+import { eventMap } from './event-map';
 import { EventStoreReadModel } from './interfaces';
 import { PostgresService } from './postgres.service';
-import { eventMap } from './event-map';
 
 @Injectable()
 export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
@@ -75,21 +75,23 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  private createEventFromRow(row: EventStoreReadModel) {
-    const { constructor: EventConstructor, schema: validator } =
-      eventMap[row.type as keyof typeof eventMap];
-    if (!EventConstructor) {
+  // Even though this function returns `unknown`, the events will still work
+  // with the event bus since `instanceof` continues to function as expected.
+  private createEventFromRow(row: EventStoreReadModel): unknown {
+    const map = eventMap[row.type as keyof typeof eventMap];
+    if (!map) {
       this.logger.error(`Unknown event type: ${row.type}`);
       throw new Error(`Unknown event type: ${row.type}`);
     }
+    const { constructor: EventConstructor, schema: validator } = map;
 
-    const result = validator(row.data);
-    if (!result.success) {
-      const message = `Invalid data for event type: ${row.type} - ${result.error.message}`;
+    const validatorResult = validator(row.data);
+    if (!validatorResult.success) {
+      const message = `Invalid data for event type: ${row.type} - ${validatorResult.error.message}`;
       this.logger.error(message);
       throw new Error(message);
     }
 
-    return new EventConstructor({ ...row, data: result.data }); // Pass full row with validated data
+    return new EventConstructor({ ...row, data: validatorResult.data }); // Pass full row with validated data
   }
 }
