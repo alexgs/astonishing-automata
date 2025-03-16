@@ -3,10 +3,17 @@
  */
 
 import { IEvent } from '@nestjs/cqrs';
+import { z } from 'zod';
 
 import { BaseEvent, EventStoreReadModel } from '../../event-store/interfaces';
-import { StepName } from '../../state-machine/types';
+import { StepName, StepsZodEnum } from '../../state-machine/types';
 import { EVENT_TYPES } from '../constants';
+
+export const StepChangedEventPayloadSchema = z.object({
+  characterId: z.string(),
+  nextStep: StepsZodEnum,
+  previousStep: StepsZodEnum,
+});
 
 export interface StepChangedEventPayload {
   characterId: string;
