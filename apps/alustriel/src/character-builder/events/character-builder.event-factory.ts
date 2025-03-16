@@ -48,7 +48,7 @@ export class CharacterBuilderEventFactory {
 
     return this.eventStore.createEventWriteModel({
       data: payload,
-      eventType: EVENT_TYPES.STARTED,
+      eventType: EVENT_TYPES.STEP_CHANGED,
       expectedVersion,
       streamId: characterId,
       streamType: STREAM_TYPES.CHARACTER,

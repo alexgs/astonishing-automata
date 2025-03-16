@@ -68,7 +68,6 @@ describe('Character Builder module', () => {
       };
 
       const tracker = mockKnexService.getTracker();
-      tracker.on.select('streams').responseOnce([]);
       tracker.on.insert('streams').responseOnce(1);
       tracker.on.select('streams').responseOnce([streamRecord]);
       tracker.on.insert('events').responseOnce(1);
