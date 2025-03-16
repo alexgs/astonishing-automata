@@ -9,13 +9,13 @@ import { BaseEvent, EventStoreReadModel } from '../../event-store/interfaces';
 import { INITIAL_STEP } from '../../state-machine/constants';
 import { EVENT_TYPES } from '../constants';
 
-export const characterStartedEventPayloadSchema = z.object({
+export const CharacterStartedEventPayloadSchema = z.object({
   characterId: z.string(),
   nextStep: z.literal(INITIAL_STEP),
 });
 
 export type CharacterStartedEventPayload = z.infer<
-  typeof characterStartedEventPayloadSchema
+  typeof CharacterStartedEventPayloadSchema
 >;
 
 export class CharacterStartedEvent

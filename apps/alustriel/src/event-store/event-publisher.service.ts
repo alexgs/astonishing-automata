@@ -12,13 +12,34 @@ import {
 import { EventBus } from '@nestjs/cqrs';
 
 import { EVENT_TYPES } from '../character-builder/constants';
-import { CharacterStartedEvent } from '../character-builder/events/character-started.event';
-import { StepChangedEvent } from '../character-builder/events/step-changed.event';
+import {
+  CharacterStartedEvent,
+  CharacterStartedEventPayloadSchema,
+} from '../character-builder/events/character-started.event';
+import {
+  StepChangedEvent,
+  StepChangedEventPayloadSchema,
+} from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
 
 import { POSTGRES_CHANNEL } from './constants';
 import { EventStoreReadModel } from './interfaces';
 import { PostgresService } from './postgres.service';
+
+const eventMap = {
+  [EVENT_TYPES.STEP_CHANGED]: {
+    constructor: StepChangedEvent,
+    schema: StepChangedEventPayloadSchema.safeParse.bind(
+      StepChangedEventPayloadSchema,
+    ),
+  },
+  [EVENT_TYPES.STARTED]: {
+    constructor: CharacterStartedEvent,
+    schema: CharacterStartedEventPayloadSchema.safeParse.bind(
+      CharacterStartedEventPayloadSchema,
+    ),
+  },
+} as const;
 
 @Injectable()
 export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
@@ -78,13 +99,20 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
   }
 
   private createEventFromRow(row: EventStoreReadModel) {
-    switch (row.type) {
-      case EVENT_TYPES.STEP_CHANGED:
-        return new StepChangedEvent(row);
-      case EVENT_TYPES.STARTED:
-        return new CharacterStartedEvent(row);
-      default:
-        throw new Error(`Unknown event type: ${row.type}`);
+    const { constructor: EventConstructor, schema: validator } =
+      eventMap[row.type as keyof typeof eventMap];
+    if (!EventConstructor) {
+      this.logger.error(`Unknown event type: ${row.type}`);
+      throw new Error(`Unknown event type: ${row.type}`);
     }
+
+    const result = validator(row.data);
+    if (!result.success) {
+      const message = `Invalid data for event type: ${row.type} - ${result.error.message}`;
+      this.logger.error(message);
+      throw new Error(message);
+    }
+
+    return new EventConstructor({ ...row, data: result.data }); // Pass full row with validated data
   }
 }
