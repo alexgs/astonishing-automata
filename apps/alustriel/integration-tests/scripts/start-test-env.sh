@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Copyright 2023-2024 Phillip Gates-Shannon. All rights reserved. Licensed under the Open Software License version 3.0.
+# Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
 #
 
 # Get the current directory
