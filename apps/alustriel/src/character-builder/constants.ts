@@ -3,6 +3,7 @@
  */
 
 export const EVENT_TYPES = {
+  SPECIES_SELECTED: 'event-types.character-builder.species-selected',
   STARTED: 'event-types.character-builder.character-creation-started',
   STEP_CHANGED: 'event-types.character-builder.step-changed',
 } as const;

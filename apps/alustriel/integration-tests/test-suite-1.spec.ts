@@ -43,7 +43,7 @@ describe('Character Builder Integration Test Suite 1', () => {
     }
   });
 
-  it('A user starts the character builder process', async () => {
+  it('Abed starts the character builder process', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
@@ -74,7 +74,59 @@ describe('Character Builder Integration Test Suite 1', () => {
     });
   });
 
-  it('The user moves forward in the character creation workflow', async () => {
+  it('Abed tries to select an invalid species', async () => {
+    let response: AxiosResponse;
+    try {
+      response = await axios(
+        `http://localhost:3000/api/v1/character-builder/select-species`,
+        {
+          method: 'POST',
+          data: {
+            characterId: CHARACTER_ID,
+            species: 'core.dragon',
+          },
+        },
+      );
+    } catch (e) {
+      response = e.response;
+    }
+    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
+  });
+
+  it('Abed selects a valid species', async () => {
+    let response: AxiosResponse;
+    try {
+      response = await axios(
+        `http://localhost:3000/api/v1/character-builder/select-species`,
+        {
+          method: 'POST',
+          data: {
+            characterId: CHARACTER_ID,
+            species: 'core.elf',
+          },
+        },
+      );
+    } catch (e) {
+      response = e.response;
+    }
+    expect(response.status).toEqual(HttpStatus.CREATED);
+
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
+    expect(events).toHaveLength(2);
+    expect(events.at(-1)).toMatchObject({
+      type: CHARACTER_EVENT_TYPES.SPECIES_SELECTED,
+      stream_id: CHARACTER_ID,
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        species: 'core.elf',
+      }),
+      version: 2,
+    });
+  });
+
+  it('Abed moves forward in the character creation workflow', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
@@ -90,14 +142,13 @@ describe('Character Builder Integration Test Suite 1', () => {
     } catch (e) {
       response = e.response;
     }
-
     expect(response.status).toEqual(HttpStatus.CREATED);
 
     const events = await knex('events')
       .where({ stream_id: CHARACTER_ID })
       .orderBy('id', 'asc');
-    expect(events).toHaveLength(2);
-    expect(events[1]).toMatchObject({
+    expect(events).toHaveLength(3);
+    expect(events.at(-1)).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
       data: expect.objectContaining({
@@ -105,11 +156,11 @@ describe('Character Builder Integration Test Suite 1', () => {
         previousStep: STEPS.SELECT_SPECIES,
         nextStep: STEPS.SELECT_CLASS,
       }),
-      version: 2,
+      version: 3,
     });
   });
 
-  it('The user tries to make an invalid transition', async () => {
+  it('Abed tries to make an invalid transition', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
@@ -125,14 +176,13 @@ describe('Character Builder Integration Test Suite 1', () => {
     } catch (e) {
       response = e.response;
     }
-
     expect(response.status).toEqual(HttpStatus.CONFLICT);
 
     const events = await knex('events')
       .where({ stream_id: CHARACTER_ID })
       .orderBy('id', 'asc');
-    expect(events).toHaveLength(2);
-    expect(events[1]).toMatchObject({
+    expect(events).toHaveLength(3);
+    expect(events.at(-1)).toMatchObject({
       type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
       stream_id: CHARACTER_ID,
       data: expect.objectContaining({
@@ -140,7 +190,7 @@ describe('Character Builder Integration Test Suite 1', () => {
         previousStep: STEPS.SELECT_SPECIES,
         nextStep: STEPS.SELECT_CLASS,
       }),
-      version: 2,
+      version: 3,
     });
   });
 });

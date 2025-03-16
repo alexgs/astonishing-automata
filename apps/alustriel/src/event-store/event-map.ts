@@ -10,6 +10,10 @@ import {
   CharacterStartedEventPayloadSchema,
 } from '../character-builder/events/character-started.event';
 import {
+  SpeciesSelectedEvent,
+  SpeciesSelectedEventPayloadSchema,
+} from '../character-builder/events/species-selected.event';
+import {
   StepChangedEvent,
   StepChangedEventPayloadSchema,
 } from '../character-builder/events/step-changed.event';
@@ -20,16 +24,22 @@ interface EventMap {
 }
 
 export const eventMap: { [event: string]: EventMap } = {
-  [EVENT_TYPES.STEP_CHANGED]: {
-    constructor: StepChangedEvent,
-    schema: StepChangedEventPayloadSchema.safeParse.bind(
-      StepChangedEventPayloadSchema,
+  [EVENT_TYPES.SPECIES_SELECTED]: {
+    constructor: SpeciesSelectedEvent,
+    schema: SpeciesSelectedEventPayloadSchema.safeParse.bind(
+      SpeciesSelectedEventPayloadSchema,
     ),
   },
   [EVENT_TYPES.STARTED]: {
     constructor: CharacterStartedEvent,
     schema: CharacterStartedEventPayloadSchema.safeParse.bind(
       CharacterStartedEventPayloadSchema,
+    ),
+  },
+  [EVENT_TYPES.STEP_CHANGED]: {
+    constructor: StepChangedEvent,
+    schema: StepChangedEventPayloadSchema.safeParse.bind(
+      StepChangedEventPayloadSchema,
     ),
   },
 } as const;

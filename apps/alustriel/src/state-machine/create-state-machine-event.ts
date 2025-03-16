@@ -1,0 +1,45 @@
+/*
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+import { EVENT_TYPES } from '../character-builder/constants';
+import { CharacterStartedEventPayload } from '../character-builder/events/character-started.event';
+import { SpeciesSelectedEventPayload } from '../character-builder/events/species-selected.event';
+import { StepChangedEventPayload } from '../character-builder/events/step-changed.event';
+import { EventStoreReadModel } from '../event-store/interfaces';
+
+import { ACTIONS } from './constants';
+import { CharacterContext } from './interfaces';
+
+type StateMachineEvent = {
+  [key in keyof CharacterContext]: unknown;
+} & {
+  type: string;
+};
+
+export function createStateMachineEvent(
+  eventStoreEvent: EventStoreReadModel,
+): StateMachineEvent {
+  switch (eventStoreEvent.type) {
+    case EVENT_TYPES.STARTED:
+      const characterStartedEventPayload: CharacterStartedEventPayload =
+        eventStoreEvent.data;
+      return {
+        type: characterStartedEventPayload.nextStep,
+      };
+    case EVENT_TYPES.STEP_CHANGED:
+      // Partial is required to make TypeScript happy
+      const stepChangedEventPayload: Partial<StepChangedEventPayload> =
+        eventStoreEvent.data;
+      return {
+        type: stepChangedEventPayload.nextStep,
+      };
+    case EVENT_TYPES.SPECIES_SELECTED:
+      const speciesSelectedEventPayload: SpeciesSelectedEventPayload =
+        eventStoreEvent.data;
+      return {
+        type: ACTIONS.SELECT_SPECIES,
+        species: speciesSelectedEventPayload.species,
+      };
+  }
+}

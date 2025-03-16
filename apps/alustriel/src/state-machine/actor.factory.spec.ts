@@ -26,6 +26,7 @@ jest.mock('xstate', () => {
   };
 
   return {
+    assign: jest.fn(),
     createActor: jest.fn(),
     createMachine: jest.fn(),
     setup: jest.fn(() => ({
@@ -117,7 +118,7 @@ describe('ActorFactory', () => {
         { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step2' }, version: 3 },
       ];
       mockEventStoreService.getEventsByStreamId.mockResolvedValue(pastEvents);
-      const mockActor = { start: jest.fn() };
+      const mockActor = { start: jest.fn(), send: jest.fn() };
       mockXState.createActor.mockReturnValue(mockActor);
 
       const resolvedState = { value: 'step2', context: {} };
@@ -132,13 +133,9 @@ describe('ActorFactory', () => {
       );
       expect(createActor).toHaveBeenCalledWith(
         mockXState.mockCharacterBuilderMachine,
-        {
-          snapshot: expect.objectContaining({
-            value: 'step2',
-          }),
-        },
       );
       expect(mockActor.start).toHaveBeenCalled();
+      expect(mockActor.send).toHaveBeenCalledTimes(pastEvents.length);
       expect(actor).toBe(mockActor);
       expect(version).toBe(pastEvents.length);
     });
