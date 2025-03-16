@@ -9,6 +9,7 @@ import { EventStoreService } from '../../event-store/event-store.service';
 import { ActorFactory } from '../../state-machine/actor.factory';
 import { ACTIONS } from '../../state-machine/constants';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
+import { InvalidActionException } from '../exceptions/invalid-action.exception';
 
 import { SelectSpeciesCommand } from './select-species.command';
 
@@ -27,7 +28,15 @@ export class SelectSpeciesCommandHandler
     const { actor, version } = await this.actorFactory.getActor(
       command.characterId,
     );
-    actor.send({ type: ACTIONS.SELECT_SPECIES, species: command.species });
+
+    // Check that this is a valid action for the actor
+    const action = { type: ACTIONS.SELECT_SPECIES, species: command.species };
+    const currentState = actor.getSnapshot();
+    if (!currentState.can(action)) {
+      throw new InvalidActionException(
+        `Cannot select species during step "${currentState.value}".`,
+      );
+    }
 
     const event = await this.eventFactory.createSpeciesSelectedEvent({
       characterId: command.characterId,
