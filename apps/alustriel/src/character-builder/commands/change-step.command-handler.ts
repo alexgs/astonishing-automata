@@ -24,7 +24,9 @@ export class ChangeStepCommandHandler
   ) {}
 
   async execute(command: ChangeStepCommand) {
-    const { actor } = await this.actorFactory.getActor(command.characterId);
+    const { actor, version } = await this.actorFactory.getActor(
+      command.characterId,
+    );
     const previousStep = actor.getSnapshot().value;
 
     // Check that this is a valid step change for the actor
@@ -39,6 +41,7 @@ export class ChangeStepCommandHandler
       command.characterId,
       command.targetStep,
       previousStep,
+      version,
     );
     await this.eventStoreService.appendEvent(event);
 

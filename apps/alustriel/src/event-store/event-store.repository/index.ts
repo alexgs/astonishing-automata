@@ -3,5 +3,5 @@
  */
 
 export { appendEvent } from './append-event';
-export { createEvent } from './create-event';
+export { createEventWriteModel } from './create-event-write-model';
 export { getEventsByStreamId } from './get-events-by-stream-id';

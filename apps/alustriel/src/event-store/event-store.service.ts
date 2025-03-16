@@ -9,10 +9,14 @@ import { TOKENS } from '../provider-tokens';
 
 import {
   appendEvent,
-  createEvent,
+  createEventWriteModel,
   getEventsByStreamId,
 } from './event-store.repository';
-import { EventStoreReadModel, EventStoreWriteModel } from './interfaces';
+import {
+  CreateEventWriteModelPayload,
+  EventStoreReadModel,
+  EventStoreWriteModel,
+} from './interfaces';
 import { KnexService } from './knex.service';
 
 @Injectable()
@@ -30,19 +34,11 @@ export class EventStoreService {
     return appendEvent(this.knex, event, this.logger);
   }
 
-  async createEvent(
-    streamId: string,
-    streamType: string,
-    eventType: string,
-    data: unknown,
+  async createEventWriteModel(
+    payload: CreateEventWriteModelPayload,
   ): Promise<EventStoreWriteModel> {
     try {
-      return createEvent(this.knex, {
-        data,
-        eventType,
-        streamId,
-        streamType,
-      });
+      return createEventWriteModel(payload);
     } catch (error) {
       this.logger.error(
         `Error creating event: ${error}`,
@@ -53,7 +49,6 @@ export class EventStoreService {
   }
 
   async getEventsByStreamId(streamId: string): Promise<EventStoreReadModel[]> {
-    // TODO Make sure events are returned in order
     return getEventsByStreamId(this.knex, streamId);
   }
 }

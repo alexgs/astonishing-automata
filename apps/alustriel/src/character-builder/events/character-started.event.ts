@@ -3,15 +3,20 @@
  */
 
 import { IEvent } from '@nestjs/cqrs';
+import { z } from 'zod';
 
 import { BaseEvent, EventStoreReadModel } from '../../event-store/interfaces';
 import { INITIAL_STEP } from '../../state-machine/constants';
 import { EVENT_TYPES } from '../constants';
 
-export interface CharacterStartedEventPayload {
-  characterId: string;
-  nextStep: typeof INITIAL_STEP;
-}
+export const CharacterStartedEventPayloadSchema = z.object({
+  characterId: z.string(),
+  nextStep: z.literal(INITIAL_STEP),
+});
+
+export type CharacterStartedEventPayload = z.infer<
+  typeof CharacterStartedEventPayloadSchema
+>;
 
 export class CharacterStartedEvent
   implements
