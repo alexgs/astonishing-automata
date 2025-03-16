@@ -6,12 +6,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { createActor, Actor } from 'xstate';
 
 import { EVENT_TYPES } from '../character-builder/constants';
-import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { EventStoreService } from '../event-store/event-store.service';
 
-import { INITIAL_STEP } from './constants';
+import { createStateMachineEvent } from './create-state-machine-event';
 import { characterBuilderMachine } from './state-machine';
-import { StepName } from './types';
 
 interface GetActorReturnType {
   actor: Actor<typeof characterBuilderMachine>;
@@ -57,29 +55,16 @@ export class ActorFactory {
       );
     }
 
-    // Rehydrate the actor with past events, getting the step and data
-    let step: StepName = INITIAL_STEP;
+    // Rehydrate the actor by replaying past events
+    const actor = createActor(characterBuilderMachine);
+    actor.start();
     let version = 0;
     for (const rawEvent of pastEvents) {
+      const event = createStateMachineEvent(rawEvent);
+      actor.send(event);
       version = rawEvent.version;
-      if (rawEvent.type === EVENT_TYPES.STEP_CHANGED) {
-        const event = new StepChangedEvent(rawEvent);
-        step = event.data.nextStep;
-      }
     }
 
-    // Resolve the state of the machine based on the rehydrated step and data
-    const resolvedState = characterBuilderMachine.resolveState({
-      value: step,
-      context: {}, // TODO Eventually the restored data will go here
-    });
-
-    // Restore the actor from the resolved state
-    const actor = createActor(characterBuilderMachine, {
-      snapshot: resolvedState,
-    });
-
-    actor.start();
     return { actor, version };
   }
 }
