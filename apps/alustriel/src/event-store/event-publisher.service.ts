@@ -11,35 +11,12 @@ import {
 } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 
-import { EVENT_TYPES } from '../character-builder/constants';
-import {
-  CharacterStartedEvent,
-  CharacterStartedEventPayloadSchema,
-} from '../character-builder/events/character-started.event';
-import {
-  StepChangedEvent,
-  StepChangedEventPayloadSchema,
-} from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
 
 import { POSTGRES_CHANNEL } from './constants';
 import { EventStoreReadModel } from './interfaces';
 import { PostgresService } from './postgres.service';
-
-const eventMap = {
-  [EVENT_TYPES.STEP_CHANGED]: {
-    constructor: StepChangedEvent,
-    schema: StepChangedEventPayloadSchema.safeParse.bind(
-      StepChangedEventPayloadSchema,
-    ),
-  },
-  [EVENT_TYPES.STARTED]: {
-    constructor: CharacterStartedEvent,
-    schema: CharacterStartedEventPayloadSchema.safeParse.bind(
-      CharacterStartedEventPayloadSchema,
-    ),
-  },
-} as const;
+import { eventMap } from './event-map';
 
 @Injectable()
 export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
