@@ -40,7 +40,7 @@ const PAST_EVENTS: EventStoreReadModel[] = [
     type: EVENT_TYPES.SPECIES_SELECTED,
     data: {
       characterId: CHARACTER_ID,
-      species: 'elf',
+      species: 'core.elf',
     },
     created_at: new Date(1742149788700),
     version: 2,
@@ -125,7 +125,7 @@ describe('State Machine module', () => {
         const { actor } = await actorFactory.getActor(CHARACTER_ID);
         expect(actor).toBeDefined();
         expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_CLASS);
-        expect(actor.getSnapshot().context.species).toEqual('elf');
+        expect(actor.getSnapshot().context.species).toEqual('core.elf');
       });
     });
   });

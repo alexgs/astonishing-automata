@@ -74,7 +74,7 @@ describe('Character Builder Integration Test Suite 1', () => {
     });
   });
 
-  it('Abed selects a species', async () => {
+  it('Abed tries to select an invalid species', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
@@ -83,7 +83,26 @@ describe('Character Builder Integration Test Suite 1', () => {
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,
-            species: 'elf',
+            species: 'core.dragon',
+          },
+        },
+      );
+    } catch (e) {
+      response = e.response;
+    }
+    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
+  });
+
+  it('Abed selects a valid species', async () => {
+    let response: AxiosResponse;
+    try {
+      response = await axios(
+        `http://localhost:3000/api/v1/character-builder/select-species`,
+        {
+          method: 'POST',
+          data: {
+            characterId: CHARACTER_ID,
+            species: 'core.elf',
           },
         },
       );
@@ -101,7 +120,7 @@ describe('Character Builder Integration Test Suite 1', () => {
       stream_id: CHARACTER_ID,
       data: expect.objectContaining({
         characterId: CHARACTER_ID,
-        species: 'elf',
+        species: 'core.elf',
       }),
       version: 2,
     });
