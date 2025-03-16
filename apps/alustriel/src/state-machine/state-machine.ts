@@ -2,9 +2,9 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { setup } from 'xstate';
+import { assign, setup } from 'xstate';
 
-import { STEPS } from './constants';
+import { ACTIONS, STEPS } from './constants';
 import { CharacterContext } from './interfaces';
 
 export const characterBuilderMachine = setup({
@@ -17,7 +17,16 @@ export const characterBuilderMachine = setup({
   initial: STEPS.SELECT_SPECIES,
   states: {
     [STEPS.SELECT_SPECIES]: {
-      on: { [STEPS.SELECT_CLASS]: STEPS.SELECT_CLASS },
+      on: {
+        [ACTIONS.SELECT_SPECIES]: {
+          actions: [
+            assign({
+              species: ({ event }) => event.species,
+            }),
+          ],
+        },
+        [STEPS.SELECT_CLASS]: STEPS.SELECT_CLASS,
+      },
     },
     [STEPS.SELECT_CLASS]: {
       on: {
