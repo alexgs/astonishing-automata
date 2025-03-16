@@ -2,6 +2,10 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+export const ACTIONS = {
+  SELECT_SPECIES: 'character-builder.actions.select-species',
+} as const;
+
 // Can't use `.` in step names, but can use it in event names. 🤷🏻
 // https://stately.ai/blog/2024-01-23-state-machines-whats-in-a-name#xstate-v5-and-dotcase
 export const STEPS = {

@@ -7,6 +7,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { EventStoreService } from '../../event-store/event-store.service';
 import { ActorFactory } from '../../state-machine/actor.factory';
+import { ACTIONS } from '../../state-machine/constants';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 
 import { SelectSpeciesCommand } from './select-species.command';
@@ -26,6 +27,15 @@ export class SelectSpeciesCommandHandler
     const { actor, version } = await this.actorFactory.getActor(
       command.characterId,
     );
-    actor.setSpecies(command.species);
+    actor.send({ type: ACTIONS.SELECT_SPECIES, species: command.species });
+
+    const event = await this.eventFactory.createSpeciesSelectedEvent({
+      characterId: command.characterId,
+      species: command.species,
+      version,
+    });
+    await this.eventStoreService.appendEvent(event);
+
+    return { characterId: command.characterId, species: command.species };
   }
 }

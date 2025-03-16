@@ -10,7 +10,14 @@ import { StepName } from '../../state-machine/types';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
 
 import { CharacterStartedEventPayload } from './character-started.event';
+import { SpeciesSelectedEventPayload } from './species-selected.event';
 import { StepChangedEventPayload } from './step-changed.event';
+
+export interface CreateSpeciesSelectedEventArgs {
+  characterId: string;
+  species: string;
+  version: number;
+}
 
 @Injectable()
 export class CharacterBuilderEventFactory {
@@ -18,6 +25,21 @@ export class CharacterBuilderEventFactory {
     private readonly eventStore: EventStoreService,
     private readonly logger: Logger,
   ) {}
+
+  public createSpeciesSelectedEvent(args: CreateSpeciesSelectedEventArgs) {
+    const payload: SpeciesSelectedEventPayload = {
+      characterId: args.characterId,
+      species: args.species,
+    };
+
+    return this.eventStore.createEventWriteModel({
+      data: payload,
+      eventType: EVENT_TYPES.SPECIES_SELECTED,
+      streamId: args.characterId,
+      streamType: STREAM_TYPES.CHARACTER,
+      expectedVersion: args.version,
+    });
+  }
 
   public async createCharacterStartedEvent(characterId: string) {
     const payload: CharacterStartedEventPayload = {
