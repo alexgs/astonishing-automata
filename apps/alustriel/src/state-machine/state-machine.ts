@@ -30,6 +30,13 @@ export const characterBuilderMachine = setup({
     },
     [STEPS.SELECT_CLASS]: {
       on: {
+        [ACTIONS.SELECT_CLASS]: {
+          actions: [
+            assign({
+              className: ({ event }) => event.className,
+            }),
+          ],
+        },
         [STEPS.SELECT_SUBCLASS]: STEPS.SELECT_SUBCLASS,
         [STEPS.SELECT_CLASS_FEATURES]: STEPS.SELECT_CLASS_FEATURES,
         [STEPS.SELECT_SPECIES]: STEPS.SELECT_SPECIES,
