@@ -12,6 +12,7 @@ import {
 
 import { CharacterBuilderService } from './character-builder.service';
 import { ChangeStepDto } from './dto/change-step.dto';
+import { SelectClassDto } from './dto/select-class.dto';
 import { SelectSpeciesDto } from './dto/select-species.dto';
 import { InvalidStateTransitionException } from './exceptions/invalid-state-transition.exception';
 
@@ -37,6 +38,16 @@ export class CharacterBuilderController {
       }
       throw new InternalServerErrorException(); // Generic fallback
     }
+  }
+
+  @Post('select-class')
+  async selectClass(@Body() selectClassDto: SelectClassDto) {
+    this.logger.debug(
+      'Received POST request to /character-builder/select-class',
+      CharacterBuilderController.name,
+    );
+    const data = await this.characterBuilderService.selectClass(selectClassDto);
+    return { data };
   }
 
   @Post('select-species')

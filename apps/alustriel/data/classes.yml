@@ -1,0 +1,25 @@
+classes:
+  - id: core.artificer
+    name: Artificer
+  - id: core.bard
+    name: Bard
+  - id: core.cleric
+    name: Cleric
+  - id: core.druid
+    name: Druid
+  - id: core.fighter
+    name: Fighter
+  - id: core.monk
+    name: Monk
+  - id: core.paladin
+    name: Paladin
+  - id: core.ranger
+    name: Ranger
+  - id: core.rogue
+    name: Rogue
+  - id: core.sorcerer
+    name: Sorcerer
+  - id: core.warlock
+    name: Warlock
+  - id: core.wizard
+    name: Wizard
