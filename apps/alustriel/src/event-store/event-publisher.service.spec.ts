@@ -8,6 +8,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { EVENT_TYPES } from '../character-builder/constants';
 import { CharacterStartedEvent } from '../character-builder/events/character-started.event';
+import {
+  ClassSelectedEvent,
+  ClassSelectedEventPayload,
+} from '../character-builder/events/class-selected.event';
+import {
+  SpeciesSelectedEvent,
+  SpeciesSelectedEventPayload,
+} from '../character-builder/events/species-selected.event';
+import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
 import { STEPS } from '../state-machine/constants';
 
@@ -76,7 +85,7 @@ describe('EventPublisherService', () => {
   });
 
   describe('onModuleInit', () => {
-    it('should subscribe to PostgreSQL events', async () => {
+    it('subscribes to PostgreSQL events', async () => {
       await service.onModuleInit();
 
       expect(mockPostgresService.getSql).toHaveBeenCalled();
@@ -93,7 +102,7 @@ describe('EventPublisherService', () => {
       );
     });
 
-    it('should retry connection on failure', async () => {
+    it('retries the connection on failure', async () => {
       // Save the current timer implementation and use real timers for this test
       jest.useRealTimers();
 
@@ -115,7 +124,7 @@ describe('EventPublisherService', () => {
       jest.useFakeTimers();
     }, 15000); // Extend timeout further if needed
 
-    it('should throw error after maximum retries', async () => {
+    it('throws an error after maximum retries', async () => {
       // Use real timers for this test
       jest.useRealTimers();
 
@@ -155,7 +164,7 @@ describe('EventPublisherService', () => {
   });
 
   describe('onModuleDestroy', () => {
-    it('should unsubscribe and close connection', async () => {
+    it('unsubscribes and closes the connection', async () => {
       // First initialize to set up the unsubscribe function
       await service.onModuleInit();
 
@@ -168,7 +177,7 @@ describe('EventPublisherService', () => {
       );
     });
 
-    it('should handle errors during unsubscribe', async () => {
+    it('handles errors during unsubscribe', async () => {
       await service.onModuleInit();
 
       const error = new Error('Unsubscribe failed');
@@ -184,7 +193,7 @@ describe('EventPublisherService', () => {
       );
     });
 
-    it('should handle errors during postgres service close', async () => {
+    it('handles errors during postgres service close', async () => {
       await service.onModuleInit();
 
       const error = new Error('Close failed');
@@ -200,7 +209,63 @@ describe('EventPublisherService', () => {
   });
 
   describe('event publishing', () => {
-    it('should publish StepChangedEvent for STEP_CHANGED event type', async () => {
+    it(`publishes ${ClassSelectedEvent.name} for CLASS_SELECTED event type`, async () => {
+      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
+
+      await service.onModuleInit();
+
+      const data: ClassSelectedEventPayload = {
+        characterId,
+        className: 'core.druid',
+      };
+      const mockEvent: EventStoreReadModel = {
+        id: '123',
+        stream_id: characterId,
+        data,
+        type: EVENT_TYPES.CLASS_SELECTED,
+        version: 1,
+        created_at: new Date(),
+      };
+
+      eventCallback(mockEvent);
+
+      expect(mockLoggerDebug).toHaveBeenCalledWith(
+        `Publishing event: ${JSON.stringify(mockEvent)}`,
+      );
+      expect(mockEventBus.publish).toHaveBeenCalledWith(
+        expect.objectContaining({ data }),
+      );
+    });
+
+    it(`publishes ${SpeciesSelectedEvent.name} for SPECIES_SELECTED event type`, async () => {
+      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
+
+      await service.onModuleInit();
+
+      const data: SpeciesSelectedEventPayload = {
+        characterId,
+        species: 'core.elf',
+      };
+      const mockEvent: EventStoreReadModel = {
+        id: '123',
+        stream_id: characterId,
+        data,
+        type: EVENT_TYPES.SPECIES_SELECTED,
+        version: 1,
+        created_at: new Date(),
+      };
+
+      eventCallback(mockEvent);
+
+      expect(mockLoggerDebug).toHaveBeenCalledWith(
+        `Publishing event: ${JSON.stringify(mockEvent)}`,
+      );
+      expect(mockEventBus.publish).toHaveBeenCalledWith(
+        expect.objectContaining({ data }),
+      );
+    });
+
+    it(`publishes ${StepChangedEvent.name} for STEP_CHANGED event type`, async () => {
       const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
 
       await service.onModuleInit();
@@ -234,7 +299,7 @@ describe('EventPublisherService', () => {
       );
     });
 
-    it(`should publish ${CharacterStartedEvent.name} for STARTED event type`, async () => {
+    it(`publishes ${CharacterStartedEvent.name} for STARTED event type`, async () => {
       const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
 
       await service.onModuleInit();
@@ -263,7 +328,7 @@ describe('EventPublisherService', () => {
       );
     });
 
-    it('should throw error for unknown event types', async () => {
+    it('throws an error for unknown event types', async () => {
       await service.onModuleInit();
 
       const mockEvent: EventStoreReadModel = {

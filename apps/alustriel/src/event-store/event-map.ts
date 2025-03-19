@@ -10,6 +10,10 @@ import {
   CharacterStartedEventPayloadSchema,
 } from '../character-builder/events/character-started.event';
 import {
+  ClassSelectedEvent,
+  ClassSelectedEventPayloadSchema,
+} from '../character-builder/events/class-selected.event';
+import {
   SpeciesSelectedEvent,
   SpeciesSelectedEventPayloadSchema,
 } from '../character-builder/events/species-selected.event';
@@ -24,6 +28,12 @@ interface EventMap {
 }
 
 export const eventMap: { [event: string]: EventMap } = {
+  [EVENT_TYPES.CLASS_SELECTED]: {
+    constructor: ClassSelectedEvent,
+    schema: ClassSelectedEventPayloadSchema.safeParse.bind(
+      ClassSelectedEventPayloadSchema,
+    ),
+  },
   [EVENT_TYPES.SPECIES_SELECTED]: {
     constructor: SpeciesSelectedEvent,
     schema: SpeciesSelectedEventPayloadSchema.safeParse.bind(
