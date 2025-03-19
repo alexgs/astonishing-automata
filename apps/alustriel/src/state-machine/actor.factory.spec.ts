@@ -114,7 +114,11 @@ describe('ActorFactory', () => {
     it('rehydrates an actor with past events', async () => {
       const pastEvents = [
         { type: EVENT_TYPES.STARTED, data: { step: 'step1' }, version: 1 },
-        { type: 'data-changed', data: { skills: ['perception'] }, version: 2 },
+        {
+          type: EVENT_TYPES.SPECIES_SELECTED,
+          data: { skills: ['perception'] },
+          version: 2,
+        },
         { type: EVENT_TYPES.STEP_CHANGED, data: { step: 'step2' }, version: 3 },
       ];
       mockEventStoreService.getEventsByStreamId.mockResolvedValue(pastEvents);
