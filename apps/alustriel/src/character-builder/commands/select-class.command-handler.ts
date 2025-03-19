@@ -29,8 +29,10 @@ export class SelectClassCommandHandler
       command.characterId,
     );
 
-    // Check that this is a valid action for the actor
+    // It's more efficient to create the action in each command handler than to centralize it
     const action = { type: ACTIONS.SELECT_CLASS, className: command.className };
+
+    // Check that this is a valid action for the actor
     const currentState = actor.getSnapshot();
     if (!currentState.can(action)) {
       throw new InvalidActionException(

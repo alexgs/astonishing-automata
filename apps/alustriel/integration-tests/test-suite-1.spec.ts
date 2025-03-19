@@ -8,10 +8,12 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import * as cookieParser from 'cookie-parser';
 import { knex } from 'knex';
+import { WinstonModule } from 'nest-winston';
 
 import { AppModule } from '../src/app.module';
 import { EVENT_TYPES as CHARACTER_EVENT_TYPES } from '../src/character-builder/constants';
 import { STEPS } from '../src/state-machine/constants';
+import { testLog } from '../src/winston-transports';
 
 import { KnexClient, resetDb } from './helpers';
 
@@ -28,7 +30,11 @@ describe('Character Builder Integration Test Suite 1', () => {
     await resetDb(knex);
 
     module = await Test.createTestingModule({ imports: [AppModule] }).compile();
-    app = module.createNestApplication();
+    app = module.createNestApplication({
+      logger: WinstonModule.createLogger({
+        transports: [testLog],
+      }),
+    });
     app.enableVersioning({ type: VersioningType.URI });
     app.setGlobalPrefix('api');
     app.use(cookieParser());
@@ -191,6 +197,73 @@ describe('Character Builder Integration Test Suite 1', () => {
         nextStep: STEPS.SELECT_CLASS,
       }),
       version: 3,
+    });
+  });
+
+  it('Abed tries to select an invalid class', async () => {
+    let response: AxiosResponse;
+    try {
+      response = await axios(
+        `http://localhost:3000/api/v1/character-builder/select-class`,
+        {
+          method: 'POST',
+          data: {
+            characterId: CHARACTER_ID,
+            className: 'homebrew.batman',
+          },
+        },
+      );
+    } catch (e) {
+      response = e.response;
+    }
+    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
+
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
+    expect(events).toHaveLength(3);
+    expect(events.at(-1)).toMatchObject({
+      type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
+      stream_id: CHARACTER_ID,
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        previousStep: STEPS.SELECT_SPECIES,
+        nextStep: STEPS.SELECT_CLASS,
+      }),
+      version: 3,
+    });
+  });
+
+  it('Abed selects valid a class', async () => {
+    let response: AxiosResponse;
+    try {
+      response = await axios(
+        `http://localhost:3000/api/v1/character-builder/select-class`,
+        {
+          method: 'POST',
+          data: {
+            characterId: CHARACTER_ID,
+            className: 'core.fighter',
+          },
+        },
+      );
+    } catch (e) {
+      response = e.response;
+    }
+    expect(response.status).toEqual(HttpStatus.CREATED);
+
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
+    expect(events).toHaveLength(4);
+    expect(events.at(-1)).toMatchObject({
+      type: CHARACTER_EVENT_TYPES.CLASS_SELECTED,
+      stream_id: CHARACTER_ID,
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        className: 'core.fighter',
+      }),
+      version: 4,
     });
   });
 });
