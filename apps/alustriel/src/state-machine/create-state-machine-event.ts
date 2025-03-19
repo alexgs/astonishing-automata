@@ -49,5 +49,9 @@ export function createStateMachineEvent(
         type: ACTIONS.SELECT_SPECIES,
         species: speciesSelectedEventPayload.species,
       };
+    default:
+      throw new Error(
+        `Unknown event type: ${eventStoreEvent.type} for event ${eventStoreEvent.id}`,
+      );
   }
 }

@@ -45,6 +45,6 @@ export class SelectClassCommandHandler
     });
     await this.eventStoreService.appendEvent(event);
 
-    return { characterId: command.characterId, class: command.className };
+    return { characterId: command.characterId, className: command.className };
   }
 }

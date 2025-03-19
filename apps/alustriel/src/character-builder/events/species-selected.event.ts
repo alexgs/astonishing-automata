@@ -19,14 +19,14 @@ export type SpeciesSelectedEventPayload = z.infer<
 
 export class SpeciesSelectedEvent
   implements
-    BaseEvent<typeof EVENT_TYPES.STEP_CHANGED, SpeciesSelectedEventPayload>,
+    BaseEvent<typeof EVENT_TYPES.SPECIES_SELECTED, SpeciesSelectedEventPayload>,
     IEvent
 {
   public readonly id: string;
   public readonly createdAt: Date;
   public readonly data: SpeciesSelectedEventPayload;
   public readonly streamId: string;
-  public readonly type = EVENT_TYPES.STEP_CHANGED;
+  public readonly type = EVENT_TYPES.SPECIES_SELECTED;
   public readonly version: number;
 
   constructor(row: EventStoreReadModel) {
