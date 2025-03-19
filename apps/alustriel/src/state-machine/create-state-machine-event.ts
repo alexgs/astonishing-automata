@@ -4,6 +4,7 @@
 
 import { EVENT_TYPES } from '../character-builder/constants';
 import { CharacterStartedEventPayload } from '../character-builder/events/character-started.event';
+import { ClassSelectedEventPayload } from '../character-builder/events/class-selected.event';
 import { SpeciesSelectedEventPayload } from '../character-builder/events/species-selected.event';
 import { StepChangedEventPayload } from '../character-builder/events/step-changed.event';
 import { EventStoreReadModel } from '../event-store/interfaces';
@@ -21,6 +22,13 @@ export function createStateMachineEvent(
   eventStoreEvent: EventStoreReadModel,
 ): StateMachineEvent {
   switch (eventStoreEvent.type) {
+    case EVENT_TYPES.CLASS_SELECTED:
+      const classSelectedEventPayload: ClassSelectedEventPayload =
+        eventStoreEvent.data;
+      return {
+        type: ACTIONS.SELECT_CLASS,
+        className: classSelectedEventPayload.className,
+      };
     case EVENT_TYPES.STARTED:
       const characterStartedEventPayload: CharacterStartedEventPayload =
         eventStoreEvent.data;
@@ -41,5 +49,9 @@ export function createStateMachineEvent(
         type: ACTIONS.SELECT_SPECIES,
         species: speciesSelectedEventPayload.species,
       };
+    default:
+      throw new Error(
+        `Unknown event type: ${eventStoreEvent.type} for event ${eventStoreEvent.id}`,
+      );
   }
 }

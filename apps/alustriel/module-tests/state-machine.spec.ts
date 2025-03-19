@@ -26,7 +26,7 @@ const PAST_EVENTS: EventStoreReadModel[] = [
   {
     id: '01JPG3G7Z11P38SHXWSQJNNRZ0',
     stream_id: CHARACTER_ID,
-    type: EVENT_TYPES.STEP_CHANGED,
+    type: EVENT_TYPES.STARTED,
     data: {
       characterId: CHARACTER_ID,
       nextStep: STEPS.SELECT_SPECIES,
@@ -56,6 +56,29 @@ const PAST_EVENTS: EventStoreReadModel[] = [
     },
     created_at: new Date(1742149789529),
     version: 3,
+  },
+  {
+    id: '01JPG3GA9GZTYHFGKNKYHXJ196',
+    stream_id: CHARACTER_ID,
+    type: EVENT_TYPES.CLASS_SELECTED,
+    data: {
+      characterId: CHARACTER_ID,
+      className: 'core.rogue',
+    },
+    created_at: new Date(1742149790000),
+    version: 4,
+  },
+  {
+    id: '01JPG3GAHAFEA1DR734N9WZNRD',
+    stream_id: CHARACTER_ID,
+    type: EVENT_TYPES.STEP_CHANGED,
+    data: {
+      characterId: CHARACTER_ID,
+      previousStep: STEPS.SELECT_CLASS,
+      nextStep: STEPS.SELECT_CLASS_FEATURES,
+    },
+    created_at: new Date(1742149790250),
+    version: 5,
   },
 ];
 
@@ -124,8 +147,9 @@ describe('State Machine module', () => {
 
         const { actor } = await actorFactory.getActor(CHARACTER_ID);
         expect(actor).toBeDefined();
-        expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_CLASS);
+        expect(actor.getSnapshot().value).toEqual(STEPS.SELECT_CLASS_FEATURES);
         expect(actor.getSnapshot().context.species).toEqual('core.elf');
+        expect(actor.getSnapshot().context.className).toEqual('core.rogue');
       });
     });
   });

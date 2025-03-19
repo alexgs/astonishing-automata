@@ -8,9 +8,11 @@ import { CommandBus } from '@nestjs/cqrs';
 import { StepName } from '../state-machine/types';
 
 import { ChangeStepCommand } from './commands/change-step.command';
+import { SelectClassCommand } from './commands/select-class.command';
 import { SelectSpeciesCommand } from './commands/select-species.command';
 import { StartCharacterCreationCommand } from './commands/start-character-creation.command';
 import { ChangeStepDto } from './dto/change-step.dto';
+import { SelectClassDto } from './dto/select-class.dto';
 import { SelectSpeciesDto } from './dto/select-species.dto';
 
 @Injectable()
@@ -25,6 +27,18 @@ export class CharacterBuilderService {
       new ChangeStepCommand(
         changeStepDto.characterId,
         changeStepDto.targetStep,
+      ),
+    );
+  }
+
+  async selectClass(selectClassDto: SelectClassDto) {
+    return this.commandBus.execute<
+      SelectClassCommand,
+      { characterId: string; className: string }
+    >(
+      new SelectClassCommand(
+        selectClassDto.characterId,
+        selectClassDto.className,
       ),
     );
   }

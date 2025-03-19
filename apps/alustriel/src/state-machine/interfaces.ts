@@ -5,7 +5,7 @@
 export interface CharacterContext {
   species?: string;
   culture?: string;
-  class?: string;
+  className?: string;
   subclass?: string;
   abilityScores?: Record<string, number>;
   background?: string;

@@ -3,6 +3,7 @@
  */
 
 export const ACTIONS = {
+  SELECT_CLASS: 'character-builder.actions.select-class',
   SELECT_SPECIES: 'character-builder.actions.select-species',
 } as const;
 

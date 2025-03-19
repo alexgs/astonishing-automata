@@ -8,31 +8,31 @@ import { z } from 'zod';
 import { BaseEvent, EventStoreReadModel } from '../../event-store/interfaces';
 import { EVENT_TYPES } from '../constants';
 
-export const SpeciesSelectedEventPayloadSchema = z.object({
+export const ClassSelectedEventPayloadSchema = z.object({
   characterId: z.string(),
-  species: z.string(),
+  className: z.string(),
 });
 
-export type SpeciesSelectedEventPayload = z.infer<
-  typeof SpeciesSelectedEventPayloadSchema
+export type ClassSelectedEventPayload = z.infer<
+  typeof ClassSelectedEventPayloadSchema
 >;
 
-export class SpeciesSelectedEvent
+export class ClassSelectedEvent
   implements
-    BaseEvent<typeof EVENT_TYPES.SPECIES_SELECTED, SpeciesSelectedEventPayload>,
+    BaseEvent<typeof EVENT_TYPES.CLASS_SELECTED, ClassSelectedEventPayload>,
     IEvent
 {
   public readonly id: string;
   public readonly createdAt: Date;
-  public readonly data: SpeciesSelectedEventPayload;
+  public readonly data: ClassSelectedEventPayload;
   public readonly streamId: string;
-  public readonly type = EVENT_TYPES.SPECIES_SELECTED;
+  public readonly type = EVENT_TYPES.CLASS_SELECTED;
   public readonly version: number;
 
   constructor(row: EventStoreReadModel) {
     this.id = row.id;
     this.createdAt = new Date(row.created_at);
-    this.data = row.data as SpeciesSelectedEventPayload;
+    this.data = row.data as ClassSelectedEventPayload;
     this.streamId = row.stream_id;
     this.version = row.version;
   }
