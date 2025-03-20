@@ -2,12 +2,43 @@
   - Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
   -->
 
-<h1>Welcome to Automata Character Builder!</h1>
-<div>
-  <h2>Your Characters</h2>
-  <p>Eventually a list of characters will go here.</p>
-</div>
-<div>
-  <h2>Start a new character:</h2>
-  <button type="button">Start</button>
-</div>
+<script>
+  import ContentContainer from '$lib/components/ContentContainer.svelte';
+
+  let currentYear = new Date().getFullYear();
+</script>
+
+<ContentContainer>
+  <!-- Header -->
+  <header class="header">
+    <h1>My App</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/dashboard">Dashboard</a>
+    </nav>
+  </header>
+
+  <div class="content-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h2>Welcome to My App</h2>
+      <p>This is a dark-themed web app using the Finn palette.</p>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© {currentYear} My App. All rights reserved.</p>
+  </footer>
+</ContentContainer>

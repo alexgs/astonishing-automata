@@ -1,0 +1,18 @@
+:root {
+  /* Base Background Color */
+  --background: #212121;
+
+  /* Tints (Lighter Shades) */
+  --background-tint-1: #4d4d4d;
+  --background-tint-2: #7a7a7a;
+  --background-tint-3: #a6a6a6;
+  --background-tint-4: #d3d3d3;
+  --background-tint-5: #ffffff;
+
+  /* Shades (Darker Shades) */
+  --background-shade-1: #1a1a1a;
+  --background-shade-2: #141414;
+  --background-shade-3: #0d0d0d;
+  --background-shade-4: #070707;
+  --background-shade-5: #000000;
+}
