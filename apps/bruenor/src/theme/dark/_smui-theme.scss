@@ -4,12 +4,21 @@
 
 // Svelte Colors! (Dark Theme)
 @use '@material/theme/index' as theme with (
-  $primary: #ff3e00,
-  $secondary: color.scale(#676778, $whiteness: -10%),
-  $surface: color.adjust(color-palette.$grey-900, $blue: +4),
-  $background: #000,
-  $error: color-palette.$red-700
+  $primary: #EF798A,
+  $secondary: #F7A9A8,
+  $background: #212121,
+  $surface: #613F75,
+  $on-primary: #E5C3D1,
+  $on-secondary: #613F75,
+  $on-surface: #988B8E,
+  $error: color-palette.$red-700,
 );
+
+@use '@material/top-app-bar/mdc-top-app-bar';
+.mdc-top-app-bar {
+  @include theme.property(background-color, #613F75); // Custom background
+  @include theme.property(color, #E5C3D1); // Custom text/icon color
+}
 
 *, *::before, *::after {
   box-sizing: border-box;
