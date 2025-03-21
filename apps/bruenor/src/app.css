@@ -1,8 +1,9 @@
-/* These colors are from [Radix Colors](https://www.radix-ui.com/colors) */
-/* Use "green" for success and "tomato" for errors. */
-/* For accents, consider "mint," "sky," or "pink." */
-
 :root {
+  --mdc-typography-font-family: 'Inter', system-ui, sans-serif;
+
+  /* These colors are from [Radix Colors](https://www.radix-ui.com/colors) */
+  /* Use "green" for success and "tomato" for errors. */
+  /* For accents, consider "mint," "sky," or "pink." */
   --purple-1: #241e2a;
   --purple-2: #292131;
   --purple-3: #382849;
@@ -67,5 +68,6 @@
 }
 
 body {
+  font-family: 'Inter', system-ui, sans-serif;
   margin: 0;
 }

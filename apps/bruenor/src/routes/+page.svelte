@@ -21,10 +21,10 @@
   </Content>
 </Drawer>
 
-<TopAppBar>
+<TopAppBar style="background: transparent">
   <Row>
     <Section align="start">
-      <Title>Automata Character Builder</Title>
+      <Title style="padding-left: 0">Automata Character Builder</Title>
     </Section>
     <Section align="end">
       <Button variant="raised" onclick={() => alert('Hello!')}>Click Me</Button>
