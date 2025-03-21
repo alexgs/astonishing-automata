@@ -1,3 +1,71 @@
+/* These colors are from [Radix Colors](https://www.radix-ui.com/colors) */
+/* Use "green" for success and "tomato" for errors. */
+/* For accents, consider "mint," "sky," or "pink." */
+
+:root {
+  --purple-1: #241e2a;
+  --purple-2: #292131;
+  --purple-3: #382849;
+  --purple-4: #452d5b;
+  --purple-5: #4e3367;
+  --purple-6: #593c75;
+  --purple-7: #6b498a;
+  --purple-8: #885cb0;
+  --purple-9: #9a5cd0;
+  --purple-10: #865baf;
+  --purple-11: #d39dff;
+  --purple-12: #eadafc;
+
+  --purple-a1: #6700f20b;
+  --purple-a2: #8c21f813;
+  --purple-a3: #a148ff2e;
+  --purple-a4: #ab4ffe43;
+  --purple-a5: #ae59fd51;
+  --purple-a6: #b568fe61;
+  --purple-a7: #bd76ff79;
+  --purple-a8: #c07cfea5;
+  --purple-a9: #ba6bfeca;
+  --purple-a10: #be7bfea4;
+  --purple-a11: #d39dff;
+  --purple-a12: #edddfffc;
+
+  --purple-contrast: #eeeeee;
+  --purple-surface: #31214180;
+  --purple-indicator: #9a5cd0;
+  --purple-track: #9a5cd0;
+
+  --grey-1: #202123;
+  --grey-2: #27282a;
+  --grey-3: #303033;
+  --grey-4: #35363a;
+  --grey-5: #3b3c41;
+  --grey-6: #43444a;
+  --grey-7: #4f5057;
+  --grey-8: #656771;
+  --grey-9: #71737e;
+  --grey-10: #7d7f8a;
+  --grey-11: #b4b5bf;
+  --grey-12: #eeeef0;
+
+  --grey-a1: #0022cc03;
+  --grey-a2: #adc4f20b;
+  --grey-a3: #d8d8fc15;
+  --grey-a4: #d1dafd1d;
+  --grey-a5: #d5dcfe25;
+  --grey-a6: #d6dbfb30;
+  --grey-a7: #dce0fc3f;
+  --grey-a8: #dee4ff5c;
+  --grey-a9: #e0e5ff6b;
+  --grey-a10: #e3e8ff79;
+  --grey-a11: #eff1ffb6;
+  --grey-a12: #fdfdffee;
+
+  --grey-contrast: #FFFFFF;
+  --grey-surface: rgba(0, 0, 0, 0.05);
+  --grey-indicator: #71737e;
+  --grey-track: #71737e;
+}
+
 body {
   margin: 0;
 }
