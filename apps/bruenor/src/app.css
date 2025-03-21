@@ -16,3 +16,37 @@
   --background-shade-4: #070707;
   --background-shade-5: #000000;
 }
+
+/* --- TYPOGRAPHY --- */
+/* Defaults for smaller screens */
+html {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+/* Major second */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+h1 { font-size: 2.027rem; }
+h2 { font-size: 1.802rem; }
+h3 { font-size: 1.602rem; }
+h4 { font-size: 1.424rem; }
+h5 { font-size: 1.266rem; }
+h6 { font-size: 1.125rem; }
+small { font-size: 0.889rem; }
+
+/* Smaller base font size on bigger screens */
+@media screen and (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  background-color: var(--background);
+  color: var(--background-tint-5);
+  font-family: sans-serif;
+}

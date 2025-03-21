@@ -11,7 +11,7 @@
 <ContentContainer>
   <!-- Header -->
   <header class="header">
-    <h1>My App</h1>
+    <h1>Automata Character Builder</h1>
     <nav>
       <a href="/">Home</a>
       <a href="/about">About</a>
@@ -32,13 +32,13 @@
 
     <!-- Main Content -->
     <main class="main-content">
-      <h2>Welcome to My App</h2>
+      <h2>Welcome to Automata Character Builder</h2>
       <p>This is a dark-themed web app using the Finn palette.</p>
     </main>
   </div>
 
   <!-- Footer -->
   <footer class="footer">
-    <p>© {currentYear} My App. All rights reserved.</p>
+    <p>&copy; {currentYear} Automata Character Builder. All rights reserved.</p>
   </footer>
 </ContentContainer>
