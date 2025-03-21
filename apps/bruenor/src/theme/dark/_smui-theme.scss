@@ -1,0 +1,40 @@
+@use 'sass:color';
+
+@use '@material/theme/color-palette';
+
+@use '@material/theme/index' as theme with (
+  $primary: #9a5cd0,
+  $secondary: #885cb0,
+  $background: #212121,
+  $surface: #2a2a2e,
+  $on-primary: #eeeeee,
+  $on-secondary: #eeeeee,
+  $on-surface: #eeeeee,
+  $error: #e54d2e,
+  $on-error: #ffffff,
+);
+
+@use '@material/top-app-bar/mdc-top-app-bar';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: theme.$background;
+  color: theme.$on-surface;
+}
+
+a {
+  color: #40b3ff;
+}
+
+a:visited {
+  color: color.scale(#40b3ff, $lightness: -35%);
+}
+
+.mdc-top-app-bar {
+  @include theme.property(background-color, theme.$background); // Custom background
+  @include theme.property(color, theme.$on-primary); // Custom text/icon color
+}
