@@ -8,35 +8,28 @@
 
 <style>
   .container {
-    width: 100%;
+    width: calc(100% - 1rem);
     padding: 0.5rem;
   }
 
   @media screen and (min-width: 640px) {
     .container {
       margin: 0 auto;
-      width: 640px;
+      width: calc(640px - 1rem);
     }
   }
 
   @media screen and (min-width: 768px) {
     .container {
       margin: 0 auto;
-      width: 768px;
+      width: calc(768px - 1rem);
     }
   }
 
   @media screen and (min-width: 1024px) {
     .container {
       margin: 0 auto;
-      width: 1024px;
-    }
-  }
-
-  @media screen and (min-width: 1280px) {
-    .container {
-      margin: 0 auto;
-      width: 1280px;
+      width: calc(1024px - 1rem);
     }
   }
 </style>

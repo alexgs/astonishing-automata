@@ -4,21 +4,13 @@
 
 <script>
   import ContentContainer from '$lib/components/ContentContainer.svelte';
+  import Header from '$lib/components/Header.svelte';
 
   let currentYear = new Date().getFullYear();
 </script>
 
 <ContentContainer>
-  <!-- Header -->
-  <header class="header">
-    <h1>Automata Character Builder</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/dashboard">Dashboard</a>
-    </nav>
-  </header>
-
+  <Header />
   <div class="content-wrapper">
     <!-- Sidebar -->
     <aside class="sidebar">
