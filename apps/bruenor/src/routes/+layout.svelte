@@ -1,24 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { clerk } from '$lib/clerk/clerk-instance';
-  import { userStore } from '$lib/clerk/clerk-store';
-  import { provideClerkStore } from '$lib/clerk/clerk-context';
+  import { auth } from '$lib/clerk';
 
   import '../app.css';
 
-  provideClerkStore(userStore);
+  auth.provideStore(auth.userStore);
 
-  onMount(async () => {
-    // Immediately update if already signed in
-    if (clerk.user) {
-      userStore.set(clerk.user);
-    }
-
-    // Listen to changes
-    clerk.addListener((resources) => {
-      userStore.set(resources.user ?? null);
-    });
+  onMount(() => {
+    auth.init();
   });
 
 	let { children } = $props();

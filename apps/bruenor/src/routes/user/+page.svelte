@@ -3,13 +3,13 @@
   -->
 
 <script lang="ts">
-  import { useClerkStore } from '$lib/clerk/clerk-context';
-  import { clerk } from '$lib/clerk/clerk-instance';
-  const user = useClerkStore();
+  import { auth } from '$lib/clerk';
+  const user = auth.user;
 </script>
 
 {#if $user}
   <p>Welcome, {$user.firstName}!</p>
+  <button on:click={() => auth.signOut()}>Sign Out</button>
 {:else}
-  <button on:click={() => clerk.openSignIn()}>Sign In</button>
+  <button on:click={() => auth.signIn()}>Sign In</button>
 {/if}
