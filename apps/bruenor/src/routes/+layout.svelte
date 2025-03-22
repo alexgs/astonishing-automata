@@ -1,5 +1,16 @@
 <script lang="ts">
-	import '../app.css';
+  import { onMount } from 'svelte';
+
+  import { auth } from '$lib/clerk';
+
+  import '../app.css';
+
+  auth.provideStore(auth.userStore);
+
+  onMount(() => {
+    auth.init();
+  });
+
 	let { children } = $props();
 </script>
 
