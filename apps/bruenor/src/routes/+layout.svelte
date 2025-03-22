@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  import { clerk } from '$lib/clerk';
-  import { userStore } from '$lib/clerk-store';
-  import { provideClerkStore } from '$lib/clerk-context';
+  import { clerk } from '$lib/clerk/clerk-instance';
+  import { userStore } from '$lib/clerk/clerk-store';
+  import { provideClerkStore } from '$lib/clerk/clerk-context';
 
   import '../app.css';
 
