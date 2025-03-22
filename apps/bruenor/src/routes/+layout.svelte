@@ -1,5 +1,7 @@
 <script lang="ts">
-	import '../app.css';
+  import { ClerkProvider } from 'svelte-clerk/client';
+  import '../app.css';
+
 	let { children } = $props();
 </script>
 
@@ -22,4 +24,6 @@
 </style>
 
 <div class="gradient"></div>
-{@render children()}
+<ClerkProvider>
+  {@render children()}
+</ClerkProvider>
