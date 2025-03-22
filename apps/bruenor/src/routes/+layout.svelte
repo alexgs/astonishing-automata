@@ -1,5 +1,26 @@
 <script lang="ts">
-	import '../app.css';
+  import { onMount } from 'svelte';
+
+  import { clerk } from '$lib/clerk';
+  import { userStore } from '$lib/clerk-store';
+  import { provideClerkStore } from '$lib/clerk-context';
+
+  import '../app.css';
+
+  provideClerkStore(userStore);
+
+  onMount(async () => {
+    // Immediately update if already signed in
+    if (clerk.user) {
+      userStore.set(clerk.user);
+    }
+
+    // Listen to changes
+    clerk.addListener((resources) => {
+      userStore.set(resources.user ?? null);
+    });
+  });
+
 	let { children } = $props();
 </script>
 

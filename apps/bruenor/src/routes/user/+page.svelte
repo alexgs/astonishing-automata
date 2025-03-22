@@ -3,23 +3,13 @@
   -->
 
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { useClerkStore } from '$lib/clerk-context';
   import { clerk } from '$lib/clerk';
-  import type { UserResource } from '@clerk/types';
-
-  let user: UserResource | null = null;
-
-  onMount(async () => {
-    if (clerk.user) {
-      user = clerk.user;
-    // } else {
-    //   await clerk.openSignIn();
-    }
-  });
+  const user = useClerkStore();
 </script>
 
-{#if user}
-  <p>Welcome, {user.firstName}!</p>
+{#if $user}
+  <p>Welcome, {$user.firstName}!</p>
 {:else}
   <button on:click={() => clerk.openSignIn()}>Sign In</button>
 {/if}
