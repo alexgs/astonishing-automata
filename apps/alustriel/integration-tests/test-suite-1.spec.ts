@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { clerkMiddleware } from '@clerk/express';
 import { HttpStatus, INestApplication, VersioningType } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
@@ -15,15 +16,19 @@ import { EVENT_TYPES as CHARACTER_EVENT_TYPES } from '../src/character-builder/c
 import { STEPS } from '../src/state-machine/constants';
 import { testLog } from '../src/winston-transports';
 
-import { KnexClient, resetDb } from './helpers';
+import { KnexClient, getTestToken, resetDb } from './helpers';
+import { ABED_USER_ID } from './helpers/constants';
 
 describe('Character Builder Integration Test Suite 1', () => {
   const CHARACTER_ID = '53239dc3-1dfd-464c-9469-5cfcfb30be86';
   let app: INestApplication;
+  let jwt: string;
   let knex: knex.Knex;
   let module: TestingModule;
 
   beforeAll(async () => {
+    jwt = await getTestToken(ABED_USER_ID);
+
     jest.spyOn(crypto, 'randomUUID').mockReturnValue(CHARACTER_ID);
 
     knex = KnexClient.getKnex();
@@ -31,10 +36,16 @@ describe('Character Builder Integration Test Suite 1', () => {
 
     module = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = module.createNestApplication({
+      cors: true,
       logger: WinstonModule.createLogger({
         transports: [testLog],
       }),
     });
+
+    // Access the raw Express app & register Clerk middleware
+    const expressApp = app.getHttpAdapter().getInstance();
+    expressApp.use(clerkMiddleware());
+
     app.enableVersioning({ type: VersioningType.URI });
     app.setGlobalPrefix('api');
     app.use(cookieParser());
@@ -55,6 +66,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/start`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
         },
       );
@@ -86,6 +100,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/select-species`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,
@@ -105,6 +122,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/select-species`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,
@@ -138,6 +158,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/change-step`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,
@@ -172,6 +195,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/change-step`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,
@@ -206,6 +232,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/select-class`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,
@@ -240,6 +269,9 @@ describe('Character Builder Integration Test Suite 1', () => {
       response = await axios(
         `http://localhost:3000/api/v1/character-builder/select-class`,
         {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
           method: 'POST',
           data: {
             characterId: CHARACTER_ID,

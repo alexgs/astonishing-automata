@@ -3,5 +3,6 @@
  */
 
 export { KnexClient } from './knex-client';
+export { getTestToken } from './get-test-token';
 export { resetDb } from './reset-db';
 export { sleep } from './sleep';
