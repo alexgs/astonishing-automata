@@ -1,7 +1,7 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Module tests
+name: Bruenor
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  module-tests:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,5 +23,6 @@ jobs:
         run: npm ci --include=dev
         env:
           FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
-      - name: Alustriel module tests
-        run: npm -w apps/alustriel run test:mod
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ vars.CLERK_PUBLISHABLE_KEY }}
+      - name: Bruenor unit tests
+        run: npm -w apps/bruenor run test
