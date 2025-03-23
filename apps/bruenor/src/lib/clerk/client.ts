@@ -2,12 +2,13 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import type { UserResource } from '@clerk/types';
+import type { SessionResource, UserResource } from '@clerk/types';
 import { derived } from 'svelte/store';
 
 import { clerk } from './clerk-instance';
-import { userStore } from './clerk-store';
+import { sessionStore, userStore } from './stores';
 
+export const clerkSession = derived(sessionStore, ($session) => $session);
 export const clerkUser = derived(userStore, ($user) => $user);
 
 /**
@@ -19,9 +20,18 @@ export function initializeClerkReactivity() {
   if (clerk.user) {
     userStore.set(clerk.user);
   }
+  if (clerk.session) {
+    sessionStore.set(clerk.session);
+  }
+
+  interface ClerkResources {
+    session?: SessionResource | null;
+    user?: UserResource | null;
+  }
 
   // Subscribe to changes in Clerk resources
-  clerk.addListener((resources: { user?: UserResource | null }) => {
+  clerk.addListener((resources: ClerkResources) => {
+    sessionStore.set(resources.session ?? null);
     userStore.set(resources.user ?? null);
   });
 }

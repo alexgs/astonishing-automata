@@ -8,16 +8,20 @@ import { APP_PIPE } from '@nestjs/core';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ZodValidationPipe } from 'nestjs-zod';
 
+import { AuthModule } from './auth/auth.module';
 import { CharacterBuilderModule } from './character-builder/character-builder.module';
 import { StateMachineModule } from './state-machine/state-machine.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   controllers: [],
   imports: [
+    AuthModule,
     CharacterBuilderModule,
     ConfigModule.forRoot(),
     CqrsModule.forRoot(),
     StateMachineModule,
+    UserModule,
   ],
   providers: [
     Logger,

@@ -4,12 +4,27 @@
 
 <script lang="ts">
   import { auth } from '$lib/clerk';
-  const user = auth.user;
+  const { session, user } = auth;
+
+  async function retrieveUserProfile() {
+    await fetch('http://localhost:3000/api/v1/user/profile', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${await $session?.getToken()}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
 </script>
 
 {#if $user}
   <p>Welcome, {$user.firstName}!</p>
   <button on:click={() => auth.signOut()}>Sign Out</button>
+  <div style="margin-top: 2rem">
+    <button on:click={retrieveUserProfile}>Fetch user profile</button>
+  </div>
 {:else}
   <button on:click={() => auth.signIn()}>Sign In</button>
 {/if}
+
