@@ -26,6 +26,7 @@ jobs:
       - name: Alustriel integration tests
         run: cd apps/alustriel && ./integration-tests/scripts/run-integration-tests.sh
         env:
+          CLERK_PUBLISHABLE_KEY: ${{ vars.CLERK_PUBLISHABLE_KEY }}
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
           DATABASE_HOST: ${{ vars.DATABASE_HOST }}
           DATABASE_NAME: ${{ vars.DATABASE_NAME }}
