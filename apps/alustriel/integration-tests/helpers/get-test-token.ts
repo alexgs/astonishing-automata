@@ -3,8 +3,9 @@
  */
 
 import axios from 'axios';
+import * as env from 'env-var';
 
-const CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY;
+const CLERK_SECRET_KEY = env.get('CLERK_SECRET_KEY').required().asString();
 const CLERK_API_URL = 'https://api.clerk.dev/v1';
 
 export async function getTestToken(userId: string): Promise<string> {
