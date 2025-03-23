@@ -6,7 +6,7 @@ import { Controller, Get } from '@nestjs/common';
 
 import { CurrentUserId } from '../auth/decorators/current-user-id.decorator';
 
-@Controller('user')
+@Controller({ path: 'user', version: '1' })
 export class UserController {
   @Get('profile')
   getProfile(@CurrentUserId() userId: string) {

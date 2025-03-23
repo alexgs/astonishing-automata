@@ -33,6 +33,7 @@ export default ts.config(
 			// 'no-unused-vars': 'off',
 			// 'import/no-dynamic-require': 'warn',
 			// 'import/no-nodejs-modules': 'warn',
+      'import/no-unresolved': 'off', // TODO I bet I could turn this on after determining the right resolver to use
 			'import/order': [
 				'error',
 				{
