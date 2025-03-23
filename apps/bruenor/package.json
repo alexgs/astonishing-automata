@@ -21,7 +21,8 @@
     "prepare:sveltekit": "svelte-kit sync || echo ''",
     "preview": "vite preview",
     "smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark",
-    "test": "npm run test:unit -- --run",
+    "test": "vitest --run",
+    "test:watch": "vitest --watch",
     "test:unit": "vitest"
   },
   "devDependencies": {
