@@ -4,11 +4,14 @@
 
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
+// eslint-disable-next-line import/no-unresolved
+import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
+// eslint-disable-next-line import/no-unresolved
 import ts from 'typescript-eslint';
 
 import svelteConfig from './svelte.config.js';
@@ -27,13 +30,13 @@ export default ts.config(
 		files: ['**/*.{js,mjs,cjs,ts}'],
 		languageOptions: {
 			ecmaVersion: 'latest',
+      parser: tsParser,
 			sourceType: 'module',
 		},
 		rules: {
 			// 'no-unused-vars': 'off',
 			// 'import/no-dynamic-require': 'warn',
 			// 'import/no-nodejs-modules': 'warn',
-      'import/no-unresolved': 'off', // TODO I bet I could turn this on after determining the right resolver to use
 			'import/order': [
 				'error',
 				{

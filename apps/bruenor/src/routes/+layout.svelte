@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
+  // eslint-disable-next-line import/no-unresolved
   import { auth } from '$lib/clerk';
 
   import '../app.css';
