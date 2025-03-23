@@ -3,8 +3,10 @@
   -->
 
 <script>
+  // eslint-disable-next-line import/default,import/no-named-as-default,import/no-named-as-default-member
   import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import Drawer, { Content } from '@smui/drawer';
+  // eslint-disable-next-line import/default,import/no-named-as-default,import/no-named-as-default-member
   import List, { Item } from '@smui/list';
   import Button, { Label } from '@smui/button';
 
