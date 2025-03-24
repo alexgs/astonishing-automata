@@ -9,27 +9,30 @@
 <style>
   .container {
     width: calc(100% - 1rem);
-    padding: 0.5rem;
+    padding: 0 0.5rem;
   }
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 610px) {
     .container {
       margin: 0 auto;
-      width: calc(600px - 1rem);
+      padding: 0;
+      width: 600px;
     }
   }
 
   @media screen and (min-width: 904px) {
     .container {
       margin: 0 auto;
-      max-width: calc(840px - 1rem);
+      padding: 0;
+      max-width: 840px;
     }
   }
 
   @media screen and (min-width: 1240px) {
     .container {
       margin: 0 auto;
-      max-width: calc(1080px - 1rem);
+      padding: 0;
+      max-width: 1080px;
     }
   }
 </style>

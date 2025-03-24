@@ -139,7 +139,13 @@
   --grey-track: #71737e;
 }
 
+/* --- GLOBAL STYLES --- */
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   margin: 0;
+}
+
+.mdc-top-app-bar {
+  top: 0;
 }

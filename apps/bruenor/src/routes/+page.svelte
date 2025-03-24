@@ -38,8 +38,8 @@
 </TopAppBar>
 
 <AppContainer>
-  <main style="padding: 1rem;">
-    <p style="margin-top: 64px">Automata is a modular and extensible TTRPG
+  <main style="margin-top: 64px">
+    <p>Automata is a modular and extensible TTRPG
       character builder.</p>
     <Button onclick={() => (open = !open)} color="secondary" variant="outlined">
       <Label>Toggle Drawer</Label>
