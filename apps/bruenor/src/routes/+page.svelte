@@ -10,6 +10,9 @@
   import List, { Item } from '@smui/list';
   import Button, { Label } from '@smui/button';
 
+  // eslint-disable-next-line import/no-unresolved
+  import AppContainer from '$lib/components/AppContainer.svelte';
+
   let open = $state(false);
 </script>
 
@@ -34,12 +37,14 @@
   </Row>
 </TopAppBar>
 
-<main style="padding: 1rem;">
-  <p style="margin-top: 64px">Automata is a modular and extensible TTRPG character builder.</p>
-  <Button onclick={() => (open = !open)} color="secondary" variant="outlined">
-    <Label>Toggle Drawer</Label>
-  </Button>
-  <br />
-  <pre class="status">Active: {open}</pre>
-
-</main>
+<AppContainer>
+  <main style="padding: 1rem;">
+    <p style="margin-top: 64px">Automata is a modular and extensible TTRPG
+      character builder.</p>
+    <Button onclick={() => (open = !open)} color="secondary" variant="outlined">
+      <Label>Toggle Drawer</Label>
+    </Button>
+    <br />
+    <pre class="status">Active: {open}</pre>
+  </main>
+</AppContainer>
