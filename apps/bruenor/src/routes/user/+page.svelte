@@ -3,7 +3,6 @@
   -->
 
 <script lang="ts">
-  // eslint-disable-next-line import/no-unresolved
   import { auth } from '$lib/clerk';
   const { session, user } = auth;
 

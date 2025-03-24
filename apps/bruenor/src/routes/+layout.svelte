@@ -1,12 +1,9 @@
 <script lang="ts">
   import Button from '@smui/button';
-  // eslint-disable-next-line import/default,import/no-named-as-default,import/no-named-as-default-member
   import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import { onMount } from 'svelte';
 
-  // eslint-disable-next-line import/no-unresolved
   import { auth } from '$lib/clerk';
-  // eslint-disable-next-line import/no-unresolved
   import AppContainer from '$lib/components/AppContainer.svelte';
   import '../app.css';
 
