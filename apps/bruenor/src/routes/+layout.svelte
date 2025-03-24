@@ -1,9 +1,13 @@
 <script lang="ts">
+  import Button from '@smui/button';
+  // eslint-disable-next-line import/default,import/no-named-as-default,import/no-named-as-default-member
+  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import { onMount } from 'svelte';
 
   // eslint-disable-next-line import/no-unresolved
   import { auth } from '$lib/clerk';
-
+  // eslint-disable-next-line import/no-unresolved
+  import AppContainer from '$lib/components/AppContainer.svelte';
   import '../app.css';
 
   auth.provideStore(auth.userStore);
@@ -34,4 +38,20 @@
 </style>
 
 <div class="gradient"></div>
-{@render children()}
+
+<TopAppBar style="background: transparent">
+  <Row>
+    <Section align="start">
+      <Title>Automata Character Builder</Title>
+    </Section>
+    <Section align="end">
+      <Button variant="raised" onclick={() => alert('Hello!')}>Click Me</Button>
+    </Section>
+  </Row>
+</TopAppBar>
+
+<AppContainer>
+  <main style="margin-top: 64px">
+    {@render children()}
+  </main>
+</AppContainer>
