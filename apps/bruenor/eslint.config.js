@@ -74,7 +74,7 @@ export default ts.config(
       'import/no-named-as-default-member': 'off',
 
       // Optional; helpful to prevent deeply nested relative paths
-      'import/no-relative-parent-imports': 'warn',
+      'import/no-relative-parent-imports': 'off',
 
       // Option; no extraneous deps
       'import/no-extraneous-dependencies': 'error',
