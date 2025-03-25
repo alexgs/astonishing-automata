@@ -3,8 +3,9 @@
   -->
 
 <script>
-  import Button, { Label } from '@smui/button';
+  import { Label } from '@smui/button';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
+  import PopButton from '$lib/components/PopButton.svelte';
 </script>
 
 <style>
@@ -33,9 +34,9 @@
   </Cell>
   <Cell span={12}>
     <div class="button-container">
-      <Button>
+      <PopButton>
         <Label>Create a new character</Label>
-      </Button>
+      </PopButton>
     </div>
   </Cell>
   <Cell span={4}>
