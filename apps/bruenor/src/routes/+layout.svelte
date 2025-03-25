@@ -1,10 +1,9 @@
 <script lang="ts">
-  import Button from '@smui/button';
-  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
   import { onMount } from 'svelte';
 
   import { auth } from '$lib/clerk';
   import AppContainer from '$lib/components/AppContainer.svelte';
+  import NavBar from '$lib/components/NavBar.svelte';
   import '../app.css';
 
   auth.provideStore(auth.userStore);
@@ -36,16 +35,7 @@
 
 <div class="gradient"></div>
 
-<TopAppBar style="background: transparent">
-  <Row>
-    <Section align="start">
-      <Title>Automata Character Builder</Title>
-    </Section>
-    <Section align="end">
-      <Button variant="raised" onclick={() => alert('Hello!')}>Click Me</Button>
-    </Section>
-  </Row>
-</TopAppBar>
+<NavBar />
 
 <AppContainer>
   <main style="margin-top: 64px">
