@@ -24,7 +24,7 @@
     .container {
       margin: 0 auto;
       padding: 0;
-      max-width: 840px;
+      width: 840px;
     }
   }
 
@@ -32,7 +32,7 @@
     .container {
       margin: 0 auto;
       padding: 0;
-      max-width: 1080px;
+      width: 1080px;
     }
   }
 </style>
