@@ -3,11 +3,8 @@
  */
 
 @use '@material/button/mixins' as button;
-@use '@material/theme/color-palette' as palette;
-@use '@material/theme/theme-color';
-
 .pop-button {
-  $primary-color: palette.$pink-600;
+  $primary-color: var(--pink-9);
 
   &.mdc-button {
     @include button.ink-color($primary-color);
