@@ -3,43 +3,49 @@
   -->
 
 <script>
-  // eslint-disable-next-line import/default,import/no-named-as-default,import/no-named-as-default-member
-  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
-  import Drawer, { Content } from '@smui/drawer';
-  // eslint-disable-next-line import/default,import/no-named-as-default,import/no-named-as-default-member
-  import List, { Item } from '@smui/list';
-  import Button, { Label } from '@smui/button';
-
-  let open = $state(false);
+  import { Label } from '@smui/button';
+  import LayoutGrid, { Cell } from '@smui/layout-grid';
+  import PopButton from '$lib/components/PopButton.svelte';
 </script>
 
-<Drawer variant="dismissible" bind:open>
-  <Content>
-    <List>
-      <Item onclick={() => alert('Home clicked')}>Home</Item>
-      <Item onclick={() => alert('Settings clicked')}>Settings</Item>
-      <Item onclick={() => (open = !open)}>Close</Item>
-    </List>
-  </Content>
-</Drawer>
+<style>
+  h1 {
+    margin: 0;
+    text-align: center;
+  }
 
-<TopAppBar style="background: transparent">
-  <Row>
-    <Section align="start">
-      <Title style="padding-left: 0">Automata Character Builder</Title>
-    </Section>
-    <Section align="end">
-      <Button variant="raised" onclick={() => alert('Hello!')}>Click Me</Button>
-    </Section>
-  </Row>
-</TopAppBar>
+  .button-container {
+    text-align: center;
+  }
 
-<main style="padding: 1rem;">
-  <p style="margin-top: 64px">Automata is a modular and extensible TTRPG character builder.</p>
-  <Button onclick={() => (open = !open)} color="secondary" variant="outlined">
-    <Label>Toggle Drawer</Label>
-  </Button>
-  <br />
-  <pre class="status">Active: {open}</pre>
+  .demo-cell {
+    height: 248px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--mdc-theme-secondary, #333);
+    color: var(--mdc-theme-on-secondary, #fff);
+  }
+</style>
 
-</main>
+<LayoutGrid>
+  <Cell span={12}>
+    <h1>Your Characters</h1>
+  </Cell>
+  <Cell span={12}>
+    <div class="button-container">
+      <PopButton>
+        <Label>Create a new character</Label>
+      </PopButton>
+    </div>
+  </Cell>
+  <Cell span={4}>
+    <div class="demo-cell">Character 1</div>
+  </Cell>
+  <Cell span={4}>
+    <div class="demo-cell">Character 2</div>
+  </Cell>
+  <Cell span={4}>
+    <div class="demo-cell">Character 3</div>
+  </Cell>
+</LayoutGrid>

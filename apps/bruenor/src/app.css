@@ -76,6 +76,7 @@
   /* These colors are from [Radix Colors](https://www.radix-ui.com/colors) */
   /* Use "green" for success and "tomato" for errors. */
   /* For accents, consider "mint," "sky," or "pink." */
+
   --purple-1: #241e2a;
   --purple-2: #292131;
   --purple-3: #382849;
@@ -137,9 +138,41 @@
   --grey-surface: rgba(0, 0, 0, 0.05);
   --grey-indicator: #71737e;
   --grey-track: #71737e;
+
+  --pink-1: #191117;
+  --pink-2: #21121d;
+  --pink-3: #37172f;
+  --pink-4: #4b143d;
+  --pink-5: #591c47;
+  --pink-6: #692955;
+  --pink-7: #833869;
+  --pink-8: #a84885;
+  --pink-9: #d6409f;
+  --pink-10: #de51a8;
+  --pink-11: #ff8dcc;
+  --pink-12: #fdd1ea;
+
+  --sky-1: #0d141f;
+  --sky-2: #111a27;
+  --sky-3: #112840;
+  --sky-4: #113555;
+  --sky-5: #154467;
+  --sky-6: #1b537b;
+  --sky-7: #1f6692;
+  --sky-8: #197cae;
+  --sky-9: #7ce2fe;
+  --sky-10: #a8eeff;
+  --sky-11: #75c7f0;
+  --sky-12: #c2f3ff;
 }
+
+/* --- GLOBAL STYLES --- */
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
   margin: 0;
+}
+
+.mdc-top-app-bar {
+  top: 0;
 }

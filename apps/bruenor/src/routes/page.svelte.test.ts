@@ -10,10 +10,10 @@ import Page from './+page.svelte';
 describe('Page Component', () => {
   test('renders the component', () => {
     render(Page);
-    expect(screen.getByText('Automata Character Builder')).toBeInTheDocument();
+    expect(screen.getByText('Create a new character')).toBeInTheDocument();
   });
 
-  // TODO: I can't get this test to work, so it should be handled in an E2E test
+  // TODO: I can't get this test to work; it should be handled in an E2E test
   test.skip('toggles drawer when button is clicked', async () => {
     render(Page);
     const toggleButton = screen.getByText('Toggle Drawer');

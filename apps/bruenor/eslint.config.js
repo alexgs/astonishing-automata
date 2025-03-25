@@ -4,14 +4,12 @@
 
 import { includeIgnoreFile } from '@eslint/compat';
 import js from '@eslint/js';
-// eslint-disable-next-line import/no-unresolved
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
+import pluginImport from 'eslint-plugin-import';
 import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
-// eslint-disable-next-line import/no-unresolved
 import ts from 'typescript-eslint';
 
 import svelteConfig from './svelte.config.js';
@@ -25,7 +23,7 @@ export default ts.config(
 	...svelte.configs.recommended,
 	prettier,
 	...svelte.configs['flat/prettier'],
-	importPlugin.flatConfigs.recommended,
+	pluginImport.flatConfigs.recommended,
 	{
 		files: ['**/*.{js,mjs,cjs,ts}'],
 		languageOptions: {
@@ -33,10 +31,22 @@ export default ts.config(
       parser: tsParser,
 			sourceType: 'module',
 		},
+    settings: {
+      'import/resolver': {
+        alias: {
+          map: [
+            ['$lib', './src/lib'],
+          ],
+          extensions: ['.js', '.ts', '.svelte'],
+        },
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
+      },
+    },
 		rules: {
-			// 'no-unused-vars': 'off',
-			// 'import/no-dynamic-require': 'warn',
-			// 'import/no-nodejs-modules': 'warn',
+      // Organize imports
 			'import/order': [
 				'error',
 				{
@@ -52,7 +62,23 @@ export default ts.config(
 					'newlines-between': 'always',
 				},
 			],
-		},
+      // Warn if trying to import a non-existent file or symbol
+      'import/no-unresolved': 'error',
+      'import/named': 'error',
+      'import/export': 'error',
+
+      // Avoid false positives with ESM packages
+      'import/default': 'off',
+      'import/namespace': 'off',
+      'import/no-named-as-default': 'off',
+      'import/no-named-as-default-member': 'off',
+
+      // Optional; helpful to prevent deeply nested relative paths
+      'import/no-relative-parent-imports': 'off',
+
+      // Option; no extraneous deps
+      'import/no-extraneous-dependencies': 'error',
+    },
 	},
 	{
 		languageOptions: {
@@ -75,4 +101,52 @@ export default ts.config(
 			},
 		},
 	},
+  {
+    files: ['**/*.svelte'],
+    plugins: {
+      svelte: svelte,
+    },
+    languageOptions: {
+      parserOptions: {
+        extraFileExtensions: ['.svelte'],
+        // No parser field here!
+      },
+    },
+    settings: {
+      'import/resolver': {
+        alias: {
+          map: [['$lib', './src/lib']],
+          extensions: ['.js', '.ts', '.svelte'],
+        },
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
+        },
+      },
+    },
+    rules: {
+      'import/default': 'off',
+      'import/named': 'off',
+      'import/namespace': 'off',
+      'import/no-duplicates': 'off',
+      'import/no-named-as-default': 'off',
+      'import/no-named-as-default-member': 'off',
+      'import/no-unresolved': 'off',
+    },
+  },
+  {
+    files: ['**/*.config.{js,ts}', 'vite.config.{js,ts}', 'svelte.config.{js,ts}', 'eslint.config.{js,ts}'],
+    rules: {
+      // Turn off noisy rules just for config files
+      'import/default': 'off',
+      'import/named': 'off',
+      'import/namespace': 'off',
+      'import/no-duplicates': 'off',
+      'import/no-extraneous-dependencies': 'off',
+      'import/no-named-as-default': 'off',
+      'import/no-relative-parent-imports': 'off',
+      'import/no-unresolved': 'off',
+      'import/order': 'off',
+    },
+  },
 );

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  // eslint-disable-next-line import/no-unresolved
   import { auth } from '$lib/clerk';
-
+  import AppContainer from '$lib/components/AppContainer.svelte';
+  import NavBar from '$lib/components/NavBar.svelte';
   import '../app.css';
 
   auth.provideStore(auth.userStore);
@@ -34,4 +34,11 @@
 </style>
 
 <div class="gradient"></div>
-{@render children()}
+
+<NavBar />
+
+<AppContainer>
+  <main style="margin-top: 64px">
+    {@render children()}
+  </main>
+</AppContainer>

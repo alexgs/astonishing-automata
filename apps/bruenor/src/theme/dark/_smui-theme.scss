@@ -16,6 +16,8 @@
 
 @use '@material/top-app-bar/mdc-top-app-bar';
 
+@use './pop-button';
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
