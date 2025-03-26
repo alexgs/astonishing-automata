@@ -8,7 +8,7 @@ import { knex } from 'knex';
 
 @Injectable()
 export class KnexService implements OnModuleDestroy {
-  private knexObject: knex.Knex;
+  private knexObject: knex.Knex | null = null;
 
   constructor(
     private readonly configService: ConfigService,
@@ -33,6 +33,9 @@ export class KnexService implements OnModuleDestroy {
     if (!this.knexObject) {
       this.logger.debug('Initializing Knex connection.', KnexService.name);
       this.initializeKnex();
+    }
+    if (!this.knexObject) {
+      throw new Error('Unable to initialize Knex service');
     }
     return this.knexObject;
   }

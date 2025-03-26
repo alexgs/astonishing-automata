@@ -23,27 +23,27 @@ export function createStateMachineEvent(
   switch (eventStoreEvent.type) {
     case EVENT_TYPES.CLASS_SELECTED:
       const classSelectedEventPayload: ClassSelectedEventPayload =
-        eventStoreEvent.data;
+        eventStoreEvent.data as ClassSelectedEventPayload;
       return {
         type: ACTIONS.SELECT_CLASS,
         className: classSelectedEventPayload.className,
       };
     case EVENT_TYPES.STARTED:
       const characterStartedEventPayload: CharacterStartedEventPayload =
-        eventStoreEvent.data;
+        eventStoreEvent.data as CharacterStartedEventPayload;
       return {
         type: characterStartedEventPayload.nextStep,
       };
     case EVENT_TYPES.STEP_CHANGED:
       // Partial is required to make TypeScript happy
-      const stepChangedEventPayload: Partial<StepChangedEventPayload> =
-        eventStoreEvent.data;
+      const stepChangedEventPayload: StepChangedEventPayload =
+        eventStoreEvent.data as StepChangedEventPayload;
       return {
         type: stepChangedEventPayload.nextStep,
       };
     case EVENT_TYPES.SPECIES_SELECTED:
       const speciesSelectedEventPayload: SpeciesSelectedEventPayload =
-        eventStoreEvent.data;
+        eventStoreEvent.data as SpeciesSelectedEventPayload;
       return {
         type: ACTIONS.SELECT_SPECIES,
         species: speciesSelectedEventPayload.species,

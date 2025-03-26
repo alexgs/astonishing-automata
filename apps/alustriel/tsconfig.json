@@ -17,8 +17,7 @@
     "removeComments": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strictBindCallApply": false,
-    "strictNullChecks": false,
-    "target": "ES2021",
+    "strict": true,
+    "target": "ES2021"
   }
 }
