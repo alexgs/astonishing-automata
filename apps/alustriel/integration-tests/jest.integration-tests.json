@@ -95,6 +95,9 @@
   },
   "maxWorkers": 1,
   "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleNameMapper": {
+    "^@automata/state-machine$": "<rootDir>/../../packages/state-machine/src"
+  },
   "rootDir": "..",
   "setupFilesAfterEnv": ["<rootDir>/integration-tests/helpers/setup.ts"],
   "testEnvironment": "node",
