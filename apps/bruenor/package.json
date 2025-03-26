@@ -17,7 +17,7 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "lint": "eslint .",
-    "prepare": "npm run smui-theme-dark",
+    "prepare": "npm run prepare:sveltekit && npm run smui-theme-dark",
     "prepare:sveltekit": "svelte-kit sync || echo ''",
     "preview": "vite preview",
     "smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark",
