@@ -49,11 +49,16 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
         const sql = this.postgresService.getSql();
         const subscriptionHandle = await sql.subscribe(
           POSTGRES_CHANNEL,
-          (row: EventStoreReadModel) => {
-            this.logger.debug(`Publishing event: ${JSON.stringify(row)}`);
-            const event = this.createEventFromRow(row);
-            if (event) {
-              this.eventBus.publish(event);
+          (row) => {
+            if (row) {
+              const readModel: EventStoreReadModel = row as EventStoreReadModel;
+              this.logger.debug(
+                `Publishing event: ${JSON.stringify(readModel)}`,
+              );
+              const event = this.createEventFromRow(readModel);
+              if (event) {
+                this.eventBus.publish(event);
+              }
             }
           },
           () => {

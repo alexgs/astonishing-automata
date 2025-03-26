@@ -27,10 +27,12 @@ export async function getTestToken(userId: string): Promise<string> {
 
     return tokenResponse.data.jwt;
   } catch (error) {
-    console.error(
-      'Error getting Clerk test token:',
-      error.response?.data || error.message,
-    );
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Error getting Clerk test token:',
+        error.response?.data || error.message,
+      );
+    }
     throw error;
   }
 }

@@ -72,8 +72,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           method: 'POST',
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
 
     expect(response.status).toEqual(HttpStatus.CREATED);
@@ -110,8 +114,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           },
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
     expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
   });
@@ -132,8 +140,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           },
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
     expect(response.status).toEqual(HttpStatus.CREATED);
 
@@ -168,8 +180,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           },
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
     expect(response.status).toEqual(HttpStatus.CREATED);
 
@@ -205,8 +221,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           },
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
     expect(response.status).toEqual(HttpStatus.CONFLICT);
 
@@ -242,8 +262,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           },
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
     expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
 
@@ -279,8 +303,12 @@ describe('Character Builder Integration Test Suite 1', () => {
           },
         },
       );
-    } catch (e) {
-      response = e.response;
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
     }
     expect(response.status).toEqual(HttpStatus.CREATED);
 

@@ -22,32 +22,34 @@ import {
   StepChangedEventPayloadSchema,
 } from '../character-builder/events/step-changed.event';
 
+type GenericConstructor = new (...args: unknown[]) => unknown;
+
 interface EventMap {
-  constructor: new (...args: unknown[]) => unknown;
+  constructor: GenericConstructor;
   schema: (data: unknown) => SafeParseReturnType<unknown, unknown>;
 }
 
 export const eventMap: { [event: string]: EventMap } = {
   [EVENT_TYPES.CLASS_SELECTED]: {
-    constructor: ClassSelectedEvent,
+    constructor: ClassSelectedEvent as GenericConstructor,
     schema: ClassSelectedEventPayloadSchema.safeParse.bind(
       ClassSelectedEventPayloadSchema,
     ),
   },
   [EVENT_TYPES.SPECIES_SELECTED]: {
-    constructor: SpeciesSelectedEvent,
+    constructor: SpeciesSelectedEvent as GenericConstructor,
     schema: SpeciesSelectedEventPayloadSchema.safeParse.bind(
       SpeciesSelectedEventPayloadSchema,
     ),
   },
   [EVENT_TYPES.STARTED]: {
-    constructor: CharacterStartedEvent,
+    constructor: CharacterStartedEvent as GenericConstructor,
     schema: CharacterStartedEventPayloadSchema.safeParse.bind(
       CharacterStartedEventPayloadSchema,
     ),
   },
   [EVENT_TYPES.STEP_CHANGED]: {
-    constructor: StepChangedEvent,
+    constructor: StepChangedEvent as GenericConstructor,
     schema: StepChangedEventPayloadSchema.safeParse.bind(
       StepChangedEventPayloadSchema,
     ),

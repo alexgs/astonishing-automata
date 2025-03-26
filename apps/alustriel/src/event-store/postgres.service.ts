@@ -10,7 +10,7 @@ import { IPostgresService } from './interfaces';
 
 @Injectable()
 export class PostgresService implements IPostgresService {
-  private sqlObject: postgres.Sql;
+  private sqlObject: postgres.Sql | null = null;
 
   constructor(private readonly configService: ConfigService) {}
 
@@ -34,6 +34,9 @@ export class PostgresService implements IPostgresService {
   getSql(): postgres.Sql {
     if (!this.sqlObject) {
       this.initializeSql();
+    }
+    if (!this.sqlObject) {
+      throw new Error('Unable to initialize PostgreSQL service');
     }
     return this.sqlObject;
   }
