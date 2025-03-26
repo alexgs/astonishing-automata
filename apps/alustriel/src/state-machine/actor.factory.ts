@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { characterBuilderMachine } from '@automata/state-machine';
 import { Injectable, Logger } from '@nestjs/common';
 import { createActor, Actor } from 'xstate';
 
@@ -9,7 +10,6 @@ import { EVENT_TYPES } from '../character-builder/constants';
 import { EventStoreService } from '../event-store/event-store.service';
 
 import { createStateMachineEvent } from './create-state-machine-event';
-import { characterBuilderMachine } from './state-machine';
 
 interface GetActorReturnType {
   actor: Actor<typeof characterBuilderMachine>;

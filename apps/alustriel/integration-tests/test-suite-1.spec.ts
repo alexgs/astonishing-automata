@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { STEPS } from '@automata/state-machine';
 import { clerkMiddleware } from '@clerk/express';
 import { HttpStatus, INestApplication, VersioningType } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -13,7 +14,6 @@ import { WinstonModule } from 'nest-winston';
 
 import { AppModule } from '../src/app.module';
 import { EVENT_TYPES as CHARACTER_EVENT_TYPES } from '../src/character-builder/constants';
-import { STEPS } from '../src/state-machine/constants';
 import { testLog } from '../src/winston-transports';
 
 import { KnexClient, getTestToken, resetDb } from './helpers';

@@ -2,10 +2,9 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { StepName } from '@automata/state-machine';
 import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-
-import { StepName } from '../state-machine/types';
 
 import { ChangeStepCommand } from './commands/change-step.command';
 import { SelectClassCommand } from './commands/select-class.command';

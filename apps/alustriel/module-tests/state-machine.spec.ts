@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { STEPS } from '@automata/state-machine';
 import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -13,7 +14,6 @@ import { EventStoreModule } from '../src/event-store/event-store.module';
 import { EventStoreReadModel } from '../src/event-store/interfaces';
 import { TOKENS } from '../src/provider-tokens';
 import { ActorFactory } from '../src/state-machine/actor.factory';
-import { STEPS } from '../src/state-machine/constants';
 import { StateMachineModule } from '../src/state-machine/state-machine.module';
 import { testLog } from '../src/winston-transports';
 

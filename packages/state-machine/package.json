@@ -7,10 +7,13 @@
     "name": "Alex Gates-Shannon"
   },
   "license": "Elastic License 2.0",
+  "main": "dist/index.js",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexgs/automata-character-builder.git"
   },
-  "scripts": {}
+  "scripts": {
+    "build": "tsc"
+  }
 }
