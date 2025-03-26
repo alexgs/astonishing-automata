@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { STEPS } from '@automata/state-machine';
 import { Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -18,7 +19,6 @@ import {
 } from '../character-builder/events/species-selected.event';
 import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
-import { STEPS } from '../state-machine/constants';
 
 import { EventPublisherService } from './event-publisher.service';
 import { EventStoreReadModel } from './interfaces';
@@ -32,9 +32,9 @@ describe('EventPublisherService', () => {
   let mockUnsubscribe: jest.Mock;
   let mockLoggerDebug: jest.SpyInstance;
   let mockLoggerError: jest.SpyInstance;
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   let eventCallback: Function;
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   let connectCallback: Function;
 
   beforeEach(async () => {

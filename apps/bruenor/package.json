@@ -17,7 +17,7 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "lint": "eslint .",
-    "prepare": "npm run smui-theme-dark",
+    "prepare": "npm run prepare:sveltekit && npm run smui-theme-dark",
     "prepare:sveltekit": "svelte-kit sync || echo ''",
     "preview": "vite preview",
     "smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark",
@@ -26,6 +26,7 @@
     "test:unit": "vitest"
   },
   "devDependencies": {
+    "@automata/state-machine": "*",
     "@clerk/clerk-js": "^5.57.2",
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.18.0",

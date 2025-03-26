@@ -2,15 +2,14 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { ACTIONS, CharacterContext } from '@automata/state-machine';
+
 import { EVENT_TYPES } from '../character-builder/constants';
 import { CharacterStartedEventPayload } from '../character-builder/events/character-started.event';
 import { ClassSelectedEventPayload } from '../character-builder/events/class-selected.event';
 import { SpeciesSelectedEventPayload } from '../character-builder/events/species-selected.event';
 import { StepChangedEventPayload } from '../character-builder/events/step-changed.event';
 import { EventStoreReadModel } from '../event-store/interfaces';
-
-import { ACTIONS } from './constants';
-import { CharacterContext } from './interfaces';
 
 type StateMachineEvent = {
   [key in keyof CharacterContext]: unknown;

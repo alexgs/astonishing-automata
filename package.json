@@ -20,6 +20,6 @@
   "workspaces": [
     "apps/alustriel",
     "apps/bruenor",
-    "packages/*"
+    "packages/state-machine"
   ]
 }

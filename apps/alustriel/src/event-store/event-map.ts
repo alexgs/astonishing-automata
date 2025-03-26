@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { SafeParseReturnType } from 'zod/lib/types';
+import { SafeParseReturnType } from 'zod';
 
 import { EVENT_TYPES } from '../character-builder/constants';
 import {

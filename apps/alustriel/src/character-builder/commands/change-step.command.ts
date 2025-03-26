@@ -2,9 +2,8 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { StepName } from '@automata/state-machine';
 import { ICommand } from '@nestjs/cqrs';
-
-import { StepName } from '../../state-machine/types';
 
 export class ChangeStepCommand implements ICommand {
   constructor(

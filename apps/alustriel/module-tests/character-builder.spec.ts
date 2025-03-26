@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { INITIAL_STEP, STEPS } from '@automata/state-machine';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -26,7 +27,6 @@ import {
 } from '../src/character-builder/events/step-changed.event';
 import { StreamRecord } from '../src/event-store/interfaces';
 import { TOKENS } from '../src/provider-tokens';
-import { INITIAL_STEP, STEPS } from '../src/state-machine/constants';
 import { testLog } from '../src/winston-transports';
 
 import { MockKnexService } from './mock-knex-service';

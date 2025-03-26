@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions" suppressed-tasks="Sass;SCSS">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="-w apps/bruenor run prepare" />
+      <option name="arguments" value="-w apps/bruenor run smui-theme-dark" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />

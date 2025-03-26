@@ -2,11 +2,11 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { StepName, StepsZodEnum } from '@automata/state-machine';
 import { IEvent } from '@nestjs/cqrs';
 import { z } from 'zod';
 
 import { BaseEvent, EventStoreReadModel } from '../../event-store/interfaces';
-import { StepName, StepsZodEnum } from '../../state-machine/types';
 import { EVENT_TYPES } from '../constants';
 
 export const StepChangedEventPayloadSchema = z.object({

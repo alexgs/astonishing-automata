@@ -2,11 +2,10 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { INITIAL_STEP, StepName } from '@automata/state-machine';
 import { Injectable, Logger } from '@nestjs/common';
 
 import { EventStoreService } from '../../event-store/event-store.service';
-import { INITIAL_STEP } from '../../state-machine/constants';
-import { StepName } from '../../state-machine/types';
 import { EVENT_TYPES, STREAM_TYPES } from '../constants';
 
 import { CharacterStartedEventPayload } from './character-started.event';
