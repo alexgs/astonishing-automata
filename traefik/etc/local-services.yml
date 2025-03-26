@@ -1,0 +1,32 @@
+http:
+  routers:
+    alustriel:
+      entryPoints:
+        - web-secure
+      rule: "Host(`api.automata.local`)"
+      service: alustriel
+      tls: true
+
+    bruenor:
+      entryPoints:
+        - web-secure
+      rule: "Host(`app.automata.local`)"
+      service: bruenor
+      tls: true
+
+  services:
+    alustriel:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:3000"
+    bruenor:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:5173"
+
+tls:
+  certificates:
+    - certFile: /etc/traefik/automata.local+2.pem
+      keyFile: /etc/traefik/automata.local+2-key.pem
+      stores:
+        - default

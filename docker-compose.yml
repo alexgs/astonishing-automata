@@ -48,7 +48,6 @@ services:
       - soxy-net
     depends_on:
       - soxy
-#      - webapp
     labels:
       - "traefik.enable=false"
 

@@ -1,0 +1,4 @@
+host/*.log
+*.crt
+*.key
+*.pem
