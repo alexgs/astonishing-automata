@@ -1,0 +1,16 @@
+{
+  "name": "@automata/state-machine",
+  "version": "0.1.0",
+  "description": "Shared state machine library for Automata Character Builder",
+  "author": {
+    "email": "alex.nebula99@gmail.com",
+    "name": "Alex Gates-Shannon"
+  },
+  "license": "Elastic License 2.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexgs/automata-character-builder.git"
+  },
+  "scripts": {}
+}
