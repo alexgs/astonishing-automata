@@ -4,7 +4,7 @@
 
 import { Clerk } from '@clerk/clerk-js';
 
-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+import { config } from '$lib/config';
 
-export const clerk = new Clerk(clerkPubKey);
+export const clerk = new Clerk(config.clerkPublishableKey);
 await clerk.load();

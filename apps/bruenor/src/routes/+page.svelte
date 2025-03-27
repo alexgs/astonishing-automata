@@ -5,7 +5,33 @@
 <script>
   import { Label } from '@smui/button';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
+
+  import { goto } from '$app/navigation';
   import PopButton from '$lib/components/PopButton.svelte';
+  import { config } from '$lib/config';
+
+  let loading = $state(false);
+
+  async function createCharacter() {
+    loading = true;
+    try {
+      const res = await fetch(`https://${config.apiHost}/api/v1/character-builder/start`, {
+        method: 'POST'
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to start character');
+      }
+
+      const { characterId } = await res.json();
+      await goto(`/wizard/${characterId}`);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to start a new character.');
+    } finally {
+      loading = false;
+    }
+  }
 </script>
 
 <style>
@@ -34,7 +60,7 @@
   </Cell>
   <Cell span={12}>
     <div class="button-container">
-      <PopButton>
+      <PopButton onclick={createCharacter} disabled={loading}>
         <Label>Create a new character</Label>
       </PopButton>
     </div>
