@@ -8,23 +8,30 @@
 
   import { goto } from '$app/navigation';
   import PopButton from '$lib/components/PopButton.svelte';
+  import { auth } from '$lib/clerk';
   import { config } from '$lib/config';
+
+  const { session } = auth;
 
   let loading = $state(false);
 
   async function createCharacter() {
+    const token = await $session?.getToken();
     loading = true;
     try {
       const res = await fetch(`https://${config.apiHost}/api/v1/character-builder/start`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`, // Ensure you have a valid auth token
+        },
       });
 
       if (!res.ok) {
         throw new Error('Failed to start character');
       }
 
-      const { characterId } = await res.json();
-      await goto(`/wizard/${characterId}`);
+      const { data } = await res.json();
+      await goto(`/wizard/${data.characterId}`);
     } catch (err) {
       console.error(err);
       alert('Failed to start a new character.');
