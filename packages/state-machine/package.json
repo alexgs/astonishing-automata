@@ -15,5 +15,9 @@
   },
   "scripts": {
     "build": "tsc"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "xstate": "^5.19.2"
   }
 }
