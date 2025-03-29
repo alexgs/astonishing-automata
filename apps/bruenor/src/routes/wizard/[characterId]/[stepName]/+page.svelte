@@ -10,16 +10,24 @@
 
   const { characterId, stepName } = page.params;
 
-  const [initialState, initialActions] = initialTransition(characterBuilderMachine);
-  console.log(initialState);
-  console.log(initialActions);
+  const stateNode = characterBuilderMachine.getStateNodeById(`${characterBuilderMachine.id}.${stepName}`);
+  const validEvents = Object.keys(stateNode.on);
 
   // TODO Eventually we'll need to use a different state than `initialState`
-  const [nextState, actions] = transition(characterBuilderMachine, initialState, {
-    type: 'start',
-  });
-
-
+  const [initialState] = initialTransition(characterBuilderMachine);
+  const nextStep = validEvents
+    .map((event) => {
+      const [nextState] = transition(characterBuilderMachine, initialState, {
+        type: event,
+      });
+      return {
+        event,
+        nextStep: nextState.value,
+      };
+    })
+    .filter((step) => step.nextStep !== stepName)
+    .at(0);
+  console.log(`Next step: ${JSON.stringify(nextStep)}`);
 </script>
 
 <LayoutGrid>
