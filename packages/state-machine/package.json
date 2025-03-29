@@ -6,19 +6,29 @@
     "email": "alex.nebula99@gmail.com",
     "name": "Alex Gates-Shannon"
   },
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
   "license": "Elastic License 2.0",
-  "main": "dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexgs/automata-character-builder.git"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsup"
   },
   "type": "module",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "xstate": "^5.19.2"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0"
   }
 }
