@@ -15,3 +15,7 @@ export interface CharacterContext {
   equipment?: string[];
   spells?: string[];
 }
+
+export interface StepMetadata {
+  label: string;
+}

@@ -3,31 +3,20 @@
   -->
 
 <script>
-  import { characterBuilderMachine } from '@automata/state-machine';
+  import {
+    characterBuilderMachine,
+    getNextSteps,
+  } from '@automata/state-machine';
   import LayoutGrid, { Cell } from '@smui/layout-grid';
   import { page } from '$app/state';
-  import { initialTransition, transition } from 'xstate';
+  import { initialTransition } from 'xstate';
 
   const { characterId, stepName } = page.params;
 
-  const stateNode = characterBuilderMachine.getStateNodeById(`${characterBuilderMachine.id}.${stepName}`);
-  const validEvents = Object.keys(stateNode.on);
-
   // TODO Eventually we'll need to use a different state than `initialState`
   const [initialState] = initialTransition(characterBuilderMachine);
-  const nextStep = validEvents
-    .map((event) => {
-      const [nextState] = transition(characterBuilderMachine, initialState, {
-        type: event,
-      });
-      return {
-        event,
-        nextStep: nextState.value,
-      };
-    })
-    .filter((step) => step.nextStep !== stepName)
-    .at(0);
-  console.log(`Next step: ${JSON.stringify(nextStep)}`);
+  const nextSteps = getNextSteps(characterBuilderMachine, initialState, stepName);
+  console.log(`Next steps: ${JSON.stringify(nextSteps, null, 2)}`);
 </script>
 
 <LayoutGrid>
