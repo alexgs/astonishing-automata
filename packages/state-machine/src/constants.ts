@@ -30,4 +30,4 @@ export const STEPS = {
   FINISH: 'character-builder~steps~finish',
 } as const;
 
-export const INITIAL_STEP = STEPS.SELECT_SPECIES;
+export const INITIAL_STEP = STEPS.SELECT_SPECIES; // TODO This can be replaced with the [`initialTransition` function](https://stately.ai/docs/transitions#transitioning-state)
