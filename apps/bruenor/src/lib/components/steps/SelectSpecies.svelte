@@ -25,7 +25,6 @@
 
   const { characterId, send, snapshot }: Props = $props();
 
-  console.log(`Value: ${$snapshot.value}`);
   const nextSteps = getNextSteps(characterBuilderMachine, $snapshot, $snapshot.value);
   console.log(`Next steps: ${JSON.stringify(nextSteps, null, 2)}`);
 

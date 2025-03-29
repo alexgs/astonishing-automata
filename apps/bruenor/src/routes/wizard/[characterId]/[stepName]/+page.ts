@@ -4,8 +4,6 @@
 
 import type { PageLoad } from './$types';
 export const load: PageLoad = ({ params }) => {
-  console.log(`Params: ${JSON.stringify(params)}`);
-
   return {
     characterId: params.characterId,
     stepName: params.stepName,

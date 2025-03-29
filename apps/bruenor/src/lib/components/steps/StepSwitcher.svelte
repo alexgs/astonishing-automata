@@ -3,18 +3,10 @@
   -->
 
 <script lang="ts">
-  import {
-    characterBuilderMachine, getNextSteps,
-    type StepName,
-    STEPS,
-  } from '@automata/state-machine';
+  import { type StepName, STEPS } from '@automata/state-machine';
   import SelectSpecies from '$lib/components/steps/SelectSpecies.svelte';
   import SelectClass from '$lib/components/steps/SelectClass.svelte';
-  import {
-    type AnyEventObject,
-    type AnyMachineSnapshot,
-    initialTransition,
-  } from 'xstate';
+  import { type AnyEventObject, type AnyMachineSnapshot } from 'xstate';
   import type { Readable } from 'svelte/store';
 
   interface Props {
@@ -46,10 +38,6 @@
   };
 
   const StepComponent = $derived(stepComponentMap[stepName as StepName]);
-
-  const [ initialState ] = initialTransition(characterBuilderMachine);
-  const nextSteps = getNextSteps(characterBuilderMachine, initialState, stepName);
-  console.log(`Next steps: ${JSON.stringify(nextSteps, null, 2)}`);
 </script>
 
 {#if StepComponent}
