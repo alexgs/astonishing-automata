@@ -30,7 +30,7 @@ jobs:
 #          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
       - name: Build app and dependencies
-        run: npx turbo run build --filter=alustriel... --verbosity verbose
+        run: npx turbo run build --filter=alustriel... --verbosity 3
 
       - name: Alustriel integration tests
         run: cd apps/alustriel && ./integration-tests/scripts/run-integration-tests.sh
