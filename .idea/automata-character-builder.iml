@@ -9,6 +9,10 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/bruenor/.svelte-kit" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/httpRequests" />
       <excludeFolder url="file://$MODULE_DIR$/database/integration-tests" />
+      <excludeFolder url="file://$MODULE_DIR$/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/alustriel/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/bruenor/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/state-machine/.turbo" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

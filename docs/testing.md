@@ -17,7 +17,7 @@ Normally, the integration tests should be run with the script `apps/alustriel/in
 These steps will let you destroy or reset a test environment.
 
 1. Start in `apps/alustriel`.
-1. Run `docker-compose down --remote-orphans`.
+1. Run `docker-compose down --remove-orphans`.
 1. Delete the database with `rm -rf ../../database/integration-tests`.
 
 Note that the tests should reset the database before each test is executed, so you shouldn't need to do this very often. You should do it before running the integration tests script locally.
