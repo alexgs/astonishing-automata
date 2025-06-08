@@ -7,6 +7,7 @@
     "name": "Alex Gates-Shannon"
   },
   "license": "Elastic License 2.0",
+  "packageManager": "npm@11.1.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -21,5 +22,8 @@
     "apps/alustriel",
     "apps/bruenor",
     "packages/state-machine"
-  ]
+  ],
+  "devDependencies": {
+    "turbo": "^2.5.4"
+  }
 }
