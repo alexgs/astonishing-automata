@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache turbo build setup
+      - name: TurboRepo cache setup
         uses: actions/cache@v4
         with:
           path: .turbo
@@ -35,11 +35,6 @@ jobs:
         run: npm ci --include=dev
         env:
           FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
-
-#      - name: Turbo Remote Cache Login (optional)
-#        run: npx turbo login
-#        env:
-#          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
       - name: Build app and dependencies
         run: npx turbo run build --filter=alustriel...
@@ -65,6 +60,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: TurboRepo cache setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
@@ -87,6 +90,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: TurboRepo cache setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Use Node.js 22
         uses: actions/setup-node@v4
