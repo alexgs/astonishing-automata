@@ -57,7 +57,7 @@ export class CharacterBuilderService {
   async startCharacterCreation() {
     return this.commandBus.execute<
       StartCharacterCreationCommand,
-      { characterId: string }
+      { characterId: string; stepName: StepName }
     >(new StartCharacterCreationCommand());
   }
 }

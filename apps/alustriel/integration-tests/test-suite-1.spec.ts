@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { STEPS } from '@automata/state-machine';
+import { INITIAL_STEP, STEPS } from '@automata/state-machine';
 import { clerkMiddleware } from '@clerk/express';
 import { HttpStatus, INestApplication, VersioningType } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -81,7 +81,8 @@ describe('Character Builder Integration Test Suite 1', () => {
     }
 
     expect(response.status).toEqual(HttpStatus.CREATED);
-    const { characterId } = response.data.data;
+    const { characterId, stepName } = response.data.data;
+    expect(stepName).toEqual(INITIAL_STEP);
 
     const events = await knex('events')
       .where({ stream_id: CHARACTER_ID })

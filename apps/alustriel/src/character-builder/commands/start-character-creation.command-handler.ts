@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { INITIAL_STEP } from '@automata/state-machine';
 import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
@@ -29,6 +30,6 @@ export class StartCharacterCreationHandler
       await this.eventFactory.createCharacterStartedEvent(characterId);
     await this.eventStore.appendEvent(event);
 
-    return { characterId };
+    return { characterId, stepName: INITIAL_STEP };
   }
 }

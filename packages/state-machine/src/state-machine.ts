@@ -5,11 +5,12 @@
 import { assign, setup } from 'xstate';
 
 import { ACTIONS, STEPS } from './constants';
-import { CharacterContext } from './interfaces';
+import { CharacterContext, StepMetadata } from './interfaces';
 
 export const characterBuilderMachine = setup({
   types: {} as {
     context: CharacterContext;
+    meta: StepMetadata;
   },
 }).createMachine({
   id: 'characterBuilder',
@@ -17,6 +18,9 @@ export const characterBuilderMachine = setup({
   initial: STEPS.SELECT_SPECIES,
   states: {
     [STEPS.SELECT_SPECIES]: {
+      meta: {
+        label: 'Select Species',
+      },
       on: {
         [ACTIONS.SELECT_SPECIES]: {
           actions: [
@@ -29,6 +33,9 @@ export const characterBuilderMachine = setup({
       },
     },
     [STEPS.SELECT_CLASS]: {
+      meta: {
+        label: 'Select Class',
+      },
       on: {
         [ACTIONS.SELECT_CLASS]: {
           actions: [
@@ -43,6 +50,9 @@ export const characterBuilderMachine = setup({
       },
     },
     [STEPS.SELECT_SUBCLASS]: {
+      meta: {
+        label: 'Select Subclass',
+      },
       on: {
         [STEPS.SELECT_CLASS_FEATURES]: STEPS.SELECT_CLASS_FEATURES,
         [STEPS.SELECT_CLASS]: STEPS.SELECT_CLASS,
