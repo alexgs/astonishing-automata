@@ -178,7 +178,10 @@ describe('Character Builder module', () => {
       );
       expect(response.status).toEqual(HttpStatus.CREATED);
       expect(response.body).toEqual({
-        data: { characterId: UUID },
+        data: {
+          characterId: UUID,
+          stepName: INITIAL_STEP,
+        },
       });
     });
 
