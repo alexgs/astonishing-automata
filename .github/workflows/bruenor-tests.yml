@@ -23,11 +23,12 @@ jobs:
         run: npm ci --include=dev
         env:
           FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
-          PUBLIC_API_HOST: ${{ vars.PUBLIC_API_HOST }}
-          PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ vars.CLERK_PUBLISHABLE_KEY }}
 
       - name: Build app and dependencies
         run: npx turbo run build --filter=bruenor...
 
       - name: Bruenor unit tests
         run: npm -w apps/bruenor run test
+        env:
+          PUBLIC_API_HOST: ${{ vars.PUBLIC_API_HOST }}
+          PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ vars.CLERK_PUBLISHABLE_KEY }}
