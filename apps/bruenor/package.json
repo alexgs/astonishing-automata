@@ -25,6 +25,9 @@
     "test:watch": "vitest --watch",
     "test:unit": "vitest"
   },
+  "dependencies": {
+    "xstate": "^5.19.4"
+  },
   "devDependencies": {
     "@automata/state-machine": "*",
     "@clerk/clerk-js": "^5.57.2",
