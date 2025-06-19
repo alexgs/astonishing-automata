@@ -33,6 +33,9 @@ const MAX_RETRIES = 3;
 export const characterBuilderOrchestrator = setup({
   actors: {
     [characterBuilderMachine.id]: characterBuilderMachine,
+    sendUpdateToServer: fromPromise(({ input }) => {
+      return sendUpdateToServer(input);
+    }),
   },
   types: {
     context: {
@@ -56,18 +59,28 @@ export const characterBuilderOrchestrator = setup({
   },
   invoke: {
     id: characterBuilderMachine.id,
-    src: characterBuilderMachine,
+    systemId: characterBuilderMachine.id,
+    src: characterBuilderMachine.id,
   },
   states: {
     idle: {
       on: {
         USER_ACTION: {
-          target: 'syncing',
+          target: 'optimisticUpdate',
           actions: [
             assign({
               pendingEvent: ({ event }) => event,
             }),
             sendTo(characterBuilderMachine.id, ({ event }: { event: UserAction }) => event.event),
+          ],
+        },
+      },
+    },
+    optimisticUpdate: {
+      after: {
+        0: {
+          target: 'syncing',
+          actions: [
             assign({
               optimisticContext: ({ system }) => {
                 const child = system.get(characterBuilderMachine.id);
@@ -81,9 +94,7 @@ export const characterBuilderOrchestrator = setup({
     syncing: {
       invoke: {
         input: ({ context }) => ({ pendingEvent: context.pendingEvent }),
-        src: fromPromise(
-          ({ input }) => sendUpdateToServer(input.pendingEvent)
-        ),
+        src: 'sendUpdateToServer',
         onDone: {
           target: 'idle',
           actions: assign({
@@ -100,5 +111,6 @@ export const characterBuilderOrchestrator = setup({
         },
       },
     },
+    retrying: {},
   },
 });
