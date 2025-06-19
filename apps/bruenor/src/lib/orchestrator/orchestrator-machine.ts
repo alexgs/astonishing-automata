@@ -16,15 +16,17 @@ interface OrchestratorContext {
 }
 
 type OrchestratorEvent =
-  | { type: 'USER_ACTION'; event: unknown }
+  | UserAction
   | { type: 'RETRY' }
   | { type: 'RESTORE_CONTEXT'; data: CharacterContext };
+
+type UserAction = { type: 'USER_ACTION'; event: unknown };
 
 const MAX_RETRIES = 3;
 
 export const characterBuilderOrchestrator = setup({
   actors: {
-    characterBuilderMachine: characterBuilderMachine,
+    [characterBuilderMachine.id]: characterBuilderMachine,
   },
   types: {
     context: {
@@ -47,9 +49,29 @@ export const characterBuilderOrchestrator = setup({
     error: null,
   },
   invoke: {
-    src: 'characterBuilderMachine',
+    id: characterBuilderMachine.id,
+    src: characterBuilderMachine,
   },
   states: {
-    idle: {},
+    idle: {
+      on: {
+        USER_ACTION: {
+          target: 'syncing',
+          actions: [
+            assign({
+              pendingEvent: ({ event }) => event,
+            }),
+            sendTo(characterBuilderMachine.id, ({ event }: { event: UserAction }) => event.event),
+            assign({
+              optimisticContext: ({ system }) => {
+                const child = system.get(characterBuilderMachine.id);
+                return child?.getSnapshot()?.context || null;
+              },
+            }),
+          ],
+        },
+      },
+    },
+    syncing: {},
   },
 });
