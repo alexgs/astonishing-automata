@@ -3,7 +3,13 @@
  */
 
 import { type CharacterContext, characterBuilderMachine } from '@automata/state-machine';
-import { assign, sendTo, setup } from 'xstate';
+import {
+  type ErrorActorEvent,
+  assign,
+  fromPromise,
+  sendTo,
+  setup,
+} from 'xstate';
 
 import { sendUpdateToServer } from '../services/send-update-to-server';
 
@@ -12,7 +18,7 @@ interface OrchestratorContext {
   lastConfirmedContext: CharacterContext | null;
   retryCount: number;
   pendingEvent: OrchestratorEvent | null;
-  error: Error | null;
+  error: ErrorActorEvent | null;
 }
 
 type OrchestratorEvent =
@@ -72,6 +78,27 @@ export const characterBuilderOrchestrator = setup({
         },
       },
     },
-    syncing: {},
+    syncing: {
+      invoke: {
+        input: ({ context }) => ({ pendingEvent: context.pendingEvent }),
+        src: fromPromise(
+          ({ input }) => sendUpdateToServer(input.pendingEvent)
+        ),
+        onDone: {
+          target: 'idle',
+          actions: assign({
+            lastConfirmedContext: ({ context }) => context.optimisticContext,
+            retryCount: 0,
+            error: null,
+          }),
+        },
+        onError: {
+          target: 'retrying',
+          actions: assign({
+            error: ({ event }) => event.error as ErrorActorEvent,
+          }),
+        },
+      },
+    },
   },
 });
