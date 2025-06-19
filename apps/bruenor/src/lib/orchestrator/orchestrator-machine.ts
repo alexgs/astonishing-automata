@@ -49,5 +49,7 @@ export const characterBuilderOrchestrator = setup({
   invoke: {
     src: 'characterBuilderMachine',
   },
-  states: {},
+  states: {
+    idle: {},
+  },
 });
