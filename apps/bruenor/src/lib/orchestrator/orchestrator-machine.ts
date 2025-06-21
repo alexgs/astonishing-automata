@@ -111,6 +111,27 @@ export const characterBuilderOrchestrator = setup({
         },
       },
     },
-    retrying: {},
+    retrying: {
+      always: [
+        {
+          guard: ({ context }) => context.retryCount < MAX_RETRIES,
+          target: 'syncing',
+          actions: assign({
+            retryCount: ({ context }) => context.retryCount + 1,
+          }),
+        },
+        {
+          target: 'error',
+          actions: sendTo(
+            characterBuilderMachine.id,
+            ({ context }: { context: OrchestratorContext }) => ({
+              type: 'RESTORE_CONTEXT',
+              data: context.lastConfirmedContext,
+            })
+          ),
+        },
+      ],
+    },
+    error: {},
   },
 });

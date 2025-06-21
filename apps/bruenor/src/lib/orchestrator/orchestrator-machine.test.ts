@@ -3,12 +3,12 @@
  */
 
 import { ACTIONS, type CharacterContext } from '@automata/state-machine';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createActor, fromPromise } from 'xstate';
 
 import { characterBuilderOrchestrator } from './orchestrator-machine';
 
-describe('characterBuilderOrchestrator', () => {
+describe('Front-end orchestrator machine', () => {
   it('starts', () => {
     const service = createActor(characterBuilderOrchestrator).start();
     const state = service.getSnapshot();
@@ -73,5 +73,31 @@ describe('characterBuilderOrchestrator', () => {
     expect(state.matches('idle')).toBe(true);
     expect(state.context.optimisticContext).toEqual(expectedContext);
     expect(state.context.lastConfirmedContext).toEqual(expectedContext);
+  });
+
+  it('retries on failure', async () => {
+    const mockSendUpdateToServer = vi.fn().mockRejectedValue('Network error');
+    const machine = characterBuilderOrchestrator.provide({
+      actors: {
+        sendUpdateToServer: fromPromise(mockSendUpdateToServer),
+      },
+    });
+    const service = createActor(machine).start();
+
+    service.send({
+      type: 'USER_ACTION',
+      event: { type: ACTIONS.SELECT_SPECIES, species: 'Elf' },
+    });
+    await new Promise((r) => setTimeout(r, 50)); // wait for retries
+
+    const state = service.getSnapshot();
+    expect(state.matches('error')).toBe(true);
+    expect(state.context.retryCount).toBe(3);
+
+    // Expect the mock to have been called once for the initial call plus three retries
+    expect(mockSendUpdateToServer).toHaveBeenCalledTimes(1 + 3);
+
+    expect(state.context.optimisticContext).toEqual({ species: 'Elf' });
+    expect(state.context.lastConfirmedContext).toBeNull();
   });
 });
