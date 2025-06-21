@@ -100,4 +100,42 @@ describe('Front-end orchestrator machine', () => {
     expect(state.context.optimisticContext).toEqual({ species: 'Elf' });
     expect(state.context.lastConfirmedContext).toBeNull();
   });
+
+  it('allows manual retry after failure', async () => {
+    const expectedContext: CharacterContext = {
+      species: 'Elf',
+    };
+    const mockSendUpdateToServer = vi.fn()
+      .mockRejectedValueOnce('Network error')
+      .mockRejectedValueOnce('Network error')
+      .mockRejectedValueOnce('Network error')
+      .mockRejectedValueOnce('Network error')
+      .mockResolvedValue(true);
+    const machine = characterBuilderOrchestrator.provide({
+      actors: {
+        sendUpdateToServer: fromPromise(mockSendUpdateToServer),
+      },
+    });
+    const service = createActor(machine).start();
+
+    service.send({
+      type: 'USER_ACTION',
+      event: { type: ACTIONS.SELECT_SPECIES, species: 'Elf' },
+    });
+    await new Promise((r) => setTimeout(r, 750)); // wait for retries
+
+    let state = service.getSnapshot();
+    expect(state.matches('error')).toBe(true);
+    expect(state.context.retryCount).toBe(3);
+    expect(state.context.optimisticContext).toEqual(expectedContext);
+    expect(state.context.lastConfirmedContext).toBeNull();
+
+    service.send({ type: 'RETRY' });
+    await new Promise((r) => setTimeout(r, 0)); // wait for async
+
+    state = service.getSnapshot();
+    expect(state.matches('idle')).toBe(true);
+    expect(state.context.optimisticContext).toEqual(expectedContext);
+    expect(state.context.lastConfirmedContext).toEqual(expectedContext);
+  });
 });

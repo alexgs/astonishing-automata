@@ -139,6 +139,13 @@ export const characterBuilderOrchestrator = setup({
         },
       ],
     },
-    error: {},
+    error: {
+      on: {
+        RETRY: {
+          target: 'syncing',
+          actions: assign({ retryCount: 0 }),
+        },
+      },
+    },
   },
 });
