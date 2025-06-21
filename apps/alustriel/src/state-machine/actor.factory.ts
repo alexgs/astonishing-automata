@@ -8,6 +8,7 @@ import { createActor, Actor } from 'xstate';
 
 import { EVENT_TYPES } from '../character-builder/constants';
 import { EventStoreService } from '../event-store/event-store.service';
+import { EventStoreReadModel } from '../event-store/interfaces';
 
 import { createStateMachineEvent } from './create-state-machine-event';
 
@@ -30,13 +31,25 @@ export class ActorFactory {
 
     // No events? This should never happen
     if (pastEvents.length === 0) {
-      this.logger.error(
-        'No past events found! This should never happen!',
-        ActorFactory.name,
-      );
-      throw new Error(
-        `[${ActorFactory.name}] No past events found! This should never happen!`,
-      );
+      const message = 'No past events found! This should never happen!';
+      this.logger.error(message, ActorFactory.name);
+      throw new Error(`[${ActorFactory.name}] ${message}`);
+    }
+
+    if (pastEvents.length === 1 && pastEvents[0].type !== EVENT_TYPES.STARTED) {
+      const message = `Illegal start event found in stream ${characterId}`;
+      this.logger.error(message, ActorFactory.name);
+      throw new Error(`[${ActorFactory.name}] ${message}`);
+    }
+
+    return this.hydrateActor(pastEvents);
+  }
+
+  hydrateActor(pastEvents: EventStoreReadModel[]): GetActorReturnType {
+    if (pastEvents.length === 0) {
+      const message = 'No past events found';
+      this.logger.error(message, ActorFactory.name);
+      throw new Error(`[${ActorFactory.name}] ${message}`);
     }
 
     // Fresh start
@@ -46,13 +59,9 @@ export class ActorFactory {
       return { actor, version: 1 };
     }
     if (pastEvents.length === 1) {
-      this.logger.error(
-        `Illegal start event found in stream ${characterId}`,
-        ActorFactory.name,
-      );
-      throw new Error(
-        `[${ActorFactory.name}] Illegal start event found in stream ${characterId}`,
-      );
+      const message = 'Illegal start event';
+      this.logger.error(message, ActorFactory.name);
+      throw new Error(`[${ActorFactory.name}] ${message}`);
     }
 
     // Rehydrate the actor by replaying past events
