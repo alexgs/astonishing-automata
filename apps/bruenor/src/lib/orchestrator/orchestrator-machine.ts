@@ -28,6 +28,8 @@ type OrchestratorEvent =
 
 type UserAction = { type: 'USER_ACTION'; event: unknown };
 
+// If you change this value, you will need to increase the timeout in the test, too
+const BASE_DELAY = 100; // Base delay for retries in milliseconds
 const MAX_RETRIES = 3;
 
 export const characterBuilderOrchestrator = setup({
@@ -36,6 +38,9 @@ export const characterBuilderOrchestrator = setup({
     sendUpdateToServer: fromPromise(({ input }) => {
       return sendUpdateToServer(input);
     }),
+  },
+  delays: {
+    syncRetry: ({ context }) => Math.pow(2, context.retryCount) * BASE_DELAY,
   },
   types: {
     context: {
@@ -112,15 +117,17 @@ export const characterBuilderOrchestrator = setup({
       },
     },
     retrying: {
-      always: [
-        {
-          guard: ({ context }) => context.retryCount < MAX_RETRIES,
+      after: {
+        syncRetry: {
           target: 'syncing',
           actions: assign({
             retryCount: ({ context }) => context.retryCount + 1,
           }),
         },
+      },
+      always: [
         {
+          guard: ({ context }) => context.retryCount >= MAX_RETRIES,
           target: 'error',
           actions: sendTo(
             characterBuilderMachine.id,

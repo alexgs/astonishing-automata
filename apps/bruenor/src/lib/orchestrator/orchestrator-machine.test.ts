@@ -88,7 +88,7 @@ describe('Front-end orchestrator machine', () => {
       type: 'USER_ACTION',
       event: { type: ACTIONS.SELECT_SPECIES, species: 'Elf' },
     });
-    await new Promise((r) => setTimeout(r, 50)); // wait for retries
+    await new Promise((r) => setTimeout(r, 750)); // wait for retries
 
     const state = service.getSnapshot();
     expect(state.matches('error')).toBe(true);
