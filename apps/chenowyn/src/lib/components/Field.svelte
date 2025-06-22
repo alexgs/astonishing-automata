@@ -19,16 +19,22 @@
   }
 
   function updateField(fieldPath: string, value: unknown) {
-    characterState.update((state) => {
+    characterState.update((currentState) => {
+      const newState = { ...currentState };
       const segments = fieldPath.split('.');
       const last = segments.pop();
-      let target = state;
+      if (!last) {
+        console.warn(`Invalid field path: ${fieldPath}`);
+        return newState; // No valid field to update
+      }
+
+      let target = newState;
       for (const segment of segments) {
         if (!(segment in target)) target[segment] = {};
         target = target[segment] as Record<string, unknown>;
       }
-      target[last!] = value;
-      return { ...state };
+      target[last] = value;
+      return newState;
     });
   }
 </script>
