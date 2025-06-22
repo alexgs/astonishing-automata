@@ -32,6 +32,11 @@ type UserAction = { type: 'USER_ACTION'; event: unknown };
 const BASE_DELAY = 100; // Base delay for retries in milliseconds
 const MAX_RETRIES = 3;
 
+// TODO This logic needs to be updated because the server confirms the actions
+//   by sending an event, not based on the API response. I mean, that's
+//   important for retries. But promoting the optimistic context to the
+//   confirmed context is going to require some changes.
+
 export const characterBuilderOrchestrator = setup({
   actors: {
     [characterBuilderMachine.id]: characterBuilderMachine,

@@ -35,7 +35,6 @@ export function createStateMachineEvent(
         type: characterStartedEventPayload.nextStep,
       };
     case EVENT_TYPES.STEP_CHANGED:
-      // Partial is required to make TypeScript happy
       const stepChangedEventPayload: StepChangedEventPayload =
         eventStoreEvent.data as StepChangedEventPayload;
       return {
