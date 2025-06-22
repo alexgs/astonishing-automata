@@ -7,13 +7,20 @@ export type CharacterSchema = {
 };
 
 export type Constraint = {
-  if: { [field: string]: { $eq?: unknown; $lt?: unknown; $in?: unknown; } };
+  if: {
+    [field: string]: {
+      $count?: unknown
+      $eq?: unknown;
+      $in?: unknown;
+      $lt?: unknown;
+    }
+  };
   then: { allowed: boolean; reason?: string };
 };
 
 export type FieldDefinition = {
   key: string;
-  type: 'string' | 'number' | 'choice' | 'boolean';
+  type: 'boolean' | 'choice' | 'multichoice' | 'number' | 'string';
   required?: boolean;
   options?: string[];
   constraints?: Constraint[];
