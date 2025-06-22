@@ -37,8 +37,8 @@
     </form>
 
   <div class="flex gap-4">
-    <button on:click={prev} class="bg-gray-200 rounded px-4 py-2">Previous</button>
-    <button on:click={next} class="bg-blue-600 text-white rounded px-4 py-2">Next</button>
+    <button onclick={prev} class="bg-gray-200 rounded px-4 py-2">Previous</button>
+    <button onclick={next} class="bg-blue-600 text-white rounded px-4 py-2">Next</button>
   </div>
 </main>
 

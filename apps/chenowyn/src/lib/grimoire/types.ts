@@ -18,6 +18,11 @@ export type Constraint = {
   then: { allowed: boolean; reason?: string };
 };
 
+export type ConstraintViolation = {
+  path: string;
+  reason: string;
+};
+
 export type FieldDefinition = {
   key: string;
   type: 'boolean' | 'choice' | 'multichoice' | 'number' | 'string';
