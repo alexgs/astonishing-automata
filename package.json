@@ -21,6 +21,7 @@
   "workspaces": [
     "apps/alustriel",
     "apps/bruenor",
+    "apps/chenowyn",
     "packages/state-machine"
   ],
   "devDependencies": {
