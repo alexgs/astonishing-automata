@@ -11,8 +11,8 @@ export type Constraint = {
     [field: string]: {
       $count?: { $lte: number };
       $eq?: unknown;
-      $in?: unknown;
-      $lt?: unknown;
+      $in?: Array<unknown>;
+      $lt?: number;
     }
   };
   then: { allowed: boolean; reason?: string };

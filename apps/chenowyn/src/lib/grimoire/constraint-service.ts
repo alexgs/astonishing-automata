@@ -3,6 +3,7 @@
  */
 
 import type {
+  Constraint,
   ConstraintViolation,
   FieldDefinition,
   GameSystemDefinition,
@@ -26,14 +27,14 @@ function getValueAtPath(obj: Record<string, unknown>, path: string): unknown {
 }
 
 function evaluateCondition(
-  condition: Record<string, ComparisonOperator>,
+  condition: Constraint['if'],
   fieldValue: unknown,
   state: Record<string, unknown>,
 ): boolean {
   return Object.entries(condition).every(([ key, test ]) => {
     const value = key === 'this' ? fieldValue : getValueAtPath(state, key);
 
-    if ('$in' in test) {
+    if (test.$in) {
       return test.$in.includes(value);
     }
 
@@ -41,11 +42,11 @@ function evaluateCondition(
       return value === test.$eq;
     }
 
-    if ('$lt' in test && typeof value === 'number') {
+    if (!!test.$lt && typeof value === 'number') {
       return value < test.$lt;
     }
 
-    if ('$count' in test && Array.isArray(value)) {
+    if (!!test.$count && Array.isArray(value)) {
       const countTests = test.$count;
       if ('$lte' in countTests) {
         return value.length <= countTests.$lte;
