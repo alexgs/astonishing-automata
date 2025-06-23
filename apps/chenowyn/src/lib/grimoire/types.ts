@@ -9,7 +9,7 @@ export type CharacterSchema = {
 export type Constraint = {
   if: {
     [field: string]: {
-      $count?: unknown
+      $count?: { $lte: number };
       $eq?: unknown;
       $in?: unknown;
       $lt?: unknown;

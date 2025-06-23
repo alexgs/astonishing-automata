@@ -5,7 +5,7 @@
 <script lang="ts">
   import { type Writable } from 'svelte/store';
 
-  import { evaluateField } from '$lib/grimoire/evaluate-field';
+  import { evaluateField } from '$lib/grimoire/constraint-service';
   import { savageWorlds } from '$lib/grimoire/savage-worlds';
 
   interface Props {
