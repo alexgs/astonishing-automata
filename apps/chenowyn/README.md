@@ -1,38 +1,40 @@
-# sv
+# Bruenor
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Bruenor is a SvelteKit front-end for _Automata Character Builder_.
 
-## Creating a project
+## Typography
 
-If you're seeing this, you've probably already done this step. Congrats!
+For some reading on typographic scales, see [this article][1]. To calculate scale, use [this tool][2].
 
-```bash
-# create a new project in the current directory
-npx sv create
+[1]: https://designcode.io/typographic-scales
+[2]: https://typescale.com/
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Exit Criteria for `chenowyn` Becoming the Primary App
 
-## Developing
+Here’s a checklist of things to complete before you officially make that call:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Core Editor Features
 
-```bash
-npm run dev
+- [ ] Dynamically render UI from any game system definition
+- [ ] Evaluate and display constraint violations per field
+- [ ] Navigate between steps in any order
+- [ ] Conditional field/step visibility (optional for MVP)
+- [ ] Mark full character sheet as valid/invalid (overall validation pass)
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Character Lifecycle
 
-## Building
+- [ ] Load a character from the back-end
+- [ ] Update a character in local state
+- [ ] Save valid character state to the server
+- [ ] Handle and display constraint violations returned from the back-end
 
-To create a production version of your app:
+### Mock Integration
 
-```bash
-npm run build
-```
+- [ ] Plug in mock `constraintService` and mock `characterService`
+- [ ] Confirm behavior is correct when constraints are only partially enforced
 
-You can preview the production build with `npm run preview`.
+### Front-End Polish
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- [ ] Port theme/colors/styles from `bruenor`
+- [ ] Port Clerk auth from `bruenor`
+- [ ] Add top-level route for “view all characters” or a dashboard
