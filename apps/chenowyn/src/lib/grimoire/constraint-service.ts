@@ -35,7 +35,10 @@ function evaluateCondition(
     const value = key === 'this' ? fieldValue : getValueAtPath(state, key);
 
     if (test.$in) {
-      return test.$in.includes(value);
+      if (Array.isArray(test.$in)) {
+        return test.$in.includes(value);
+      }
+      return false;
     }
 
     if ('$eq' in test) {
@@ -73,15 +76,35 @@ export function evaluateField(
 
   const violations: ConstraintViolation[] = [];
 
+  let allowed = true;
+  let failureReason: string | null = null;
+
   for (const constraint of fieldDef.constraints) {
     const passed = evaluateCondition(constraint.if, fieldValue, state);
 
-    if (!passed && constraint.then.allowed === false) {
-      violations.push({
-        path,
-        reason: constraint.then.reason ?? 'Invalid value',
-      });
+    if (passed && constraint.then.allowed === true) {
+      // Value is explicitly allowed — short-circuit
+      allowed = true;
+      failureReason = null;
+      break;
     }
+
+    if (passed && constraint.then.allowed === false) {
+      // Failed this rule, but others might still allow it
+      allowed = false;
+      failureReason = constraint.then.reason ?? 'Invalid value';
+    }
+
+    if (!passed && constraint.then.allowed === true) {
+      // Rule tried to allow something, but didn’t match — keep checking
+      allowed = false;
+      // Don't override failureReason unless we don't have one
+      failureReason ??= constraint.then.reason ?? 'Invalid value';
+    }
+  }
+
+  if (!allowed) {
+    violations.push({ path, reason: failureReason ?? 'Invalid value' });
   }
 
   return violations;

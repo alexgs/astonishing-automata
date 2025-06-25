@@ -7,6 +7,7 @@
 
   import { savageWorlds } from '$lib/grimoire/savage-worlds';
   import Field from '$lib/components/Field.svelte';
+  import type { FieldDefinition, GroupFieldDefinition } from '$lib/grimoire/types';
 
   const definition = savageWorlds;
   const stepIndex = writable(0);
@@ -16,6 +17,28 @@
 
   // Get current step and field paths
   const currentStep = derived(stepIndex, ($stepIndex) => definition.steps[$stepIndex]);
+
+  function getFieldDefFromPath(path: string): FieldDefinition {
+    const segments = path.split('.');
+    let node = savageWorlds.character[segments[0]];
+    if (!node) {
+      throw new Error(`Field definition not found for path: ${path}`);
+    }
+
+    for (let i = 1; i < segments.length; i++) {
+      const segment = segments[i];
+      if (!node) {
+        throw new Error(`Field definition not found for path: ${path}`);
+      }
+
+      if (node.type === 'group') {
+        const group = node as GroupFieldDefinition;
+        node = group.fields?.[segment];
+      }
+    }
+
+    return node as FieldDefinition;
+  }
 
   function next() {
     stepIndex.update((n) => (n < definition.steps.length - 1 ? n + 1 : n));
@@ -32,7 +55,7 @@
     <h2>Step: {$currentStep.key}</h2>
     <form>
       {#each $currentStep.fields as path (path)}
-        <Field {characterState} {path} />
+        <Field {characterState} fieldDef={getFieldDefFromPath(path)} {path} />
       {/each}
     </form>
 

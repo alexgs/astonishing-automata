@@ -7,19 +7,31 @@
 
   import { evaluateField } from '$lib/grimoire/constraint-service';
   import { savageWorlds } from '$lib/grimoire/savage-worlds';
+  import type { FieldDefinition } from '$lib/grimoire/types';
 
   interface Props {
-    characterState: Writable<Record<string, unknown>>
+    characterState: Writable<Record<string, unknown>>;
+    fieldDef: FieldDefinition;
     path: string;
   }
 
-  const { characterState, path }: Props = $props();
+  const { characterState, fieldDef, path }: Props = $props();
 
   let error: string | null = $state(null);
 
+  function coerceInputValue(raw: string): unknown {
+    if (fieldDef.type === 'number') {
+      const num = Number(raw);
+      return isNaN(num) ? null : num;
+    }
+    // Add more coercions as needed
+    return raw;
+  }
+
   function handleInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    const value = input.value;
+    const raw = input.value;
+    const value = coerceInputValue(raw);
     const nextState = updateField(path, value);
 
     // Use output from `updateField` to avoid potentially evaluating constraints
