@@ -5,11 +5,11 @@
 <script lang="ts">
   import { writable, derived } from 'svelte/store';
 
-  import { savageWorlds } from '$lib/grimoire/savage-worlds';
+  import { SavageWorlds } from '@automata/grimoire';
   import Field from '$lib/components/Field.svelte';
-  import type { FieldDefinition, GroupFieldDefinition } from '$lib/grimoire/types';
+  import type { FieldDefinition, GroupFieldDefinition } from '@automata/grimoire';
 
-  const definition = savageWorlds;
+  const definition = SavageWorlds;
   const stepIndex = writable(0);
 
   // Create character state with default values
@@ -20,7 +20,7 @@
 
   function getFieldDefFromPath(path: string): FieldDefinition {
     const segments = path.split('.');
-    let node = savageWorlds.character[segments[0]];
+    let node = SavageWorlds.character[segments[0]];
     if (!node) {
       throw new Error(`Field definition not found for path: ${path}`);
     }
