@@ -5,11 +5,14 @@
 <script lang="ts">
   import { writable, derived } from 'svelte/store';
 
-  import { savageWorlds } from '$lib/grimoire/savage-worlds';
+  import {
+    type FieldDefinition,
+    type GroupFieldDefinition,
+    SavageWorlds,
+  } from '@automata/grimoire';
   import Field from '$lib/components/Field.svelte';
-  import type { FieldDefinition, GroupFieldDefinition } from '$lib/grimoire/types';
 
-  const definition = savageWorlds;
+  const definition = SavageWorlds;
   const stepIndex = writable(0);
 
   // Create character state with default values
@@ -20,7 +23,7 @@
 
   function getFieldDefFromPath(path: string): FieldDefinition {
     const segments = path.split('.');
-    let node = savageWorlds.character[segments[0]];
+    let node = SavageWorlds.character[segments[0]];
     if (!node) {
       throw new Error(`Field definition not found for path: ${path}`);
     }
@@ -52,12 +55,12 @@
 <main class="p-4 space-y-4">
   <h1 class="text-2xl font-bold">{definition.name}</h1>
 
-    <h2>Step: {$currentStep.key}</h2>
-    <form>
-      {#each $currentStep.fields as path (path)}
-        <Field {characterState} fieldDef={getFieldDefFromPath(path)} {path} />
-      {/each}
-    </form>
+  <h2>Step: {$currentStep.key}</h2>
+  <form>
+    {#each $currentStep.fields as path (path)}
+      <Field {characterState} fieldDef={getFieldDefFromPath(path)} {path} />
+    {/each}
+  </form>
 
   <div class="flex gap-4">
     <button onclick={prev} class="bg-gray-200 rounded px-4 py-2">Previous</button>

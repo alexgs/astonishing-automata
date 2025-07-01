@@ -22,6 +22,7 @@
     "apps/alustriel",
     "apps/bruenor",
     "apps/chenowyn",
+    "packages/grimoire",
     "packages/state-machine"
   ],
   "devDependencies": {

@@ -1,0 +1,33 @@
+{
+  "name": "@automata/grimoire",
+  "version": "0.1.0",
+  "description": "Constraint evaluator library for Automata Character Builder",
+  "author": {
+    "email": "alex.nebula99@gmail.com",
+    "name": "Alex Gates-Shannon"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
+  "license": "Elastic License 2.0",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexgs/automata-character-builder.git"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "tsup": "^8.4.0"
+  }
+}

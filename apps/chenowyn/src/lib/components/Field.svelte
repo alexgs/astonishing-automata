@@ -5,9 +5,7 @@
 <script lang="ts">
   import { type Writable } from 'svelte/store';
 
-  import { evaluateField } from '$lib/grimoire/constraint-service';
-  import { savageWorlds } from '$lib/grimoire/savage-worlds';
-  import type { FieldDefinition } from '$lib/grimoire/types';
+  import { type FieldDefinition, SavageWorlds, evaluateField } from '@automata/grimoire';
 
   interface Props {
     characterState: Writable<Record<string, unknown>>;
@@ -36,7 +34,7 @@
 
     // Use output from `updateField` to avoid potentially evaluating constraints
     //   on stale data immediately after input.
-    const violations = evaluateField(path, nextState, savageWorlds);
+    const violations = evaluateField(path, nextState, SavageWorlds);
     error = violations.length > 0 ? violations[0].reason : null;
   }
 
