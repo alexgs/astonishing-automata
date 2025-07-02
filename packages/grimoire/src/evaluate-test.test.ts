@@ -2,6 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { ConstraintError } from './errors';
 import { evaluateTest } from './evaluate-test';
 
 describe('Function `evaluateTest`', () => {
@@ -15,6 +16,11 @@ describe('Function `evaluateTest`', () => {
       expect(evaluateTest({ $eq: 42 }, 41)).toBe(false);
       expect(evaluateTest({ $eq: 'foo' }, 'bar')).toBe(false);
     });
+
+    it('throws an error for complex types', () => {
+      expect(() => evaluateTest({ $eq: { foo: 'bar' } }, { foo: 'bar' }))
+        .toThrow(ConstraintError);
+    });
   });
 
   describe('operator `$neq`', () => {
@@ -25,6 +31,11 @@ describe('Function `evaluateTest`', () => {
 
     it('returns `false` for equal values', () => {
       expect(evaluateTest({ $neq: 42 }, 42)).toBe(false);
+    });
+
+    it('throws an error for complex types', () => {
+      expect(() => evaluateTest({ $neq: { foo: 'bar' } }, { foo: 'baz' }))
+        .toThrow(ConstraintError);
     });
   });
 

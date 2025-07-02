@@ -4,6 +4,17 @@
  */
 
 import type { ConditionTest } from './types';
+import { ConstraintError } from './errors';
+
+function isPrimitive(value: unknown): value is string | number | boolean | null | undefined {
+  return (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean' ||
+    typeof value === 'undefined'
+  );
+}
 
 /**
  * @internal
@@ -15,10 +26,16 @@ import type { ConditionTest } from './types';
  */
 export function evaluateTest(test: ConditionTest, value: unknown): boolean {
   if ('$eq' in test) {
+    if (!isPrimitive(test.$eq) || !isPrimitive(value)) {
+      throw new ConstraintError(`$eq only supports primitive types. Received: ${typeof value}`);
+    }
     return value === test.$eq;
   }
 
   if ('$neq' in test) {
+    if (!isPrimitive(test.$neq) || !isPrimitive(value)) {
+      throw new ConstraintError(`$neq only supports primitive types. Received: ${typeof value}`);
+    }
     return value !== test.$neq;
   }
 
