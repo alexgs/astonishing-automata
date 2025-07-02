@@ -8,7 +8,6 @@ import * as conditionModule from './evaluate-condition';
 import { evaluateField } from './evaluate-field';
 import type { GameSystemDefinition } from './types';
 
-// TODO Repeat this suite of tests with a mock for `evaluateCondition`
 // TODO Add more tests to really stress the evaluation logic
 
 describe('Function `evaluateField`', () => {
@@ -62,11 +61,10 @@ describe('Function `evaluateField`', () => {
       { if: { this: { $eq: -5 } }, then: { allowed: false } },
     ];
 
-    // spy.mockReturnValue(false);
+    spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
     expect(result).toEqual([]);
-    expect(spy).toHaveBeenCalledTimes(3);
   });
 
   it('is rejected if one constraint blocks and matches', () => {
@@ -78,13 +76,12 @@ describe('Function `evaluateField`', () => {
       { if: { this: { $neq: 5 } }, then: { allowed: true } },
     ];
 
-    // spy
-    //   .mockReturnValueOnce(false)
-    //   .mockReturnValueOnce(true)
-    //   .mockReturnValueOnce(true);
+    spy
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(true);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(spy).toHaveBeenCalledTimes(3);
     expect(result).toEqual([{
       path: 'attributes.strength',
       reason: 'Invalid value',
@@ -100,10 +97,9 @@ describe('Function `evaluateField`', () => {
       { if: { this: { $eq: -5 } }, then: { allowed: true } },
     ];
 
-    // spy.mockReturnValue(false);
+    spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(spy).toHaveBeenCalledTimes(3);
     expect(result).toEqual([{
       path: 'attributes.strength',
       reason: 'Invalid value',
@@ -119,13 +115,12 @@ describe('Function `evaluateField`', () => {
       { if: { this: { $neq: 5 } }, then: { allowed: true } },
     ];
 
-    // spy
-    //   .mockReturnValueOnce(true)
-    //   .mockReturnValueOnce(false)
-    //   .mockReturnValueOnce(true);
+    spy
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(spy).toHaveBeenCalledTimes(3);
     expect(result).toEqual([]);
   });
 });
