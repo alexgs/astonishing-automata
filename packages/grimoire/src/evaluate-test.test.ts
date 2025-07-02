@@ -3,7 +3,7 @@
  */
 
 // constraintService.test.ts
-import { evaluateTest } from './constraint-service';
+import { evaluateTest } from './evaluate-test';
 
 describe('evaluateTest', () => {
   it('supports $eq', () => {
