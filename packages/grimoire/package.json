@@ -22,12 +22,15 @@
   },
   "scripts": {
     "build": "tsup",
-    "test": "echo \"No tests specified\" && exit 0"
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage"
   },
   "type": "module",
   "types": "./dist/index.d.ts",
   "dependencies": {},
   "devDependencies": {
-    "tsup": "^8.4.0"
+    "tsup": "^8.4.0",
+    "vitest": "^3.2.4"
   }
 }
