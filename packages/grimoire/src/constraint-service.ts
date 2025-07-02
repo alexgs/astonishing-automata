@@ -21,7 +21,17 @@ function getValueAtPath(obj: Record<string, unknown>, path: string): unknown {
   }, obj);
 }
 
-function evaluateCondition(
+/**
+ * @internal
+ * Internal helper — exported for testing purposes only.
+ * Use `evaluateField` for application-level constraint evaluation.
+ *
+ * @param condition - The condition clause of the constraint.
+ * @param fieldValue - The value of the field being validated.
+ * @param state - The full character state used for cross-field lookups.
+ * @returns `true` if the condition passes; otherwise, `false`.
+ */
+export function evaluateCondition(
   condition: Constraint['if'],
   fieldValue: unknown,
   state: Record<string, unknown>,
@@ -82,7 +92,16 @@ export function evaluateField(
   return violations;
 }
 
-function evaluateTest(test: ConditionTest, value: unknown): boolean {
+/**
+ * @internal
+ * Internal helper — exported for testing purposes only.
+ * Use `evaluateField` for application-level constraint evaluation.
+ *
+ * @param test - An object containing a single operator and operand.
+ * @param value - The value to compare against the operator.
+ * @returns `true` if the value satisfies the test; otherwise, `false`.
+ */
+export function evaluateTest(test: ConditionTest, value: unknown): boolean {
   if ('$eq' in test) {
     return value === test.$eq;
   }
