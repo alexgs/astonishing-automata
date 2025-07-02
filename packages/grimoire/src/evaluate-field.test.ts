@@ -8,6 +8,9 @@ import * as conditionModule from './evaluate-condition';
 import { evaluateField } from './evaluate-field';
 import type { GameSystemDefinition } from './types';
 
+// TODO Repeat this suite of tests with a mock for `evaluateCondition`
+// TODO Add more tests to really stress the evaluation logic
+
 describe('Function `evaluateField`', () => {
   const spy = vi.spyOn(conditionModule, 'evaluateCondition');
 
@@ -39,94 +42,90 @@ describe('Function `evaluateField`', () => {
     },
   };
 
-  it('returns an empty array if field definition is missing', () => {
+  it('is allowed if the field definition is missing', () => {
     const result = evaluateField('attributes.dexterity', baseState, baseSystem);
     expect(result).toEqual([]);
   });
 
-  it('returns an empty array if field has no constraints', () => {
+  it('is allowed if there are no constraints', () => {
     const result = evaluateField('attributes.strength', baseState, baseSystem);
+    expect(spy).toHaveBeenCalledTimes(0);
     expect(result).toEqual([]);
   });
 
-  it('returns an empty array if all constraints pass and allow the value', () => {
+  it('is allowed if all constraints block and none match', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
-      { if: { this: { $eq: 10 } }, then: { allowed: true } },
+      { if: { this: { $eq: 15 } }, then: { allowed: false } },
+      { if: { this: { $eq: 5 } }, then: { allowed: false } },
+      { if: { this: { $eq: -5 } }, then: { allowed: false } },
     ];
 
-    spy.mockReturnValue(true);
+    // spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
     expect(result).toEqual([]);
+    expect(spy).toHaveBeenCalledTimes(3);
   });
 
-  it('returns a violation if a constraint passes and disallows the value', () => {
+  it('is rejected if one constraint blocks and matches', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
-      { if: { this: { $eq: 10 } }, then: { allowed: false, reason: 'Too strong' } },
-    ];
-
-    spy.mockReturnValue(true);
-
-    const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([{ path: 'attributes.strength', reason: 'Too strong' }]);
-  });
-
-  it('uses default message if disallowed constraint has no reason', () => {
-    const system: GameSystemDefinition = structuredClone(baseSystem);
-    // @ts-expect-error -- `fields` is valid for group type but not single fields
-    system.character.attributes.fields.strength.constraints = [
+      { if: { this: { $eq: 15 } }, then: { allowed: true } },
       { if: { this: { $eq: 10 } }, then: { allowed: false } },
+      { if: { this: { $neq: 5 } }, then: { allowed: true } },
     ];
 
-    spy.mockReturnValue(true);
+    // spy
+    //   .mockReturnValueOnce(false)
+    //   .mockReturnValueOnce(true)
+    //   .mockReturnValueOnce(true);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([{ path: 'attributes.strength', reason: 'Invalid value' }]);
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(result).toEqual([{
+      path: 'attributes.strength',
+      reason: 'Invalid value',
+    }]);
   });
 
-  it('ignores constraints that don’t pass', () => {
+  it('is rejected if all constraints allow but none match', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
-      { if: { this: { $eq: 5 } }, then: { allowed: false, reason: 'Too weak' } },
+      { if: { this: { $eq: 15 } }, then: { allowed: true } },
+      { if: { this: { $eq: 5 } }, then: { allowed: true } },
+      { if: { this: { $eq: -5 } }, then: { allowed: true } },
     ];
 
-    spy.mockReturnValue(false);
+    // spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([]);
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(result).toEqual([{
+      path: 'attributes.strength',
+      reason: 'Invalid value',
+    }]);
   });
 
-  it('prefers first matching disallowed constraint even if later ones allow', () => {
+  it('is allowed if all "allow" constraints match and no "block" constraints match', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
-      { if: { this: { $eq: 10 } }, then: { allowed: false, reason: 'Nope' } },
       { if: { this: { $eq: 10 } }, then: { allowed: true } },
+      { if: { this: { $eq: 20 } }, then: { allowed: false } },
+      { if: { this: { $neq: 5 } }, then: { allowed: true } },
     ];
 
-    spy.mockImplementation(() => true);
+    // spy
+    //   .mockReturnValueOnce(true)
+    //   .mockReturnValueOnce(false)
+    //   .mockReturnValueOnce(true);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([{ path: 'attributes.strength', reason: 'Nope' }]);
-  });
-
-  it('short-circuits on an allowed=true constraint', () => {
-    const system: GameSystemDefinition = structuredClone(baseSystem);
-    // @ts-expect-error -- `fields` is valid for group type but not single fields
-    system.character.attributes.fields.strength.constraints = [
-      { if: { this: { $eq: 10 } }, then: { allowed: true } },
-      { if: { this: { $eq: 10 } }, then: { allowed: false, reason: 'Should not run' } },
-    ];
-
-    spy.mockReturnValue(true);
-
-    const result = evaluateField('attributes.strength', baseState, system);
+    expect(spy).toHaveBeenCalledTimes(3);
     expect(result).toEqual([]);
-    expect(spy).toHaveBeenCalledTimes(1); // confirms short-circuit behavior
   });
 });

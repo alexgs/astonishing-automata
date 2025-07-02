@@ -10,6 +10,8 @@ import type {
   GameSystemDefinition,
 } from './types';
 
+// TODO I kinda think there should be a boolean in the returned object just to be explicit about whether the field is valid or not.
+
 export function evaluateField(
   path: string,
   state: Record<string, unknown>,
