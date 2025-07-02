@@ -47,7 +47,7 @@ export function evaluateTest(test: ConditionTest, value: unknown): boolean {
   }
 
   if ('$count' in test && Array.isArray(value)) {
-    return evaluateTest(test.$count!, value.length);
+    return evaluateTest(test.$count, value.length);
   }
 
   return false;
