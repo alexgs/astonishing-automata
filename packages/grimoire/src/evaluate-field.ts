@@ -28,27 +28,29 @@ export function evaluateField(
 
   let allowed = true;
   let failureReason: string | null = null;
+  let wasExplicitlyDisallowed = false;
 
   for (const constraint of fieldDef.constraints) {
     const passed = evaluateCondition(constraint.if, fieldValue, state);
 
     if (passed && constraint.then.allowed === true) {
-      // Value is explicitly allowed — short-circuit
-      allowed = true;
-      failureReason = null;
-      break;
+      if (!wasExplicitlyDisallowed) {
+        // Short-circuit only if no disallowed rule has matched yet
+        allowed = true;
+        failureReason = null;
+        break;
+      }
     }
 
     if (passed && constraint.then.allowed === false) {
-      // Failed this rule, but others might still allow it
+      wasExplicitlyDisallowed = true;
       allowed = false;
       failureReason = constraint.then.reason ?? 'Invalid value';
     }
 
     if (!passed && constraint.then.allowed === true) {
-      // Rule tried to allow something, but didn’t match — keep checking
+      // Rule didn't match, so we continue
       allowed = false;
-      // Don't override failureReason unless we don't have one
       failureReason ??= constraint.then.reason ?? 'Invalid value';
     }
   }
