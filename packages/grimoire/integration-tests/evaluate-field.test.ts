@@ -91,10 +91,18 @@ describe('Function `evaluateField`', () => {
 
     const result = evaluateField('attributes.strength', baseState, system);
     expect(spy).toHaveBeenCalledTimes(3);
-    expect(result).toEqual([{
-      path: 'attributes.strength',
-      reason: 'Invalid value',
-    }]);
+    expect(result).toEqual([
+      {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      }, {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      }, {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      },
+    ]);
   });
 
   it('is allowed if all "allow" constraints match and no "block" constraints match', () => {
@@ -194,7 +202,12 @@ describe('Function `evaluateField`', () => {
 
     const result = evaluateField('attributes.strength', baseState, system);
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(result).toEqual([]);
+    expect(result).toEqual([
+      {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      },
+    ]);
   });
 
   it('handles conflicting constraints on the same path', () => {
@@ -223,10 +236,15 @@ describe('Function `evaluateField`', () => {
 
     const result = evaluateField('attributes.strength', baseState, system);
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(result).toEqual([{
-      path: 'attributes.strength',
-      reason: 'Invalid value',
-    }]);
+    expect(result).toEqual([
+      {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      }, {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      }
+    ]);
   });
 
   it('returns true if only disallow constraints exists and none match', () => {

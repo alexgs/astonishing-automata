@@ -100,10 +100,18 @@ describe('Function `evaluateField`', () => {
     spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([{
-      path: 'attributes.strength',
-      reason: 'Invalid value',
-    }]);
+    expect(result).toEqual([
+      {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      }, {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      }, {
+        path: 'attributes.strength',
+        reason: 'Invalid value',
+      },
+    ]);
   });
 
   it('is allowed if all "allow" constraints match and no "block" constraints match', () => {

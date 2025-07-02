@@ -12,6 +12,8 @@ import type {
 
 // TODO I kinda think there should be a boolean in the returned object just to be explicit about whether the field is valid or not.
 
+type ConstraintType = 'allow' | 'block';
+
 export function evaluateField(
   path: string,
   state: Record<string, unknown>,
@@ -24,42 +26,85 @@ export function evaluateField(
   const fieldDef = parentField?.fields?.[fieldKey] as FieldDefinition;
   const fieldValue = getValueAtPath(state, path);
 
-  if (!fieldDef || !fieldDef.constraints) return [];
+  // No constraints → allowed
+  if (!fieldDef || !fieldDef.constraints || fieldDef.constraints.length === 0) {
+    return [];
+  }
 
   const violations: ConstraintViolation[] = [];
 
-  let allowed = true;
-  let failureReason: string | null = null;
-  let wasExplicitlyDisallowed = false;
+  const results = fieldDef.constraints.map((constraint) => {
+    const result = evaluateCondition(constraint.if, fieldValue, state);
+    const type: ConstraintType = constraint.then?.allowed === false ? 'block' : 'allow';
+    return { constraint, result, type };
+  });
 
-  for (const constraint of fieldDef.constraints) {
-    const passed = evaluateCondition(constraint.if, fieldValue, state);
+  // Only blocking constraints and none match → allowed
+  if (results.every((r) => r.type === 'block' && !r.result)) {
+    return [];
+  }
 
-    if (passed && constraint.then.allowed === true) {
-      if (!wasExplicitlyDisallowed) {
-        // Short-circuit only if no disallowed rule has matched yet
-        allowed = true;
-        failureReason = null;
-        break;
+  // Any blocking constraint matches → disallowed
+  if (results.some((r) => r.type === 'block' && r.result)) {
+    results.forEach((r) => {
+      if (r.type === 'block' && r.result) {
+        violations.push({
+          path,
+          reason: r.constraint.then.reason || `Invalid value`,
+        });
       }
-    }
-
-    if (passed && constraint.then.allowed === false) {
-      wasExplicitlyDisallowed = true;
-      allowed = false;
-      failureReason = constraint.then.reason ?? 'Invalid value';
-    }
-
-    if (!passed && constraint.then.allowed === true) {
-      // Rule didn't match, so we continue
-      allowed = false;
-      failureReason ??= constraint.then.reason ?? 'Invalid value';
-    }
+    });
+    return violations;
   }
 
-  if (!allowed) {
-    violations.push({ path, reason: failureReason ?? 'Invalid value' });
+  // Only allowing constraints and none matches → disallowed
+  if (results.every((r) => r.type === 'allow' && !r.result)) {
+    results.forEach((r) => {
+      if (r.type === 'allow' && !r.result) {
+        violations.push({
+          path,
+          reason: r.constraint.then.reason || `Invalid value`,
+        });
+      }
+    });
+    return violations;
   }
 
-  return violations;
+  // All allowing constraints match and no blocking constraints match → allowed
+  if (
+    results.filter((r) => r.type === 'allow').every((r) => r.result) &&
+    results.filter((r) => r.type === 'block').every((r) => !r.result)
+  ) {
+    return [];
+  }
+
+  // All constraints allow but not all match → disallowed
+  if (results.every((r) => r.type === 'allow') && results.some((r) => !r.result)) {
+    results.forEach((r) => {
+      if (r.type === 'allow' && !r.result) {
+        violations.push({
+          path,
+          reason: r.constraint.then.reason || `Invalid value`,
+        });
+      }
+    });
+    return violations;
+  }
+
+  // Both allowing and blocking constraints exist but none match → disallowed
+  if (
+    results.some((r) => r.type === 'allow') &&
+    results.some((r) => r.type === 'block') &&
+    results.every((r) => !r.result)
+  ) {
+    results.forEach((r) => {
+      violations.push({
+        path,
+        reason: r.constraint.then.reason || `Invalid value`,
+      });
+    });
+    return violations;
+  }
+
+  throw new Error(`Unexpected evaluation result for field "${path}"`);
 }
