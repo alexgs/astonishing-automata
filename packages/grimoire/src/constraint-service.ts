@@ -3,17 +3,12 @@
  */
 
 import type {
+  ConditionTest,
   Constraint,
   ConstraintViolation,
   FieldDefinition,
   GameSystemDefinition,
 } from './types';
-
-export type ComparisonOperator =
-  | { $eq: unknown }
-  | { $lt: number }
-  | { $in: unknown[] }
-  | { $count: { $lte: number } };
 
 function getValueAtPath(obj: Record<string, unknown>, path: string): unknown {
   const pathSegments = path.split('.');
@@ -33,30 +28,7 @@ function evaluateCondition(
 ): boolean {
   return Object.entries(condition).every(([ key, test ]) => {
     const value = key === 'this' ? fieldValue : getValueAtPath(state, key);
-
-    if (test.$in) {
-      if (Array.isArray(test.$in)) {
-        return test.$in.includes(value);
-      }
-      return false;
-    }
-
-    if ('$eq' in test) {
-      return value === test.$eq;
-    }
-
-    if (!!test.$lt && typeof value === 'number') {
-      return value < test.$lt;
-    }
-
-    if (!!test.$count && Array.isArray(value)) {
-      const countTests = test.$count;
-      if ('$lte' in countTests) {
-        return value.length <= countTests.$lte;
-      }
-    }
-
-    return false; // Unsupported or failed condition
+    return evaluateTest(test, value);
   });
 }
 
@@ -108,4 +80,44 @@ export function evaluateField(
   }
 
   return violations;
+}
+
+function evaluateTest(test: ConditionTest, value: unknown): boolean {
+  if ('$eq' in test) {
+    return value === test.$eq;
+  }
+
+  if ('$neq' in test) {
+    return value !== test.$neq;
+  }
+
+  if ('$lt' in test && typeof value === 'number') {
+    return value < test.$lt!;
+  }
+
+  if ('$lte' in test && typeof value === 'number') {
+    return value <= test.$lte!;
+  }
+
+  if ('$gt' in test && typeof value === 'number') {
+    return value > test.$gt!;
+  }
+
+  if ('$gte' in test && typeof value === 'number') {
+    return value >= test.$gte!;
+  }
+
+  if ('$in' in test && Array.isArray(test.$in)) {
+    return test.$in.includes(value);
+  }
+
+  if ('$nin' in test && Array.isArray(test.$nin)) {
+    return !test.$nin.includes(value);
+  }
+
+  if ('$count' in test && Array.isArray(value)) {
+    return evaluateTest(test.$count!, value.length);
+  }
+
+  return false;
 }
