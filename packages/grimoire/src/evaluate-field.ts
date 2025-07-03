@@ -10,7 +10,13 @@ import type {
   GameSystemDefinition,
 } from './types';
 
-// TODO I kinda think there should be a boolean in the returned object just to be explicit about whether the field is valid or not.
+type ConstraintResult = {
+  result: false;
+  violations: ConstraintViolation[];
+} | {
+  result: true;
+  violations: null;
+}
 
 type ConstraintType = 'allow' | 'block';
 
@@ -18,7 +24,7 @@ export function evaluateField(
   path: string,
   state: Record<string, unknown>,
   system: GameSystemDefinition,
-): ConstraintViolation[] {
+): ConstraintResult {
   const parentField = getValueAtPath(system.character, path.replace(/\.[^.]+$/, '') as string) as {
     fields?: Record<string, unknown>
   };
@@ -28,7 +34,7 @@ export function evaluateField(
 
   // No constraints → allowed
   if (!fieldDef || !fieldDef.constraints || fieldDef.constraints.length === 0) {
-    return [];
+    return { result: true, violations: null };
   }
 
   const violations: ConstraintViolation[] = [];
@@ -39,72 +45,68 @@ export function evaluateField(
     return { constraint, result, type };
   });
 
-  // Only blocking constraints and none match → allowed
-  if (results.every((r) => r.type === 'block' && !r.result)) {
-    return [];
-  }
-
-  // Any blocking constraint matches → disallowed
-  if (results.some((r) => r.type === 'block' && r.result)) {
-    results.forEach((r) => {
-      if (r.type === 'block' && r.result) {
-        violations.push({
-          path,
-          reason: r.constraint.then.reason || `Invalid value`,
-        });
-      }
-    });
-    return violations;
-  }
-
-  // Only allowing constraints and none matches → disallowed
-  if (results.every((r) => r.type === 'allow' && !r.result)) {
-    results.forEach((r) => {
-      if (r.type === 'allow' && !r.result) {
-        violations.push({
-          path,
-          reason: r.constraint.then.reason || `Invalid value`,
-        });
-      }
-    });
-    return violations;
-  }
-
-  // All allowing constraints match and no blocking constraints match → allowed
-  if (
-    results.filter((r) => r.type === 'allow').every((r) => r.result) &&
-    results.filter((r) => r.type === 'block').every((r) => !r.result)
-  ) {
-    return [];
-  }
-
-  // All constraints allow but not all match → disallowed
-  if (results.every((r) => r.type === 'allow') && results.some((r) => !r.result)) {
-    results.forEach((r) => {
-      if (r.type === 'allow' && !r.result) {
-        violations.push({
-          path,
-          reason: r.constraint.then.reason || `Invalid value`,
-        });
-      }
-    });
-    return violations;
-  }
-
-  // Both allowing and blocking constraints exist but none match → disallowed
-  if (
-    results.some((r) => r.type === 'allow') &&
-    results.some((r) => r.type === 'block') &&
-    results.every((r) => !r.result)
-  ) {
-    results.forEach((r) => {
-      violations.push({
-        path,
-        reason: r.constraint.then.reason || `Invalid value`,
+  // Only blocking constraints
+  if (results.every((r) => r.type === 'block')) {
+    // At least one match → not allowed
+    if (results.some((r) => r.result)) {
+      results.forEach((r) => {
+        if (r.result) {
+          violations.push({
+            path,
+            reason: r.constraint.then?.reason || 'Invalid value',
+          });
+        }
       });
-    });
-    return violations;
-  }
+      return { result: false, violations };
+    } else {
+      // No matches → allowed
+      return { result: true, violations: null };
+    }
 
-  throw new Error(`Unexpected evaluation result for field "${path}"`);
+  // Only allowing constraints
+  } else if (results.every((r) => r.type === 'allow')) {
+    // All match → allowed
+    if (results.every((r) => r.result)) {
+      return { result: true, violations: null };
+    } else {
+      // At least one does not match → not allowed
+      results.forEach((r) => {
+        if (!r.result) {
+          violations.push({
+            path,
+            reason: r.constraint.then?.reason || 'Invalid value',
+          });
+        }
+      });
+      return { result: false, violations };
+    }
+
+  // Mixed constraints
+  } else {
+    // If all "allow" constraints match and no "block" constraints match → allowed
+    if (
+      results.every((r) =>
+        (r.type === 'allow' && r.result) || (r.type === 'block' && !r.result))
+    ) {
+      return { result: true, violations: null };
+
+    // Otherwise → not allowed
+    } else {
+      results.forEach((r) => {
+        if (r.type === 'allow' && !r.result) {
+          violations.push({
+            path,
+            reason: r.constraint.then?.reason || 'Invalid value',
+          });
+        }
+        if (r.type === 'block' && r.result) {
+          violations.push({
+            path,
+            reason: r.constraint.then?.reason || 'Invalid value',
+          });
+        }
+      });
+      return { result: false, violations };
+    }
+  }
 }

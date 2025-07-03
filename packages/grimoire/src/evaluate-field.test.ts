@@ -8,8 +8,6 @@ import * as conditionModule from './evaluate-condition';
 import { evaluateField } from './evaluate-field';
 import type { GameSystemDefinition } from './types';
 
-// TODO Add more tests to really stress the evaluation logic
-
 describe('Function `evaluateField`', () => {
   const spy = vi.spyOn(conditionModule, 'evaluateCondition');
 
@@ -41,18 +39,23 @@ describe('Function `evaluateField`', () => {
     },
   };
 
-  it('is allowed if the field definition is missing', () => {
+  it('returns true if the field definition is missing', () => {
     const result = evaluateField('attributes.dexterity', baseState, baseSystem);
-    expect(result).toEqual([]);
+    expect(result).toEqual({
+      result: true,
+      violations: null,
+    });
   });
 
-  it('is allowed if there are no constraints', () => {
+  it('returns true if there are no constraints', () => {
     const result = evaluateField('attributes.strength', baseState, baseSystem);
-    expect(spy).toHaveBeenCalledTimes(0);
-    expect(result).toEqual([]);
+    expect(result).toEqual({
+      result: true,
+      violations: null,
+    });
   });
 
-  it('is allowed if all constraints block and none match', () => {
+  it('returns true if all constraints block and none match', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
@@ -64,31 +67,36 @@ describe('Function `evaluateField`', () => {
     spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([]);
+    expect(result).toEqual({
+      result: true,
+      violations: null,
+    });
   });
 
-  it('is rejected if one constraint blocks and matches', () => {
+  it('returns false if one constraint blocks and matches', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
-      { if: { this: { $eq: 15 } }, then: { allowed: true } },
-      { if: { this: { $eq: 10 } }, then: { allowed: false } },
-      { if: { this: { $neq: 5 } }, then: { allowed: true } },
+      { if: { this: { $lte: 15 } }, then: { allowed: true } },
+      { if: { this: { $eq: 10 } }, then: { allowed: false, reason: 'Strength must not equal 10' } },
+      { if: { this: { $gte: 5 } }, then: { allowed: true } },
     ];
 
-    spy
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true)
-      .mockReturnValueOnce(true);
+    spy.mockReturnValue(true);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([{
-      path: 'attributes.strength',
-      reason: 'Invalid value',
-    }]);
+    expect(result).toEqual({
+      result: false,
+      violations: [
+        {
+          path: 'attributes.strength',
+          reason: 'Strength must not equal 10',
+        },
+      ],
+    });
   });
 
-  it('is rejected if all constraints allow but none match', () => {
+  it('returns false if all constraints allow but none match', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
@@ -100,21 +108,26 @@ describe('Function `evaluateField`', () => {
     spy.mockReturnValue(false);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([
-      {
-        path: 'attributes.strength',
-        reason: 'Invalid value',
-      }, {
-        path: 'attributes.strength',
-        reason: 'Invalid value',
-      }, {
-        path: 'attributes.strength',
-        reason: 'Invalid value',
-      },
-    ]);
+    expect(result).toEqual({
+      result: false,
+      violations: [
+        {
+          path: 'attributes.strength',
+          reason: 'Invalid value',
+        },
+        {
+          path: 'attributes.strength',
+          reason: 'Invalid value',
+        },
+        {
+          path: 'attributes.strength',
+          reason: 'Invalid value',
+        },
+      ],
+    });
   });
 
-  it('is allowed if all "allow" constraints match and no "block" constraints match', () => {
+  it('returns true if all "allow" constraints match and no "block" constraints match', () => {
     const system: GameSystemDefinition = structuredClone(baseSystem);
     // @ts-expect-error -- `fields` is valid for group type but not single fields
     system.character.attributes.fields.strength.constraints = [
@@ -129,6 +142,9 @@ describe('Function `evaluateField`', () => {
       .mockReturnValueOnce(true);
 
     const result = evaluateField('attributes.strength', baseState, system);
-    expect(result).toEqual([]);
+    expect(result).toEqual({
+      result: true,
+      violations: null,
+    });
   });
 });
