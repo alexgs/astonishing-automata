@@ -53,46 +53,7 @@ export function evaluateField(
       reason: r.constraint.then?.reason || 'Invalid value',
     }));
 
-  let result: boolean = false;
-
-  // Only blocking constraints
-  if (results.every((r) => r.type === 'block')) {
-    // At least one match → not allowed
-    if (results.some((r) => r.result)) {
-      result = false;
-
-    // No matches → allowed
-    } else {
-      result = true;
-    }
-
-  // Only allowing constraints
-  } else if (results.every((r) => r.type === 'allow')) {
-    // All match → allowed
-    if (results.every((r) => r.result)) {
-      result = true;
-
-    // At least one does not match → not allowed
-    } else {
-      result = false;
-    }
-
-  // Mixed constraints
-  } else {
-    // If all "allow" constraints match and no "block" constraints match → allowed
-    if (
-      results.every((r) =>
-        (r.type === 'allow' && r.result) || (r.type === 'block' && !r.result))
-    ) {
-      result = true;
-
-    // Otherwise → not allowed
-    } else {
-      result = false;
-    }
-  }
-
-  if (result) {
+  if (violations.length === 0) {
     return { result: true, violations: null };
   } else {
     return { result: false, violations };

@@ -317,4 +317,25 @@ describe('Function `evaluateField`', () => {
       violations: null,
     });
   });
+
+  it('returns true if all constraints "allow" and only one matches', () => {
+    const system: GameSystemDefinition = structuredClone(baseSystem);
+    // @ts-expect-error -- `fields` is valid for group type but not single fields
+    system.character.attributes.fields.strength.constraints = [
+      { if: { this: { $eq: 10 } }, then: { allowed: true } },
+      { if: { this: { $eq: 20 } }, then: { allowed: true } },
+    ];
+
+    const result = evaluateField('attributes.strength', baseState, system);
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({
+      result: false,
+      violations: [
+        {
+          path: 'attributes.strength',
+          reason: 'Invalid value',
+        },
+      ],
+    });
+  });
 });
