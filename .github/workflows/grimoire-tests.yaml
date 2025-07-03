@@ -1,0 +1,39 @@
+name: Grimoire
+
+on:
+  push:
+    branches: [ "develop", "feature/aa-51-update-github-actions" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: TurboRepo cache setup
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --include=dev
+        env:
+          FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+
+      - name: Build app and dependencies
+        run: npx turbo run build --filter=grimoire...
+
+      - name: Grimoire unit tests
+        run: npm -w packages/grimoire run test
