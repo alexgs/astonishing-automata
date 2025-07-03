@@ -5,6 +5,9 @@
 import { StepName } from '@automata/state-machine';
 import { ICommand } from '@nestjs/cqrs';
 
+/**
+ * @deprecated
+ */
 export class ChangeStepCommand implements ICommand {
   constructor(
     public readonly characterId: string,

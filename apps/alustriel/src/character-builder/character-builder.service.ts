@@ -18,6 +18,9 @@ import { SelectSpeciesDto } from './dto/select-species.dto';
 export class CharacterBuilderService {
   constructor(private readonly commandBus: CommandBus) {}
 
+  /**
+   * @deprecated
+   */
   async changeStep(changeStepDto: ChangeStepDto) {
     return this.commandBus.execute<
       ChangeStepCommand,
@@ -30,6 +33,9 @@ export class CharacterBuilderService {
     );
   }
 
+  /**
+   * @deprecated
+   */
   async selectClass(selectClassDto: SelectClassDto) {
     return this.commandBus.execute<
       SelectClassCommand,
@@ -42,6 +48,9 @@ export class CharacterBuilderService {
     );
   }
 
+  /**
+   * @deprecated
+   */
   async selectSpecies(selectSpeciesDto: SelectSpeciesDto) {
     return this.commandBus.execute<
       SelectSpeciesCommand,

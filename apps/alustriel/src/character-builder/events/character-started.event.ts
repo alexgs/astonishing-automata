@@ -18,6 +18,9 @@ export type CharacterStartedEventPayload = z.infer<
   typeof CharacterStartedEventPayloadSchema
 >;
 
+/**
+ * @deprecated
+ */
 export class CharacterStartedEvent
   implements
     BaseEvent<typeof EVENT_TYPES.STARTED, CharacterStartedEventPayload>,

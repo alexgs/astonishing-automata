@@ -15,4 +15,7 @@ const ChangeStepDtoSchema = z.object({
 });
 
 // Type inference from the schema
+/**
+ * @deprecated
+ */
 export class ChangeStepDto extends createZodDto(ChangeStepDtoSchema) {}

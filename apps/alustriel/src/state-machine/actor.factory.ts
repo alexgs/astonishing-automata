@@ -17,6 +17,9 @@ interface GetActorReturnType {
   version: number;
 }
 
+/**
+ * @deprecated
+ */
 @Injectable()
 export class ActorFactory {
   constructor(

@@ -17,6 +17,9 @@ export type ClassSelectedEventPayload = z.infer<
   typeof ClassSelectedEventPayloadSchema
 >;
 
+/**
+ * @deprecated
+ */
 export class ClassSelectedEvent
   implements
     BaseEvent<typeof EVENT_TYPES.CLASS_SELECTED, ClassSelectedEventPayload>,

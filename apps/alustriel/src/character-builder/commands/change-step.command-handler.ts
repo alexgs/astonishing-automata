@@ -12,6 +12,9 @@ import { InvalidStateTransitionException } from '../exceptions/invalid-state-tra
 
 import { ChangeStepCommand } from './change-step.command';
 
+/**
+ * @deprecated
+ */
 @CommandHandler(ChangeStepCommand)
 export class ChangeStepCommandHandler
   implements ICommandHandler<ChangeStepCommand>

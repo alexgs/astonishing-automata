@@ -17,6 +17,9 @@ type StateMachineEvent = {
   type: string;
 };
 
+/**
+ * @deprecated
+ */
 export function createStateMachineEvent(
   eventStoreEvent: EventStoreReadModel,
 ): StateMachineEvent {

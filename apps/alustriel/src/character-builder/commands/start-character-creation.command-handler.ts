@@ -11,6 +11,9 @@ import { CharacterBuilderEventFactory } from '../events/character-builder.event-
 
 import { StartCharacterCreationCommand } from './start-character-creation.command';
 
+/**
+ * @deprecated
+ */
 @CommandHandler(StartCharacterCreationCommand)
 export class StartCharacterCreationHandler
   implements ICommandHandler<StartCharacterCreationCommand>

@@ -23,6 +23,9 @@ export class CharacterBuilderController {
     private readonly logger: Logger,
   ) {}
 
+  /**
+   * @deprecated
+   */
   @Post('change-step')
   async changeStep(@Body() changeStepDto: ChangeStepDto) {
     this.logger.debug(
@@ -40,6 +43,9 @@ export class CharacterBuilderController {
     }
   }
 
+  /**
+   * @deprecated
+   */
   @Post('select-class')
   async selectClass(@Body() selectClassDto: SelectClassDto) {
     this.logger.debug(
@@ -50,6 +56,9 @@ export class CharacterBuilderController {
     return { data };
   }
 
+  /**
+   * @deprecated
+   */
   @Post('select-species')
   async selectSpecies(@Body() selectSpeciesDto: SelectSpeciesDto) {
     this.logger.debug(

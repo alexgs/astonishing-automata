@@ -21,6 +21,9 @@ export interface StepChangedEventPayload {
   previousStep: StepName;
 }
 
+/**
+ * @deprecated
+ */
 export class StepChangedEvent
   implements
     BaseEvent<typeof EVENT_TYPES.STEP_CHANGED, StepChangedEventPayload>,

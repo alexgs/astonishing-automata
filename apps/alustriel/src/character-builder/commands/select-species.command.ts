@@ -4,6 +4,9 @@
 
 import { ICommand } from '@nestjs/cqrs';
 
+/**
+ * @deprecated
+ */
 export class SelectSpeciesCommand implements ICommand {
   constructor(
     public readonly characterId: string,

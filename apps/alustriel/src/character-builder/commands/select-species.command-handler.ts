@@ -13,6 +13,9 @@ import { InvalidActionException } from '../exceptions/invalid-action.exception';
 
 import { SelectSpeciesCommand } from './select-species.command';
 
+/**
+ * @deprecated
+ */
 @CommandHandler(SelectSpeciesCommand)
 export class SelectSpeciesCommandHandler
   implements ICommandHandler<SelectSpeciesCommand>

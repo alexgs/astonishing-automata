@@ -32,6 +32,9 @@ export class CharacterBuilderEventFactory {
     private readonly logger: Logger,
   ) {}
 
+  /**
+   * @deprecated
+   */
   public async createCharacterStartedEvent(characterId: string) {
     const payload: CharacterStartedEventPayload = {
       characterId,
@@ -47,6 +50,9 @@ export class CharacterBuilderEventFactory {
     });
   }
 
+  /**
+   * @deprecated
+   */
   public createClassSelectedEvent(args: CreateClassSelectedEventArgs) {
     const payload: ClassSelectedEventPayload = {
       characterId: args.characterId,
@@ -62,6 +68,9 @@ export class CharacterBuilderEventFactory {
     });
   }
 
+  /**
+   * @deprecated
+   */
   public createSpeciesSelectedEvent(args: CreateSpeciesSelectedEventArgs) {
     const payload: SpeciesSelectedEventPayload = {
       characterId: args.characterId,
@@ -77,6 +86,9 @@ export class CharacterBuilderEventFactory {
     });
   }
 
+  /**
+   * @deprecated
+   */
   public async createStepChangedEvent(
     characterId: string,
     nextStep: StepName,

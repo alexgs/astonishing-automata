@@ -20,4 +20,7 @@ const SelectClassDtoSchema = z.object({
   }),
 });
 
+/**
+ * @deprecated
+ */
 export class SelectClassDto extends createZodDto(SelectClassDtoSchema) {}

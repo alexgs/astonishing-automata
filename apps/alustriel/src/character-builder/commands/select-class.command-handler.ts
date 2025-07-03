@@ -13,6 +13,9 @@ import { InvalidActionException } from '../exceptions/invalid-action.exception';
 
 import { SelectClassCommand } from './select-class.command';
 
+/**
+ * @deprecated
+ */
 @CommandHandler(SelectClassCommand)
 export class SelectClassCommandHandler
   implements ICommandHandler<SelectClassCommand>
