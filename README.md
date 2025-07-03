@@ -1,8 +1,9 @@
 # Automata Character Builder
 
-A modular and extensible TTRPG character builder.
+A modular and extensible TTRPG character builder built for system flexibility, nonlinear workflows, and deep validation.
 
 ## License
+
 This software is licensed under the **Elastic License 2.0 (ELv2)**.
 
 - **Individuals and non-profits** may self-host and modify it freely.
@@ -16,41 +17,43 @@ For more details, see the full [Elastic License 2.0](LICENSE.md). For commercial
 
 ## Overview
 
-The Automata Character Builder is a web-based character creation tool designed to support D&D 5e (2014) with plans for future expansion into a customizable and generic TTRPG character builder. It follows a state machine-based approach to guide players through the character creation and leveling-up process while maintaining flexibility.
+Automata Character Builder is a schema-driven character creation platform, currently focused on support for Savage Worlds Adventure Edition (SWADE), with future plans for additional game systems. It uses a **constraint-based editing model** instead of a rigid step-by-step flow, enabling both flexibility and strong validation.
 
-The project is built using a monorepo structure with `npm workspaces` and consists of the following key technologies:
+### Key Technologies
 
-- **Backend:** NestJS with CQRS (Command Query Responsibility Segregation)
-- **Frontend:** SvelteKit for an interactive UI
-- **Database:** PostgreSQL with Flyway for schema migrations
-- **State Management:** XState for defining character creation states
-- **Rendering Engine (Future):** Phaser or PixiJS for visual elements
+- **Frontend:** SvelteKit (UI)
+- **Backend:** NestJS with CQRS and Event Sourcing
+- **Validation:** Shared constraint engine used on both front-end and back-end
+- **Database:** PostgreSQL (with Flyway for migrations)
+- **Monorepo:** Managed with `npm workspaces`
 
-## Naming convention
+## Design Highlights
 
-Apps in this project are named for [prominent characters][1] from the _Forgotten Realms_ setting.
+- **Schema-Driven UI**
+  The system definition specifies editable fields, their types, and validation constraints. This enables UI rendering and validation to be dynamic and consistent across systems.
 
-[1]: https://forgottenrealms.fandom.com/wiki/Heroes%27_Lorebook#Characters
+- **Constraint-Based Editing**
+  Each field is governed by declarative constraints (e.g., "Wizards cannot wear heavy armor"), which are evaluated in real time. This eliminates the need for hardcoded rule logic.
+
+- **CQRS + Event Sourcing**
+  All edits flow through command handlers, which validate via the shared constraint engine. Events are recorded and used to rebuild state, ensuring full auditability.
+
+- **Nonlinear Workflow**
+  Character editing does not follow a strict FSM. Users can navigate freely between steps, and validation is context-sensitive rather than step-dependent.
 
 ## Core Features
 
-- **State Machine-Driven Character Creation**
-  - Guided process ensuring valid choices
-  - Clear separation of steps (e.g., selecting species, class, background, abilities)
-- **Leveling System**
-  - Modular approach to handling class progression
-  - Integration with CQRS to track changes over time
-- **Future Features**
-  - Expandability for other TTRPGs
-  - API for external integrations (e.g., VTT import)
-  - Visual rendering of character sheets
-  - Custom rule support, such as
-    - `Ancestries & Cultures` supplements for species and cultural separation
-    - `Advanced Spell Point System` for spellcasting
+- **Constraint Evaluation**
+  All rules about valid, visible, or allowed values are encoded as constraints evaluated using MongoDB-style syntax.
 
-### State Machine-Driven Workflow
+- **Local-First with Backend Sync**
+  The UI uses optimistic updates and submits changes at defined sync points (e.g., on screen transitions or save).
 
-The Automata Character Builder uses a state machine architecture (powered by XState) to manage the complex workflow of character creation and leveling. Each step&mdash;such as selecting a species, choosing a class, and assigning ability scores&mdash;is represented as a distinct state with defined transitions. This approach ensures that choices are validated in real-time, prevents invalid selections, and allows for non-linear progression where appropriate. By structuring character creation as a stateful process, we maintain flexibility for different RPG systems while enforcing the logical flow required for a structured build process.
+- **System Extensibility**
+  New game systems can be added by authoring a system definition schema. No need to rewrite UI or core logic.
+
+- **Event Auditability**
+  Every change to a character is captured as an event, allowing for robust history tracking and potential undo/redo workflows.
 
 ## Project Structure
 
@@ -59,14 +62,25 @@ The Automata Character Builder uses a state machine architecture (powered by XSt
 ├── apps/
 │   ├── alustriel/      # NestJS API
 │   ├── bruenor/        # SvelteKit UI
-├── database/           # Configuration and stuff for PostrgeSQL
-├── docs/               # Project documentation
-├── flyway/             # Database schema migrations
+├── database/           # PostgreSQL config and helpers
+├── docs/               # Developer documentation
+├── flyway/             # Schema migrations
 ├── README.md
 ```
 
-## Design Considerations
+## Naming Convention
 
-- **CQRS & Event Sourcing:** Allows tracking of character history and potential undo functionality.
-- **Modularity:** Each piece of functionality (e.g., character states, class progression) is isolated for maintainability.
-- **Extensibility:** Designed to support other RPG systems beyond D&D 5e.
+Applications are named after [Forgotten Realms characters][1], following an internal theme.
+
+[1]: https://forgottenrealms.fandom.com/wiki/Heroes%27_Lorebook#Characters
+
+## Future Directions
+
+- Additional game systems (Fate, D&D 5e, custom systems)
+- Visual character sheet rendering
+- VTT integration and API exposure
+- Support for supplements (e.g., *Ancestries & Cultures*, *Advanced Spell Points*)
+
+## Summary
+
+Automata is built to provide a flexible, deeply validated character editing experience that can scale across multiple TTRPG systems. Its use of constraint-driven validation, CQRS, and shared schemas makes it highly adaptable and maintainable for both developers and system designers.
