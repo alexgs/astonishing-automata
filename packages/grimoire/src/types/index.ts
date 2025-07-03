@@ -6,15 +6,12 @@ export type CharacterSchema = {
   [key: string]: FieldDefinition | GroupFieldDefinition;
 };
 
+export type ConditionTest =
+  | SimpleOperator
+  | { $count: SimpleOperator };
+
 export type Constraint = {
-  if: {
-    [field: string]: {
-      $count?: { $lte: number };
-      $eq?: unknown;
-      $in?: Array<unknown>;
-      $lt?: number;
-    }
-  };
+  if: { [field: string]: ConditionTest };
   then: { allowed: boolean; reason?: string };
 };
 
@@ -42,6 +39,16 @@ export type GroupFieldDefinition = {
   type: 'group';
   fields: { [key: string]: FieldDefinition };
 };
+
+export type SimpleOperator =
+  | { $eq: unknown }
+  | { $neq: unknown }
+  | { $lt: number }
+  | { $lte: number }
+  | { $gt: number }
+  | { $gte: number }
+  | { $in: unknown[] }
+  | { $nin: unknown[] }
 
 export type StepDefinition = {
   key: string;
