@@ -8,5 +8,6 @@
     "test": {
       "dependsOn": ["build"]
     }
-  }
+  },
+  "team": "alexgs-projects-82dfc748"
 }
