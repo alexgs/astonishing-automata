@@ -33,7 +33,7 @@ jobs:
           FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
 
       - name: Build app and dependencies
-        run: npx turbo run build --filter=grimoire...
+        run: npx turbo run build --filter=@automata/grimoire...
 
       - name: Grimoire unit tests
         run: npm -w packages/grimoire run test
