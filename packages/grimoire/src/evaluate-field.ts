@@ -37,48 +37,44 @@ export function evaluateField(
     return { result: true, violations: null };
   }
 
-  const violations: ConstraintViolation[] = [];
-
   const results = fieldDef.constraints.map((constraint) => {
     const result = evaluateCondition(constraint.if, fieldValue, state);
     const type: ConstraintType = constraint.then?.allowed === false ? 'block' : 'allow';
     return { constraint, result, type };
   });
 
+  const violations = results
+    .filter((r) =>
+      (r.type === 'allow' && !r.result) ||
+      (r.type === 'block' && r.result)
+    )
+    .map((r) => ({
+      path,
+      reason: r.constraint.then?.reason || 'Invalid value',
+    }));
+
+  let result: boolean = false;
+
   // Only blocking constraints
   if (results.every((r) => r.type === 'block')) {
     // At least one match → not allowed
     if (results.some((r) => r.result)) {
-      results.forEach((r) => {
-        if (r.result) {
-          violations.push({
-            path,
-            reason: r.constraint.then?.reason || 'Invalid value',
-          });
-        }
-      });
-      return { result: false, violations };
+      result = false;
+
+    // No matches → allowed
     } else {
-      // No matches → allowed
-      return { result: true, violations: null };
+      result = true;
     }
 
   // Only allowing constraints
   } else if (results.every((r) => r.type === 'allow')) {
     // All match → allowed
     if (results.every((r) => r.result)) {
-      return { result: true, violations: null };
+      result = true;
+
+    // At least one does not match → not allowed
     } else {
-      // At least one does not match → not allowed
-      results.forEach((r) => {
-        if (!r.result) {
-          violations.push({
-            path,
-            reason: r.constraint.then?.reason || 'Invalid value',
-          });
-        }
-      });
-      return { result: false, violations };
+      result = false;
     }
 
   // Mixed constraints
@@ -88,25 +84,17 @@ export function evaluateField(
       results.every((r) =>
         (r.type === 'allow' && r.result) || (r.type === 'block' && !r.result))
     ) {
-      return { result: true, violations: null };
+      result = true;
 
     // Otherwise → not allowed
     } else {
-      results.forEach((r) => {
-        if (r.type === 'allow' && !r.result) {
-          violations.push({
-            path,
-            reason: r.constraint.then?.reason || 'Invalid value',
-          });
-        }
-        if (r.type === 'block' && r.result) {
-          violations.push({
-            path,
-            reason: r.constraint.then?.reason || 'Invalid value',
-          });
-        }
-      });
-      return { result: false, violations };
+      result = false;
     }
+  }
+
+  if (result) {
+    return { result: true, violations: null };
+  } else {
+    return { result: false, violations };
   }
 }
