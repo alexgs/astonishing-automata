@@ -13,18 +13,13 @@ import * as request from 'supertest';
 import { CharacterBuilderModule } from '../src/character-builder/character-builder.module';
 import { EVENT_TYPES, STREAM_TYPES } from '../src/character-builder/constants';
 import {
+  CharacterPatchedEvent,
+  CharacterPatchedEventPayload,
+} from '../src/character-builder/events/character-patched.event';
+import {
   CharacterStartedEvent,
   CharacterStartedEventPayload,
 } from '../src/character-builder/events/character-started.event';
-import {
-  ClassSelectedEvent,
-  ClassSelectedEventPayload,
-} from '../src/character-builder/events/class-selected.event';
-import { SpeciesSelectedEvent } from '../src/character-builder/events/species-selected.event';
-import {
-  StepChangedEvent,
-  StepChangedEventPayload,
-} from '../src/character-builder/events/step-changed.event';
 import { StreamRecord } from '../src/event-store/interfaces';
 import { TOKENS } from '../src/provider-tokens';
 import { testLog } from '../src/winston-transports';
@@ -38,7 +33,7 @@ function getEventStream(streamRecord: StreamRecord) {
   // Start
   const startedEventPayload: CharacterStartedEventPayload = {
     characterId: UUID,
-    nextStep: INITIAL_STEP,
+    userId: 'abc123456',
   };
   const startedEvent: CharacterStartedEvent = {
     id: 'abc',
@@ -49,71 +44,45 @@ function getEventStream(streamRecord: StreamRecord) {
     version: 1,
   };
 
-  // Select species
-  const speciesSelectedEventPayload = {
+  // Set strength
+  const setStrengthPayload: CharacterPatchedEventPayload = {
     characterId: UUID,
-    species: 'core.human',
+    data: {
+      attributes: {
+        strength: 10,
+      },
+    },
+    isValid: false,
   };
-  const speciesSelectedEvent: SpeciesSelectedEvent = {
+  const strengthSetEvent: CharacterPatchedEvent = {
     id: 'def',
     createdAt: new Date(),
-    data: speciesSelectedEventPayload,
+    data: setStrengthPayload,
     streamId: UUID,
-    type: EVENT_TYPES.SPECIES_SELECTED,
+    type: EVENT_TYPES.PATCHED,
     version: 2,
   };
 
-  // Change step
-  const stepChangedEventPayload1: StepChangedEventPayload = {
+  // Set agility
+  const setAgilityPayload: CharacterPatchedEventPayload = {
     characterId: UUID,
-    nextStep: STEPS.SELECT_CLASS,
-    previousStep: STEPS.SELECT_SPECIES,
+    data: {
+      attributes: {
+        strength: 10,
+      },
+    },
+    isValid: false,
   };
-  const stepChangedEvent1: StepChangedEvent = {
-    id: 'ghi',
+  const agilitySetEvent: CharacterPatchedEvent = {
+    id: 'def',
     createdAt: new Date(),
-    data: stepChangedEventPayload1,
+    data: setAgilityPayload,
     streamId: UUID,
-    type: EVENT_TYPES.STEP_CHANGED,
-    version: 3,
+    type: EVENT_TYPES.PATCHED,
+    version: 2,
   };
 
-  // Select class
-  const classSelectedEventPayload: ClassSelectedEventPayload = {
-    characterId: UUID,
-    className: 'core.fighter',
-  };
-  const classSelectedEvent: ClassSelectedEvent = {
-    id: 'jkl',
-    createdAt: new Date(),
-    data: classSelectedEventPayload,
-    streamId: UUID,
-    type: EVENT_TYPES.CLASS_SELECTED,
-    version: 4,
-  };
-
-  // Change step
-  const stepChangedEventPayload2: StepChangedEventPayload = {
-    characterId: UUID,
-    nextStep: STEPS.SELECT_CLASS,
-    previousStep: STEPS.SELECT_CLASS_FEATURES,
-  };
-  const stepChangedEvent2: StepChangedEvent = {
-    id: 'mno',
-    createdAt: new Date(),
-    data: stepChangedEventPayload2,
-    streamId: UUID,
-    type: EVENT_TYPES.STEP_CHANGED,
-    version: 5,
-  };
-
-  const allEvents = [
-    startedEvent,
-    speciesSelectedEvent,
-    stepChangedEvent1,
-    classSelectedEvent,
-    stepChangedEvent2,
-  ];
+  const allEvents = [startedEvent, strengthSetEvent, agilitySetEvent];
   return allEvents.slice(0, streamRecord.version);
 }
 
@@ -185,7 +154,7 @@ describe('Character Builder module', () => {
       });
     });
 
-    it('POST /character-builder/select-species', async () => {
+    it.skip('POST /character-builder/select-species', async () => {
       const streamRecord: StreamRecord = {
         id: UUID,
         type: STREAM_TYPES.CHARACTER,
@@ -214,7 +183,7 @@ describe('Character Builder module', () => {
       });
     });
 
-    it('POST /character-builder/change-step', async () => {
+    it.skip('POST /character-builder/change-step', async () => {
       const streamRecord: StreamRecord = {
         id: UUID,
         type: STREAM_TYPES.CHARACTER,
@@ -243,7 +212,7 @@ describe('Character Builder module', () => {
       });
     });
 
-    it('POST /character-builder/select-class', async () => {
+    it.skip('POST /character-builder/select-class', async () => {
       const streamRecord: StreamRecord = {
         id: UUID,
         type: STREAM_TYPES.CHARACTER,

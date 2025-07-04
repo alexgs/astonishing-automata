@@ -9,6 +9,7 @@
     "ts"
   ],
   "moduleNameMapper": {
+    "^@automata/grimoire$": "<rootDir>/../../../packages/grimoire/src",
     "^@automata/state-machine$": "<rootDir>/../../../packages/state-machine/src"
   },
   "rootDir": "src",
