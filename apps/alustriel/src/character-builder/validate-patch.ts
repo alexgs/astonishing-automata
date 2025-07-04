@@ -11,18 +11,6 @@ export interface PatchValidationResult {
   invalidFields: { key: string; reason?: string }[];
 }
 
-function getLeafPaths(obj: unknown, prefix: string[] = []): string[][] {
-  if (typeof obj !== 'object' || obj === null) return [prefix];
-
-  const paths: string[][] = [];
-  for (const key of Object.keys(obj)) {
-    const value = (obj as Record<string, unknown>)[key];
-    const subPaths = getLeafPaths(value, [...prefix, key]);
-    paths.push(...subPaths);
-  }
-  return paths;
-}
-
 export function validatePatch(
   system: GameSystemDefinition,
   currentState: Record<string, unknown>,
@@ -31,9 +19,8 @@ export function validatePatch(
   const nextState = merge(currentState, patch);
   const invalidFields: { key: string; reasons?: string[] }[] = [];
 
-  const leafPaths = getLeafPaths(nextState);
-  for (const pathArray of leafPaths) {
-    const fieldKey = pathArray.join('.');
+  const allFieldKeys = system.steps.flatMap((step) => step.fields);
+  for (const fieldKey of allFieldKeys) {
     const result = evaluateField(fieldKey, nextState, system);
 
     if (!result.result) {
