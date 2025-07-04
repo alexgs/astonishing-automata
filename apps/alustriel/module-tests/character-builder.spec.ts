@@ -149,7 +149,6 @@ describe('Character Builder module', () => {
       expect(response.body).toEqual({
         data: {
           characterId: UUID,
-          stepName: INITIAL_STEP,
         },
       });
     });
