@@ -5,11 +5,6 @@
 export const EVENT_TYPES = {
   STARTED: 'event-types.character-builder.character-started',
   PATCHED: 'event-types.character-builder.character-patched',
-
-  // The following event types are deprecated
-  CLASS_SELECTED: 'event-types.character-builder.class-selected',
-  SPECIES_SELECTED: 'event-types.character-builder.species-selected',
-  STEP_CHANGED: 'event-types.character-builder.step-changed',
 } as const;
 
 export const STREAM_TYPES = {

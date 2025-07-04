@@ -10,7 +10,6 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import { AuthModule } from './auth/auth.module';
 import { CharacterBuilderModule } from './character-builder/character-builder.module';
-import { StateMachineModule } from './state-machine/state-machine.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -20,7 +19,6 @@ import { UserModule } from './user/user.module';
     CharacterBuilderModule,
     ConfigModule.forRoot(),
     CqrsModule.forRoot(),
-    StateMachineModule,
     UserModule,
   ],
   providers: [
