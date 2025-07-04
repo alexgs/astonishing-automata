@@ -2,12 +2,14 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { SavageWorlds } from '@automata/grimoire';
 import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { EventStoreService } from '../../event-store/event-store.service';
 import { CharacterHydrator } from '../character.hydrator';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
+import { validatePatch } from '../validate-patch';
 
 import { PatchCharacterCommand } from './patch-character.command';
 
@@ -27,8 +29,11 @@ export class PatchCharacterCommandHandler
       command.characterId,
     );
 
-    // TODO Check constraints
-    const isValid = true; // Implement validation logic here
+    const { isValid } = validatePatch(
+      SavageWorlds,
+      character.data,
+      command.data,
+    );
 
     const event = await this.eventFactory.createCharacterPatchedEvent({
       characterId: command.characterId,

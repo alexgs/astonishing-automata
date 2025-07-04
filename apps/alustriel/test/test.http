@@ -15,7 +15,7 @@ Content-Type: application/json
     "data": {
         "name": "Test Character",
         "attributes": {
-            "strength": 6
+            "strength": 7
         }
     }
 }

@@ -3,7 +3,7 @@
  */
 
 import { Injectable, Logger } from '@nestjs/common';
-import deepmerge from 'deepmerge';
+import { merge } from 'lodash-es';
 
 import { EventStoreService } from '../event-store/event-store.service';
 import { EventStoreReadModel } from '../event-store/interfaces';
@@ -66,7 +66,7 @@ export class CharacterHydrator {
     let version = 0;
     for (const event of pastEvents) {
       if (event.type === EVENT_TYPES.PATCHED) {
-        data = deepmerge(data, event.data as Record<string, unknown>);
+        data = merge(data, event.data as Record<string, unknown>);
         version = event.version;
       }
     }
