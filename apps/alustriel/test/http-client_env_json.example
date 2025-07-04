@@ -1,10 +1,7 @@
 /*
  * This file is an example of the environment configuration for the HTTP client.
- * It should be copied to `http-client_env.json` and modified with your actual token.
- * To get a token, go to the Clerk dashboard, select a user, and from the "Actions"
- * menu, choose to impersonate that user. In dev mode, this will take you to a static
- * (Clerk-hosted) webpage. You can copy the value from the __session cookie and paste
- * it here.
+ * It should be copied to `http-client.env.json` and modified with your actual token.
+ * See README for instructions on getting a token.
  */
 
 {
