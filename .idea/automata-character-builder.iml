@@ -13,6 +13,7 @@
       <excludeFolder url="file://$MODULE_DIR$/apps/alustriel/.turbo" />
       <excludeFolder url="file://$MODULE_DIR$/apps/bruenor/.turbo" />
       <excludeFolder url="file://$MODULE_DIR$/packages/state-machine/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/apps/chenowyn/.svelte-kit" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

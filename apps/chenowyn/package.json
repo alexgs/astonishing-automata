@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@automata/grimoire": "*",
+    "@clerk/clerk-js": "^5.70.0",
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.18.0",
     "@playwright/test": "^1.49.1",
@@ -49,7 +50,8 @@
     "vite": "^6.2.6",
     "vite-plugin-devtools-json": "^0.2.0",
     "vitest": "^3.2.3",
-    "vitest-browser-svelte": "^0.1.0"
+    "vitest-browser-svelte": "^0.1.0",
+    "zod": "^3.25.74"
   },
   "volta": {
     "node": "22.14.0",

@@ -1,23 +1,21 @@
 ### Start a new character
 POST http://localhost:3000/api/v1/character-builder/start
+Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 > {% client.global.set("characterId", response.body.data.characterId) %}
 
-### Change to the next step (success)
-POST http://localhost:3000/api/v1/character-builder/change-step
+### Patch character
+POST http://localhost:3000/api/v1/character-builder/patch-character
+Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
     "characterId": "{{characterId}}",
-    "targetStep": "character-builder:steps:select-class"
-}
-
-### Change to the next step (error)
-POST http://localhost:3000/api/v1/character-builder/change-step
-Content-Type: application/json
-
-{
-    "characterId": "{{characterId}}",
-    "targetStep": "character-builder:steps:equipment-gold-buy"
+    "data": {
+        "name": "Test Character",
+        "attributes": {
+            "strength": 7
+        }
+    }
 }

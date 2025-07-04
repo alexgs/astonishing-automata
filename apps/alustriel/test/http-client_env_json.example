@@ -1,0 +1,11 @@
+/*
+ * This file is an example of the environment configuration for the HTTP client.
+ * It should be copied to `http-client.env.json` and modified with your actual token.
+ * See README for instructions on getting a token.
+ */
+
+{
+  "dev": {
+    "TOKEN": "your_dev_token_here",
+  }
+}

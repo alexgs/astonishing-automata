@@ -2,7 +2,6 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP } from '@automata/state-machine';
 import { IEvent } from '@nestjs/cqrs';
 import { z } from 'zod';
 
@@ -11,7 +10,7 @@ import { EVENT_TYPES } from '../constants';
 
 export const CharacterStartedEventPayloadSchema = z.object({
   characterId: z.string(),
-  nextStep: z.literal(INITIAL_STEP),
+  userId: z.string(),
 });
 
 export type CharacterStartedEventPayload = z.infer<

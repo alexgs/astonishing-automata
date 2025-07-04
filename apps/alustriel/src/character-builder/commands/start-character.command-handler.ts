@@ -2,18 +2,17 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP } from '@automata/state-machine';
 import { Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 import { EventStoreService } from '../../event-store/event-store.service';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 
-import { StartCharacterCreationCommand } from './start-character-creation.command';
+import { StartCharacterCommand } from './start-character.command';
 
-@CommandHandler(StartCharacterCreationCommand)
-export class StartCharacterCreationHandler
-  implements ICommandHandler<StartCharacterCreationCommand>
+@CommandHandler(StartCharacterCommand)
+export class StartCharacterHandler
+  implements ICommandHandler<StartCharacterCommand>
 {
   constructor(
     private readonly eventFactory: CharacterBuilderEventFactory,
@@ -21,15 +20,16 @@ export class StartCharacterCreationHandler
     private readonly logger: Logger,
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async execute(_command: StartCharacterCreationCommand) {
+  async execute(command: StartCharacterCommand) {
     const characterId = crypto.randomUUID();
 
     // Create and store the event
-    const event =
-      await this.eventFactory.createCharacterStartedEvent(characterId);
+    const event = await this.eventFactory.createCharacterStartedEvent(
+      command.userId,
+      characterId,
+    );
     await this.eventStore.appendEvent(event);
 
-    return { characterId, stepName: INITIAL_STEP };
+    return { characterId };
   }
 }

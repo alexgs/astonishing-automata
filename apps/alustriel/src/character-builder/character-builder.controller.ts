@@ -2,19 +2,12 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import {
-  Body,
-  Controller,
-  InternalServerErrorException,
-  Logger,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Logger, Post } from '@nestjs/common';
+
+import { CurrentUserId } from '../auth/decorators/current-user-id.decorator';
 
 import { CharacterBuilderService } from './character-builder.service';
-import { ChangeStepDto } from './dto/change-step.dto';
-import { SelectClassDto } from './dto/select-class.dto';
-import { SelectSpeciesDto } from './dto/select-species.dto';
-import { InvalidStateTransitionException } from './exceptions/invalid-state-transition.exception';
+import { PatchCharacterDto } from './dto/patch-character.dto';
 
 @Controller({ path: 'character-builder', version: '1' })
 export class CharacterBuilderController {
@@ -23,51 +16,25 @@ export class CharacterBuilderController {
     private readonly logger: Logger,
   ) {}
 
-  @Post('change-step')
-  async changeStep(@Body() changeStepDto: ChangeStepDto) {
+  @Post('patch-character')
+  async patchCharacter(@Body() patchCharacterDto: PatchCharacterDto) {
     this.logger.debug(
-      'Received POST request to /character-builder/change-step',
-      CharacterBuilderController.name,
-    );
-    try {
-      const data = await this.characterBuilderService.changeStep(changeStepDto);
-      return { data };
-    } catch (error) {
-      if (error instanceof InvalidStateTransitionException) {
-        throw error; // NestJS will automatically return a 409 response
-      }
-      throw new InternalServerErrorException(); // Generic fallback
-    }
-  }
-
-  @Post('select-class')
-  async selectClass(@Body() selectClassDto: SelectClassDto) {
-    this.logger.debug(
-      'Received POST request to /character-builder/select-class',
-      CharacterBuilderController.name,
-    );
-    const data = await this.characterBuilderService.selectClass(selectClassDto);
-    return { data };
-  }
-
-  @Post('select-species')
-  async selectSpecies(@Body() selectSpeciesDto: SelectSpeciesDto) {
-    this.logger.debug(
-      'Received POST request to /character-builder/select-species',
+      'Received POST request to /character-builder/patch-character',
       CharacterBuilderController.name,
     );
     const data =
-      await this.characterBuilderService.selectSpecies(selectSpeciesDto);
+      await this.characterBuilderService.patchCharacter(patchCharacterDto);
     return { data };
   }
 
   @Post('start')
-  async startCharacterCreation() {
+  async startCharacterCreation(@CurrentUserId() userId: string) {
     this.logger.debug(
       'Received POST request to /character-builder/start',
       CharacterBuilderController.name,
     );
-    const data = await this.characterBuilderService.startCharacterCreation();
+    const data =
+      await this.characterBuilderService.startCharacterCreation(userId);
     return { data };
   }
 }

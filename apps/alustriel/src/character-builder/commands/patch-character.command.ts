@@ -4,9 +4,9 @@
 
 import { ICommand } from '@nestjs/cqrs';
 
-export class SelectClassCommand implements ICommand {
+export class PatchCharacterCommand implements ICommand {
   constructor(
     public readonly characterId: string,
-    public readonly className: string,
+    public readonly data: Record<string, unknown>,
   ) {}
 }

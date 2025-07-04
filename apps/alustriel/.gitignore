@@ -18,3 +18,4 @@ lerna-debug.log*
 # Tests
 /coverage
 /.nyc_output
+/test/http-client.env.json

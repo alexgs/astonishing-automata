@@ -4,9 +4,6 @@
 
 import { ICommand } from '@nestjs/cqrs';
 
-export class SelectSpeciesCommand implements ICommand {
-  constructor(
-    public readonly characterId: string,
-    public readonly species: string,
-  ) {}
+export class StartCharacterCommand implements ICommand {
+  constructor(public readonly userId: string) {}
 }

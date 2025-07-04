@@ -1,0 +1,178 @@
+:root {
+  /* --- TYPOGRAPHY --- */
+  --mdc-typography-font-family: 'Inter', system-ui, sans-serif;
+
+  /* Major second */
+  --font-size-6x: 2.281rem;
+  --font-size-5x: 2.027rem;
+  --font-size-4x: 1.802rem;
+  --font-size-3x: 1.602rem;
+  --font-size-2x: 1.424rem;
+  --font-size-xl: 1.266rem;
+  --font-size-lg: 1.125rem;
+  --font-size-md: 1rem;
+  --font-size-sm: 0.889rem;
+  --font-size-xs: 0.79rem;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-heavy: 600;
+  --font-weight-bold: 700;
+
+  --letter-spacing-6x: -0.02em;  /* Very large text tightens slightly */
+  --letter-spacing-5x: -0.015em;
+  --letter-spacing-4x: -0.01em;
+  --letter-spacing-3x: -0.005em;
+  --letter-spacing-2x: 0em;
+  --letter-spacing-xl: 0.005em;
+  --letter-spacing-lg: 0.01em;
+  --letter-spacing-md: 0.015em;   /* Standard body text */
+  --letter-spacing-sm: 0.02em;
+  --letter-spacing-xs: 0.025em;   /* Smallest text spaced out more */
+
+  --line-height-6x: 1.1;   /* Largest headings, tight */
+  --line-height-5x: 1.15;
+  --line-height-4x: 1.2;
+  --line-height-3x: 1.25;
+  --line-height-2x: 1.3;
+  --line-height-xl: 1.35;
+  --line-height-lg: 1.4;
+  --line-height-md: 1.5;    /* Default body text */
+  --line-height-sm: 1.6;
+  --line-height-xs: 1.7;    /* Smallest text needs extra space */
+
+  --mdc-typography-headline1-font-size: var(--font-size-6x);
+  --mdc-typography-headline1-font-weight: var(--font-weight-medium);
+  --mdc-typography-headline1-letter-spacing: var(--letter-spacing-6x);
+  --mdc-typography-headline1-line-height: var(--line-height-6x);
+
+  --mdc-typography-headline2-font-size: var(--font-size-5x);
+  --mdc-typography-headline2-font-weight: var(--font-weight-medium);
+  --mdc-typography-headline2-letter-spacing: var(--letter-spacing-5x);
+  --mdc-typography-headline2-line-height: var(--line-height-5x);
+
+  --mdc-typography-headline3-font-size: var(--font-size-4x);
+  --mdc-typography-headline3-font-weight: var(--font-weight-heavy);
+  --mdc-typography-headline3-letter-spacing: var(--letter-spacing-4x);
+  --mdc-typography-headline3-line-height: var(--line-height-4x);
+
+  --mdc-typography-headline4-font-size: var(--font-size-3x);
+  --mdc-typography-headline4-font-weight: var(--font-weight-heavy);
+  --mdc-typography-headline4-letter-spacing: var(--letter-spacing-3x);
+  --mdc-typography-headline4-line-height: var(--line-height-3x);
+
+  --mdc-typography-headline5-font-size: var(--font-size-2x);
+  --mdc-typography-headline5-font-weight: var(--font-weight-bold);
+  --mdc-typography-headline5-letter-spacing: var(--letter-spacing-2x);
+  --mdc-typography-headline5-line-height: var(--line-height-2x);
+
+  --mdc-typography-headline6-font-size: var(--font-size-xl);
+  --mdc-typography-headline6-font-weight: var(--font-weight-bold);
+  --mdc-typography-headline6-letter-spacing: var(--letter-spacing-xl);
+  --mdc-typography-headline6-line-height: var(--line-height-xl);
+
+  /* --- COLORS --- */
+  /* These colors are from [Radix Colors](https://www.radix-ui.com/colors) */
+  /* Use "green" for success and "tomato" for errors. */
+  /* For accents, consider "mint," "sky," or "pink." */
+
+  --purple-1: #241e2a;
+  --purple-2: #292131;
+  --purple-3: #382849;
+  --purple-4: #452d5b;
+  --purple-5: #4e3367;
+  --purple-6: #593c75;
+  --purple-7: #6b498a;
+  --purple-8: #885cb0;
+  --purple-9: #9a5cd0;
+  --purple-10: #865baf;
+  --purple-11: #d39dff;
+  --purple-12: #eadafc;
+
+  --purple-a1: #6700f20b;
+  --purple-a2: #8c21f813;
+  --purple-a3: #a148ff2e;
+  --purple-a4: #ab4ffe43;
+  --purple-a5: #ae59fd51;
+  --purple-a6: #b568fe61;
+  --purple-a7: #bd76ff79;
+  --purple-a8: #c07cfea5;
+  --purple-a9: #ba6bfeca;
+  --purple-a10: #be7bfea4;
+  --purple-a11: #d39dff;
+  --purple-a12: #edddfffc;
+
+  --purple-contrast: #eeeeee;
+  --purple-surface: #31214180;
+  --purple-indicator: #9a5cd0;
+  --purple-track: #9a5cd0;
+
+  --grey-1: #202123;
+  --grey-2: #27282a;
+  --grey-3: #303033;
+  --grey-4: #35363a;
+  --grey-5: #3b3c41;
+  --grey-6: #43444a;
+  --grey-7: #4f5057;
+  --grey-8: #656771;
+  --grey-9: #71737e;
+  --grey-10: #7d7f8a;
+  --grey-11: #b4b5bf;
+  --grey-12: #eeeef0;
+
+  --grey-a1: #0022cc03;
+  --grey-a2: #adc4f20b;
+  --grey-a3: #d8d8fc15;
+  --grey-a4: #d1dafd1d;
+  --grey-a5: #d5dcfe25;
+  --grey-a6: #d6dbfb30;
+  --grey-a7: #dce0fc3f;
+  --grey-a8: #dee4ff5c;
+  --grey-a9: #e0e5ff6b;
+  --grey-a10: #e3e8ff79;
+  --grey-a11: #eff1ffb6;
+  --grey-a12: #fdfdffee;
+
+  --grey-contrast: #FFFFFF;
+  --grey-surface: rgba(0, 0, 0, 0.05);
+  --grey-indicator: #71737e;
+  --grey-track: #71737e;
+
+  --pink-1: #191117;
+  --pink-2: #21121d;
+  --pink-3: #37172f;
+  --pink-4: #4b143d;
+  --pink-5: #591c47;
+  --pink-6: #692955;
+  --pink-7: #833869;
+  --pink-8: #a84885;
+  --pink-9: #d6409f;
+  --pink-10: #de51a8;
+  --pink-11: #ff8dcc;
+  --pink-12: #fdd1ea;
+
+  --sky-1: #0d141f;
+  --sky-2: #111a27;
+  --sky-3: #112840;
+  --sky-4: #113555;
+  --sky-5: #154467;
+  --sky-6: #1b537b;
+  --sky-7: #1f6692;
+  --sky-8: #197cae;
+  --sky-9: #7ce2fe;
+  --sky-10: #a8eeff;
+  --sky-11: #75c7f0;
+  --sky-12: #c2f3ff;
+}
+
+/* --- GLOBAL STYLES --- */
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+}
+
+.mdc-top-app-bar {
+  top: 0;
+}
