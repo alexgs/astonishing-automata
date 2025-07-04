@@ -153,7 +153,7 @@ describe('Character Builder module', () => {
       });
     });
 
-    it.skip('POST /character-builder/select-species', async () => {
+    it('POST /character-builder/patch-character', async () => {
       const streamRecord: StreamRecord = {
         id: UUID,
         type: STREAM_TYPES.CHARACTER,
@@ -168,10 +168,15 @@ describe('Character Builder module', () => {
       tracker.on.update('streams').responseOnce(1);
 
       const response = await request(app.getHttpServer())
-        .post('/character-builder/select-species')
+        .post('/character-builder/patch-character')
         .send({
           characterId: UUID,
-          species: 'core.human',
+          data: {
+            attributes: {
+              strength: 10,
+              agility: 8,
+            },
+          },
         });
       expect(response.status).toEqual(HttpStatus.CREATED);
       expect(response.body).toEqual({
