@@ -2,22 +2,13 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { STEPS } from '@automata/state-machine';
 import { Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { EVENT_TYPES } from '../character-builder/constants';
+import { CharacterPatchedEvent } from '../character-builder/events/character-patched.event';
 import { CharacterStartedEvent } from '../character-builder/events/character-started.event';
-import {
-  ClassSelectedEvent,
-  ClassSelectedEventPayload,
-} from '../character-builder/events/class-selected.event';
-import {
-  SpeciesSelectedEvent,
-  SpeciesSelectedEventPayload,
-} from '../character-builder/events/species-selected.event';
-import { StepChangedEvent } from '../character-builder/events/step-changed.event';
 import { TOKENS } from '../provider-tokens';
 
 import { EventPublisherService } from './event-publisher.service';
@@ -209,98 +200,9 @@ describe('EventPublisherService', () => {
   });
 
   describe('event publishing', () => {
-    it(`publishes ${ClassSelectedEvent.name} for CLASS_SELECTED event type`, async () => {
-      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
-
-      await service.onModuleInit();
-
-      const data: ClassSelectedEventPayload = {
-        characterId,
-        className: 'core.druid',
-      };
-      const mockEvent: EventStoreReadModel = {
-        id: '123',
-        stream_id: characterId,
-        data,
-        type: EVENT_TYPES.CLASS_SELECTED,
-        version: 1,
-        created_at: new Date(),
-      };
-
-      eventCallback(mockEvent);
-
-      expect(mockLoggerDebug).toHaveBeenCalledWith(
-        `Publishing event: ${JSON.stringify(mockEvent)}`,
-      );
-      expect(mockEventBus.publish).toHaveBeenCalledWith(
-        expect.objectContaining({ data }),
-      );
-    });
-
-    it(`publishes ${SpeciesSelectedEvent.name} for SPECIES_SELECTED event type`, async () => {
-      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
-
-      await service.onModuleInit();
-
-      const data: SpeciesSelectedEventPayload = {
-        characterId,
-        species: 'core.elf',
-      };
-      const mockEvent: EventStoreReadModel = {
-        id: '123',
-        stream_id: characterId,
-        data,
-        type: EVENT_TYPES.SPECIES_SELECTED,
-        version: 1,
-        created_at: new Date(),
-      };
-
-      eventCallback(mockEvent);
-
-      expect(mockLoggerDebug).toHaveBeenCalledWith(
-        `Publishing event: ${JSON.stringify(mockEvent)}`,
-      );
-      expect(mockEventBus.publish).toHaveBeenCalledWith(
-        expect.objectContaining({ data }),
-      );
-    });
-
-    it(`publishes ${StepChangedEvent.name} for STEP_CHANGED event type`, async () => {
-      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
-
-      await service.onModuleInit();
-
-      const mockEvent: EventStoreReadModel = {
-        id: '123',
-        stream_id: characterId,
-        data: {
-          characterId,
-          previousStep: STEPS.SELECT_SPECIES,
-          nextStep: STEPS.SELECT_CLASS,
-        },
-        type: EVENT_TYPES.STEP_CHANGED,
-        version: 1,
-        created_at: new Date(),
-      };
-
-      eventCallback(mockEvent);
-
-      expect(mockLoggerDebug).toHaveBeenCalledWith(
-        `Publishing event: ${JSON.stringify(mockEvent)}`,
-      );
-      expect(mockEventBus.publish).toHaveBeenCalledWith(
-        expect.objectContaining({
-          data: {
-            characterId,
-            previousStep: STEPS.SELECT_SPECIES,
-            nextStep: STEPS.SELECT_CLASS,
-          },
-        }),
-      );
-    });
-
     it(`publishes ${CharacterStartedEvent.name} for STARTED event type`, async () => {
       const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
+      const userId = 'user-123456';
 
       await service.onModuleInit();
 
@@ -309,7 +211,7 @@ describe('EventPublisherService', () => {
         stream_id: characterId,
         data: {
           characterId,
-          nextStep: STEPS.SELECT_SPECIES,
+          userId,
         },
         type: EVENT_TYPES.STARTED,
         version: 1,
@@ -322,8 +224,42 @@ describe('EventPublisherService', () => {
         expect.objectContaining({
           data: {
             characterId,
-            nextStep: STEPS.SELECT_SPECIES,
+            userId,
           },
+        }),
+      );
+    });
+
+    it(`publishes ${CharacterPatchedEvent.name} for PATCHED event type`, async () => {
+      const characterId = 'fe92cd2c-9275-4b01-aef1-ab610ca5967d';
+      const data = {
+        characterId,
+        data: {
+          characterId,
+          attributes: { strength: 7 },
+        },
+        isValid: false,
+      };
+
+      await service.onModuleInit();
+
+      const mockEvent: EventStoreReadModel = {
+        id: '123',
+        stream_id: characterId,
+        data,
+        type: EVENT_TYPES.PATCHED,
+        version: 2,
+        created_at: new Date(),
+      };
+
+      eventCallback(mockEvent);
+
+      expect(mockLoggerDebug).toHaveBeenCalledWith(
+        `Publishing event: ${JSON.stringify(mockEvent)}`,
+      );
+      expect(mockEventBus.publish).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data,
         }),
       );
     });
