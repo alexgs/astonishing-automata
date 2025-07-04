@@ -5,7 +5,7 @@ Content-Type: application/json
 
 > {% client.global.set("characterId", response.body.data.characterId) %}
 
-### Change to the next step (success)
+### Patch character
 POST http://localhost:3000/api/v1/character-builder/patch-character
 Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
@@ -18,13 +18,4 @@ Content-Type: application/json
             "strength": 6
         }
     }
-}
-
-### Change to the next step (error)
-POST http://localhost:3000/api/v1/character-builder/change-step
-Content-Type: application/json
-
-{
-    "characterId": "{{characterId}}",
-    "targetStep": "character-builder:steps:equipment-gold-buy"
 }

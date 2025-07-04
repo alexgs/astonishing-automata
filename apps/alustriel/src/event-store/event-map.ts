@@ -6,6 +6,10 @@ import { SafeParseReturnType } from 'zod';
 
 import { EVENT_TYPES } from '../character-builder/constants';
 import {
+  CharacterPatchedEvent,
+  CharacterPatchedEventPayloadSchema,
+} from '../character-builder/events/character-patched.event';
+import {
   CharacterStartedEvent,
   CharacterStartedEventPayloadSchema,
 } from '../character-builder/events/character-started.event';
@@ -34,6 +38,12 @@ export const eventMap: { [event: string]: EventMap } = {
     constructor: ClassSelectedEvent as GenericConstructor,
     schema: ClassSelectedEventPayloadSchema.safeParse.bind(
       ClassSelectedEventPayloadSchema,
+    ),
+  },
+  [EVENT_TYPES.PATCHED]: {
+    constructor: CharacterPatchedEvent as GenericConstructor,
+    schema: CharacterPatchedEventPayloadSchema.safeParse.bind(
+      CharacterPatchedEventPayloadSchema,
     ),
   },
   [EVENT_TYPES.SPECIES_SELECTED]: {

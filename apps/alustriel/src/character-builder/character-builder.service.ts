@@ -38,7 +38,7 @@ export class CharacterBuilderService {
   async patchCharacter(patchCharacterDto: PatchCharacterDto) {
     return this.commandBus.execute<
       PatchCharacterCommand,
-      { characterId: string; data: unknown }
+      { characterId: string; data: unknown; isValid: boolean }
     >(
       new PatchCharacterCommand(
         patchCharacterDto.characterId,
