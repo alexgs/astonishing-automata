@@ -7,10 +7,12 @@ import { Injectable } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ChangeStepCommand } from './commands/change-step.command';
+import { PatchCharacterCommand } from './commands/patch-character.command';
 import { SelectClassCommand } from './commands/select-class.command';
 import { SelectSpeciesCommand } from './commands/select-species.command';
-import { StartCharacterCommand } from './commands/start-character-command';
+import { StartCharacterCommand } from './commands/start-character.command';
 import { ChangeStepDto } from './dto/change-step.dto';
+import { PatchCharacterDto } from './dto/patch-character.dto';
 import { SelectClassDto } from './dto/select-class.dto';
 import { SelectSpeciesDto } from './dto/select-species.dto';
 
@@ -29,6 +31,18 @@ export class CharacterBuilderService {
       new ChangeStepCommand(
         changeStepDto.characterId,
         changeStepDto.targetStep,
+      ),
+    );
+  }
+
+  async patchCharacter(patchCharacterDto: PatchCharacterDto) {
+    return this.commandBus.execute<
+      PatchCharacterCommand,
+      { characterId: string; data: unknown }
+    >(
+      new PatchCharacterCommand(
+        patchCharacterDto.characterId,
+        patchCharacterDto.data,
       ),
     );
   }

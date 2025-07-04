@@ -6,12 +6,18 @@ Content-Type: application/json
 > {% client.global.set("characterId", response.body.data.characterId) %}
 
 ### Change to the next step (success)
-POST http://localhost:3000/api/v1/character-builder/change-step
+POST http://localhost:3000/api/v1/character-builder/patch-character
+Authorization: Bearer {{TOKEN}}
 Content-Type: application/json
 
 {
     "characterId": "{{characterId}}",
-    "targetStep": "character-builder:steps:select-class"
+    "data": {
+        "name": "Test Character",
+        "attributes": {
+            "strength": 6
+        }
+    }
 }
 
 ### Change to the next step (error)

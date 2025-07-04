@@ -14,6 +14,7 @@ import { CurrentUserId } from '../auth/decorators/current-user-id.decorator';
 
 import { CharacterBuilderService } from './character-builder.service';
 import { ChangeStepDto } from './dto/change-step.dto';
+import { PatchCharacterDto } from './dto/patch-character.dto';
 import { SelectClassDto } from './dto/select-class.dto';
 import { SelectSpeciesDto } from './dto/select-species.dto';
 import { InvalidStateTransitionException } from './exceptions/invalid-state-transition.exception';
@@ -43,6 +44,17 @@ export class CharacterBuilderController {
       }
       throw new InternalServerErrorException(); // Generic fallback
     }
+  }
+
+  @Post('patch-character')
+  async patchCharacter(@Body() patchCharacterDto: PatchCharacterDto) {
+    this.logger.debug(
+      'Received POST request to /character-builder/patch-character',
+      CharacterBuilderController.name,
+    );
+    const data =
+      await this.characterBuilderService.patchCharacter(patchCharacterDto);
+    return { data };
   }
 
   /**

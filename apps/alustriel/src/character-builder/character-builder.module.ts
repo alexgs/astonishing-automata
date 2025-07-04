@@ -12,6 +12,7 @@ import { StateMachineModule } from '../state-machine/state-machine.module';
 import { CharacterBuilderController } from './character-builder.controller';
 import { CharacterBuilderService } from './character-builder.service';
 import { ChangeStepCommandHandler } from './commands/change-step.command-handler';
+import { PatchCharacterCommandHandler } from './commands/patch-character.command-handler';
 import { SelectClassCommandHandler } from './commands/select-class.command-handler';
 import { SelectSpeciesCommandHandler } from './commands/select-species.command-handler';
 import { StartCharacterHandler } from './commands/start-character.command-handler';
@@ -25,6 +26,7 @@ import { CharacterBuilderEventFactory } from './events/character-builder.event-f
     CharacterBuilderEventFactory,
     CharacterBuilderService,
     Logger,
+    PatchCharacterCommandHandler,
     SelectClassCommandHandler,
     SelectSpeciesCommandHandler,
     StartCharacterHandler,

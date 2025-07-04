@@ -8,11 +8,11 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { EventStoreService } from '../../event-store/event-store.service';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 
-import { StartCharacterCommand } from './start-character.command';
+import { PatchCharacterCommand } from './patch-character.command';
 
-@CommandHandler(StartCharacterCommand)
-export class StartCharacterHandler
-  implements ICommandHandler<StartCharacterCommand>
+@CommandHandler(PatchCharacterCommand)
+export class PatchCharacterCommandHandler
+  implements ICommandHandler<PatchCharacterCommand>
 {
   constructor(
     private readonly eventFactory: CharacterBuilderEventFactory,
@@ -20,16 +20,10 @@ export class StartCharacterHandler
     private readonly logger: Logger,
   ) {}
 
-  async execute(command: StartCharacterCommand) {
-    const characterId = crypto.randomUUID();
-
-    // Create and store the event
-    const event = await this.eventFactory.createCharacterStartedEvent(
-      command.userId,
-      characterId,
+  async execute(command: PatchCharacterCommand) {
+    this.logger.debug(
+      JSON.stringify(command),
+      PatchCharacterCommandHandler.name,
     );
-    await this.eventStore.appendEvent(event);
-
-    return { characterId };
   }
 }
