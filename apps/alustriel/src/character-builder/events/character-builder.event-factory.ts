@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP, StepName } from '@automata/state-machine';
+import { StepName } from '@automata/state-machine';
 import { Injectable, Logger } from '@nestjs/common';
 
 import { EventStoreService } from '../../event-store/event-store.service';
@@ -31,14 +31,13 @@ export class CharacterBuilderEventFactory {
     private readonly eventStore: EventStoreService,
     private readonly logger: Logger,
   ) {}
-
-  /**
-   * @deprecated
-   */
-  public async createCharacterStartedEvent(characterId: string) {
+  public async createCharacterStartedEvent(
+    userId: string,
+    characterId: string,
+  ) {
     const payload: CharacterStartedEventPayload = {
       characterId,
-      nextStep: INITIAL_STEP,
+      userId,
     };
 
     return this.eventStore.createEventWriteModel({

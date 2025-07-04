@@ -10,6 +10,8 @@ import {
   Post,
 } from '@nestjs/common';
 
+import { CurrentUserId } from '../auth/decorators/current-user-id.decorator';
+
 import { CharacterBuilderService } from './character-builder.service';
 import { ChangeStepDto } from './dto/change-step.dto';
 import { SelectClassDto } from './dto/select-class.dto';
@@ -71,12 +73,13 @@ export class CharacterBuilderController {
   }
 
   @Post('start')
-  async startCharacterCreation() {
+  async startCharacterCreation(@CurrentUserId() userId: string) {
     this.logger.debug(
       'Received POST request to /character-builder/start',
       CharacterBuilderController.name,
     );
-    const data = await this.characterBuilderService.startCharacterCreation();
+    const data =
+      await this.characterBuilderService.startCharacterCreation(userId);
     return { data };
   }
 }

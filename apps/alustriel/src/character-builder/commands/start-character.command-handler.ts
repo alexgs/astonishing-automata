@@ -9,14 +9,11 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { EventStoreService } from '../../event-store/event-store.service';
 import { CharacterBuilderEventFactory } from '../events/character-builder.event-factory';
 
-import { StartCharacterCreationCommand } from './start-character-creation.command';
+import { StartCharacterCommand } from './start-character-command';
 
-/**
- * @deprecated
- */
-@CommandHandler(StartCharacterCreationCommand)
-export class StartCharacterCreationHandler
-  implements ICommandHandler<StartCharacterCreationCommand>
+@CommandHandler(StartCharacterCommand)
+export class StartCharacterHandler
+  implements ICommandHandler<StartCharacterCommand>
 {
   constructor(
     private readonly eventFactory: CharacterBuilderEventFactory,
@@ -25,12 +22,14 @@ export class StartCharacterCreationHandler
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async execute(_command: StartCharacterCreationCommand) {
+  async execute(command: StartCharacterCommand) {
     const characterId = crypto.randomUUID();
 
     // Create and store the event
-    const event =
-      await this.eventFactory.createCharacterStartedEvent(characterId);
+    const event = await this.eventFactory.createCharacterStartedEvent(
+      command.userId,
+      characterId,
+    );
     await this.eventStore.appendEvent(event);
 
     return { characterId, stepName: INITIAL_STEP };

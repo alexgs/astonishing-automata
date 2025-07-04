@@ -31,12 +31,6 @@ export function createStateMachineEvent(
         type: ACTIONS.SELECT_CLASS,
         className: classSelectedEventPayload.className,
       };
-    case EVENT_TYPES.STARTED:
-      const characterStartedEventPayload: CharacterStartedEventPayload =
-        eventStoreEvent.data as CharacterStartedEventPayload;
-      return {
-        type: characterStartedEventPayload.nextStep,
-      };
     case EVENT_TYPES.STEP_CHANGED:
       const stepChangedEventPayload: StepChangedEventPayload =
         eventStoreEvent.data as StepChangedEventPayload;

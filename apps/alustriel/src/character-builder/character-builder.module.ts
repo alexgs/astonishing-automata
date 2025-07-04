@@ -14,7 +14,7 @@ import { CharacterBuilderService } from './character-builder.service';
 import { ChangeStepCommandHandler } from './commands/change-step.command-handler';
 import { SelectClassCommandHandler } from './commands/select-class.command-handler';
 import { SelectSpeciesCommandHandler } from './commands/select-species.command-handler';
-import { StartCharacterCreationHandler } from './commands/start-character-creation.command-handler';
+import { StartCharacterHandler } from './commands/start-character.command-handler';
 import { CharacterBuilderEventFactory } from './events/character-builder.event-factory';
 
 @Module({
@@ -27,7 +27,7 @@ import { CharacterBuilderEventFactory } from './events/character-builder.event-f
     Logger,
     SelectClassCommandHandler,
     SelectSpeciesCommandHandler,
-    StartCharacterCreationHandler,
+    StartCharacterHandler,
   ],
 })
 export class CharacterBuilderModule {}
