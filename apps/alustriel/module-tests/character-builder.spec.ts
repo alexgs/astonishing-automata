@@ -178,7 +178,7 @@ describe('Character Builder module', () => {
       const response = await request(app.getHttpServer())
         .post('/character-builder/patch-character')
         .send(payload);
-      expect(response.status).toEqual(HttpStatus.CREATED);
+      expect(response.status).toEqual(HttpStatus.OK);
       expect(response.body).toEqual({
         data: {
           ...payload,

@@ -2,7 +2,6 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP, STEPS } from '@automata/state-machine';
 import { clerkMiddleware } from '@clerk/express';
 import { HttpStatus, INestApplication, VersioningType } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
