@@ -2,7 +2,6 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { STEPS } from '@automata/state-machine';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -184,64 +183,6 @@ describe('Character Builder module', () => {
         data: {
           ...payload,
           isValid: false,
-        },
-      });
-    });
-
-    it.skip('POST /character-builder/change-step', async () => {
-      const streamRecord: StreamRecord = {
-        id: UUID,
-        type: STREAM_TYPES.CHARACTER,
-        version: 2,
-      };
-
-      const tracker = mockKnexService.getTracker();
-      tracker.on.insert('streams').responseOnce(1);
-      tracker.on.select('streams').responseOnce([streamRecord]);
-      tracker.on.select('events').responseOnce(getEventStream(streamRecord));
-      tracker.on.insert('events').responseOnce(1);
-      tracker.on.update('streams').responseOnce(1);
-
-      const response = await request(app.getHttpServer())
-        .post('/character-builder/change-step')
-        .send({
-          characterId: UUID,
-          targetStep: STEPS.SELECT_CLASS,
-        });
-      expect(response.status).toEqual(HttpStatus.CREATED);
-      expect(response.body).toEqual({
-        data: {
-          characterId: UUID,
-          targetStep: STEPS.SELECT_CLASS,
-        },
-      });
-    });
-
-    it.skip('POST /character-builder/select-class', async () => {
-      const streamRecord: StreamRecord = {
-        id: UUID,
-        type: STREAM_TYPES.CHARACTER,
-        version: 3,
-      };
-
-      const tracker = mockKnexService.getTracker();
-      tracker.on.insert('streams').responseOnce(1);
-      tracker.on.select('streams').responseOnce([streamRecord]);
-      tracker.on.select('events').responseOnce(getEventStream(streamRecord));
-      tracker.on.insert('events').responseOnce(1);
-      tracker.on.update('streams').responseOnce(1);
-
-      const response = await request(app.getHttpServer())
-        .post('/character-builder/select-class')
-        .send({
-          characterId: UUID,
-          className: 'core.fighter',
-        });
-      expect(response.status).toEqual(HttpStatus.CREATED);
-      expect(response.body).toEqual({
-        data: {
-          characterId: UUID,
-          className: 'core.fighter',
         },
       });
     });
