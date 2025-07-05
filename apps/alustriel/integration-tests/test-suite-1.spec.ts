@@ -2,13 +2,12 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP, STEPS } from '@automata/state-machine';
 import { clerkMiddleware } from '@clerk/express';
 import { HttpStatus, INestApplication, VersioningType } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { knex } from 'knex';
 import { WinstonModule } from 'nest-winston';
 
@@ -81,8 +80,7 @@ describe('Character Builder Integration Test Suite 1', () => {
     }
 
     expect(response.status).toEqual(HttpStatus.CREATED);
-    const { characterId, stepName } = response.data.data;
-    expect(stepName).toEqual(INITIAL_STEP);
+    const { characterId } = response.data.data;
 
     const events = await knex('events')
       .where({ stream_id: CHARACTER_ID })
@@ -93,26 +91,30 @@ describe('Character Builder Integration Test Suite 1', () => {
       stream_id: characterId,
       data: expect.objectContaining({
         characterId: CHARACTER_ID,
-        nextStep: STEPS.SELECT_SPECIES,
+        userId: ABED_USER_ID,
       }),
       version: 1,
     });
   });
 
-  it('Abed tries to select an invalid species', async () => {
+  it('Abed sets a value for the "Strength" attribute', async () => {
     let response: AxiosResponse;
     try {
       response = await axios(
-        `http://localhost:3000/api/v1/character-builder/select-species`,
+        `http://localhost:3000/api/v1/character-builder/patch-character`,
         {
+          data: {
+            characterId: CHARACTER_ID,
+            data: {
+              attributes: {
+                strength: 10,
+              },
+            },
+          },
           headers: {
             Authorization: `Bearer ${jwt}`,
           },
           method: 'POST',
-          data: {
-            characterId: CHARACTER_ID,
-            species: 'core.dragon',
-          },
         },
       );
     } catch (error) {
@@ -122,209 +124,26 @@ describe('Character Builder Integration Test Suite 1', () => {
         throw error;
       }
     }
-    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
-  });
 
-  it('Abed selects a valid species', async () => {
-    let response: AxiosResponse;
-    try {
-      response = await axios(
-        `http://localhost:3000/api/v1/character-builder/select-species`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-          method: 'POST',
-          data: {
-            characterId: CHARACTER_ID,
-            species: 'core.elf',
-          },
-        },
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        response = error.response;
-      } else {
-        throw error;
-      }
-    }
-    expect(response.status).toEqual(HttpStatus.CREATED);
+    expect(response.status).toEqual(HttpStatus.OK);
 
     const events = await knex('events')
       .where({ stream_id: CHARACTER_ID })
       .orderBy('id', 'asc');
     expect(events).toHaveLength(2);
-    expect(events.at(-1)).toMatchObject({
-      type: CHARACTER_EVENT_TYPES.SPECIES_SELECTED,
+    expect(events[1]).toMatchObject({
+      type: CHARACTER_EVENT_TYPES.PATCHED,
       stream_id: CHARACTER_ID,
       data: expect.objectContaining({
         characterId: CHARACTER_ID,
-        species: 'core.elf',
+        data: {
+          attributes: {
+            strength: 10,
+          },
+        },
+        isValid: false,
       }),
       version: 2,
-    });
-  });
-
-  it('Abed moves forward in the character creation workflow', async () => {
-    let response: AxiosResponse;
-    try {
-      response = await axios(
-        `http://localhost:3000/api/v1/character-builder/change-step`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-          method: 'POST',
-          data: {
-            characterId: CHARACTER_ID,
-            targetStep: STEPS.SELECT_CLASS,
-          },
-        },
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        response = error.response;
-      } else {
-        throw error;
-      }
-    }
-    expect(response.status).toEqual(HttpStatus.CREATED);
-
-    const events = await knex('events')
-      .where({ stream_id: CHARACTER_ID })
-      .orderBy('id', 'asc');
-    expect(events).toHaveLength(3);
-    expect(events.at(-1)).toMatchObject({
-      type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: CHARACTER_ID,
-      data: expect.objectContaining({
-        characterId: CHARACTER_ID,
-        previousStep: STEPS.SELECT_SPECIES,
-        nextStep: STEPS.SELECT_CLASS,
-      }),
-      version: 3,
-    });
-  });
-
-  it('Abed tries to make an invalid transition', async () => {
-    let response: AxiosResponse;
-    try {
-      response = await axios(
-        `http://localhost:3000/api/v1/character-builder/change-step`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-          method: 'POST',
-          data: {
-            characterId: CHARACTER_ID,
-            targetStep: STEPS.EQUIPMENT_GOLD_BUY,
-          },
-        },
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        response = error.response;
-      } else {
-        throw error;
-      }
-    }
-    expect(response.status).toEqual(HttpStatus.CONFLICT);
-
-    const events = await knex('events')
-      .where({ stream_id: CHARACTER_ID })
-      .orderBy('id', 'asc');
-    expect(events).toHaveLength(3);
-    expect(events.at(-1)).toMatchObject({
-      type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: CHARACTER_ID,
-      data: expect.objectContaining({
-        characterId: CHARACTER_ID,
-        previousStep: STEPS.SELECT_SPECIES,
-        nextStep: STEPS.SELECT_CLASS,
-      }),
-      version: 3,
-    });
-  });
-
-  it('Abed tries to select an invalid class', async () => {
-    let response: AxiosResponse;
-    try {
-      response = await axios(
-        `http://localhost:3000/api/v1/character-builder/select-class`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-          method: 'POST',
-          data: {
-            characterId: CHARACTER_ID,
-            className: 'homebrew.batman',
-          },
-        },
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        response = error.response;
-      } else {
-        throw error;
-      }
-    }
-    expect(response.status).toEqual(HttpStatus.BAD_REQUEST);
-
-    const events = await knex('events')
-      .where({ stream_id: CHARACTER_ID })
-      .orderBy('id', 'asc');
-    expect(events).toHaveLength(3);
-    expect(events.at(-1)).toMatchObject({
-      type: CHARACTER_EVENT_TYPES.STEP_CHANGED,
-      stream_id: CHARACTER_ID,
-      data: expect.objectContaining({
-        characterId: CHARACTER_ID,
-        previousStep: STEPS.SELECT_SPECIES,
-        nextStep: STEPS.SELECT_CLASS,
-      }),
-      version: 3,
-    });
-  });
-
-  it('Abed selects valid a class', async () => {
-    let response: AxiosResponse;
-    try {
-      response = await axios(
-        `http://localhost:3000/api/v1/character-builder/select-class`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-          method: 'POST',
-          data: {
-            characterId: CHARACTER_ID,
-            className: 'core.fighter',
-          },
-        },
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        response = error.response;
-      } else {
-        throw error;
-      }
-    }
-    expect(response.status).toEqual(HttpStatus.CREATED);
-
-    const events = await knex('events')
-      .where({ stream_id: CHARACTER_ID })
-      .orderBy('id', 'asc');
-    expect(events).toHaveLength(4);
-    expect(events.at(-1)).toMatchObject({
-      type: CHARACTER_EVENT_TYPES.CLASS_SELECTED,
-      stream_id: CHARACTER_ID,
-      data: expect.objectContaining({
-        characterId: CHARACTER_ID,
-        className: 'core.fighter',
-      }),
-      version: 4,
     });
   });
 });

@@ -4,7 +4,7 @@
 
 import { evaluateField } from '@automata/grimoire';
 import type { GameSystemDefinition } from '@automata/grimoire';
-import { merge } from 'lodash-es';
+import merge from 'lodash.merge';
 
 export interface PatchValidationResult {
   isValid: boolean;

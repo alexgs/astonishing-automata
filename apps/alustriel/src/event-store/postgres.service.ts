@@ -4,7 +4,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as postgres from 'postgres';
+import postgres from 'postgres';
 
 import { IPostgresService } from './interfaces';
 

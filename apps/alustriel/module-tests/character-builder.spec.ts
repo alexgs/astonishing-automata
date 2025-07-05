@@ -2,29 +2,23 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP, STEPS } from '@automata/state-machine';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { WinstonModule } from 'nest-winston';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import { CharacterBuilderModule } from '../src/character-builder/character-builder.module';
 import { EVENT_TYPES, STREAM_TYPES } from '../src/character-builder/constants';
 import {
+  CharacterPatchedEvent,
+  CharacterPatchedEventPayload,
+} from '../src/character-builder/events/character-patched.event';
+import {
   CharacterStartedEvent,
   CharacterStartedEventPayload,
 } from '../src/character-builder/events/character-started.event';
-import {
-  ClassSelectedEvent,
-  ClassSelectedEventPayload,
-} from '../src/character-builder/events/class-selected.event';
-import { SpeciesSelectedEvent } from '../src/character-builder/events/species-selected.event';
-import {
-  StepChangedEvent,
-  StepChangedEventPayload,
-} from '../src/character-builder/events/step-changed.event';
 import { StreamRecord } from '../src/event-store/interfaces';
 import { TOKENS } from '../src/provider-tokens';
 import { testLog } from '../src/winston-transports';
@@ -38,7 +32,7 @@ function getEventStream(streamRecord: StreamRecord) {
   // Start
   const startedEventPayload: CharacterStartedEventPayload = {
     characterId: UUID,
-    nextStep: INITIAL_STEP,
+    userId: 'abc123456',
   };
   const startedEvent: CharacterStartedEvent = {
     id: 'abc',
@@ -49,71 +43,45 @@ function getEventStream(streamRecord: StreamRecord) {
     version: 1,
   };
 
-  // Select species
-  const speciesSelectedEventPayload = {
+  // Set strength
+  const setStrengthPayload: CharacterPatchedEventPayload = {
     characterId: UUID,
-    species: 'core.human',
+    data: {
+      attributes: {
+        strength: 10,
+      },
+    },
+    isValid: false,
   };
-  const speciesSelectedEvent: SpeciesSelectedEvent = {
+  const strengthSetEvent: CharacterPatchedEvent = {
     id: 'def',
     createdAt: new Date(),
-    data: speciesSelectedEventPayload,
+    data: setStrengthPayload,
     streamId: UUID,
-    type: EVENT_TYPES.SPECIES_SELECTED,
+    type: EVENT_TYPES.PATCHED,
     version: 2,
   };
 
-  // Change step
-  const stepChangedEventPayload1: StepChangedEventPayload = {
+  // Set agility
+  const setAgilityPayload: CharacterPatchedEventPayload = {
     characterId: UUID,
-    nextStep: STEPS.SELECT_CLASS,
-    previousStep: STEPS.SELECT_SPECIES,
+    data: {
+      attributes: {
+        strength: 10,
+      },
+    },
+    isValid: false,
   };
-  const stepChangedEvent1: StepChangedEvent = {
-    id: 'ghi',
+  const agilitySetEvent: CharacterPatchedEvent = {
+    id: 'def',
     createdAt: new Date(),
-    data: stepChangedEventPayload1,
+    data: setAgilityPayload,
     streamId: UUID,
-    type: EVENT_TYPES.STEP_CHANGED,
-    version: 3,
+    type: EVENT_TYPES.PATCHED,
+    version: 2,
   };
 
-  // Select class
-  const classSelectedEventPayload: ClassSelectedEventPayload = {
-    characterId: UUID,
-    className: 'core.fighter',
-  };
-  const classSelectedEvent: ClassSelectedEvent = {
-    id: 'jkl',
-    createdAt: new Date(),
-    data: classSelectedEventPayload,
-    streamId: UUID,
-    type: EVENT_TYPES.CLASS_SELECTED,
-    version: 4,
-  };
-
-  // Change step
-  const stepChangedEventPayload2: StepChangedEventPayload = {
-    characterId: UUID,
-    nextStep: STEPS.SELECT_CLASS,
-    previousStep: STEPS.SELECT_CLASS_FEATURES,
-  };
-  const stepChangedEvent2: StepChangedEvent = {
-    id: 'mno',
-    createdAt: new Date(),
-    data: stepChangedEventPayload2,
-    streamId: UUID,
-    type: EVENT_TYPES.STEP_CHANGED,
-    version: 5,
-  };
-
-  const allEvents = [
-    startedEvent,
-    speciesSelectedEvent,
-    stepChangedEvent1,
-    classSelectedEvent,
-    stepChangedEvent2,
-  ];
+  const allEvents = [startedEvent, strengthSetEvent, agilitySetEvent];
   return allEvents.slice(0, streamRecord.version);
 }
 
@@ -180,12 +148,11 @@ describe('Character Builder module', () => {
       expect(response.body).toEqual({
         data: {
           characterId: UUID,
-          stepName: INITIAL_STEP,
         },
       });
     });
 
-    it('POST /character-builder/select-species', async () => {
+    it('POST /character-builder/patch-character', async () => {
       const streamRecord: StreamRecord = {
         id: UUID,
         type: STREAM_TYPES.CHARACTER,
@@ -198,76 +165,24 @@ describe('Character Builder module', () => {
       tracker.on.select('events').responseOnce(getEventStream(streamRecord));
       tracker.on.insert('events').responseOnce(1);
       tracker.on.update('streams').responseOnce(1);
-
-      const response = await request(app.getHttpServer())
-        .post('/character-builder/select-species')
-        .send({
-          characterId: UUID,
-          species: 'core.human',
-        });
-      expect(response.status).toEqual(HttpStatus.CREATED);
-      expect(response.body).toEqual({
+      const payload = {
+        characterId: UUID,
         data: {
-          characterId: UUID,
-          species: 'core.human',
+          attributes: {
+            strength: 10,
+            agility: 8,
+          },
         },
-      });
-    });
-
-    it('POST /character-builder/change-step', async () => {
-      const streamRecord: StreamRecord = {
-        id: UUID,
-        type: STREAM_TYPES.CHARACTER,
-        version: 2,
       };
 
-      const tracker = mockKnexService.getTracker();
-      tracker.on.insert('streams').responseOnce(1);
-      tracker.on.select('streams').responseOnce([streamRecord]);
-      tracker.on.select('events').responseOnce(getEventStream(streamRecord));
-      tracker.on.insert('events').responseOnce(1);
-      tracker.on.update('streams').responseOnce(1);
-
       const response = await request(app.getHttpServer())
-        .post('/character-builder/change-step')
-        .send({
-          characterId: UUID,
-          targetStep: STEPS.SELECT_CLASS,
-        });
-      expect(response.status).toEqual(HttpStatus.CREATED);
+        .post('/character-builder/patch-character')
+        .send(payload);
+      expect(response.status).toEqual(HttpStatus.OK);
       expect(response.body).toEqual({
         data: {
-          characterId: UUID,
-          targetStep: STEPS.SELECT_CLASS,
-        },
-      });
-    });
-
-    it('POST /character-builder/select-class', async () => {
-      const streamRecord: StreamRecord = {
-        id: UUID,
-        type: STREAM_TYPES.CHARACTER,
-        version: 3,
-      };
-
-      const tracker = mockKnexService.getTracker();
-      tracker.on.insert('streams').responseOnce(1);
-      tracker.on.select('streams').responseOnce([streamRecord]);
-      tracker.on.select('events').responseOnce(getEventStream(streamRecord));
-      tracker.on.insert('events').responseOnce(1);
-      tracker.on.update('streams').responseOnce(1);
-
-      const response = await request(app.getHttpServer())
-        .post('/character-builder/select-class')
-        .send({
-          characterId: UUID,
-          className: 'core.fighter',
-        });
-      expect(response.status).toEqual(HttpStatus.CREATED);
-      expect(response.body).toEqual({
-        data: {
-          characterId: UUID,
-          className: 'core.fighter',
+          ...payload,
+          isValid: false,
         },
       });
     });

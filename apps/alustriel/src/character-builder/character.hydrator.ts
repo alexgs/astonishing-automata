@@ -3,7 +3,7 @@
  */
 
 import { Injectable, Logger } from '@nestjs/common';
-import { merge } from 'lodash-es';
+import merge from 'lodash.merge';
 
 import { EventStoreService } from '../event-store/event-store.service';
 import { EventStoreReadModel } from '../event-store/interfaces';

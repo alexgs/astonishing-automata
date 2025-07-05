@@ -2,7 +2,14 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Logger,
+  Post,
+} from '@nestjs/common';
 
 import { CurrentUserId } from '../auth/decorators/current-user-id.decorator';
 
@@ -17,6 +24,7 @@ export class CharacterBuilderController {
   ) {}
 
   @Post('patch-character')
+  @HttpCode(HttpStatus.OK)
   async patchCharacter(@Body() patchCharacterDto: PatchCharacterDto) {
     this.logger.debug(
       'Received POST request to /character-builder/patch-character',
