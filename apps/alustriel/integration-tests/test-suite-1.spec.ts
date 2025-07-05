@@ -98,6 +98,56 @@ describe('Character Builder Integration Test Suite 1', () => {
     });
   });
 
+  it('Abed sets a value for the "Strength" attribute', async () => {
+    let response: AxiosResponse;
+    try {
+      response = await axios(
+        `http://localhost:3000/api/v1/character-builder/patch-character`,
+        {
+          data: {
+            characterId: CHARACTER_ID,
+            data: {
+              attributes: {
+                strength: 10,
+              },
+            },
+          },
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+          method: 'POST',
+        },
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        response = error.response;
+      } else {
+        throw error;
+      }
+    }
+
+    expect(response.status).toEqual(HttpStatus.OK);
+
+    const events = await knex('events')
+      .where({ stream_id: CHARACTER_ID })
+      .orderBy('id', 'asc');
+    expect(events).toHaveLength(2);
+    expect(events[1]).toMatchObject({
+      type: CHARACTER_EVENT_TYPES.PATCHED,
+      stream_id: CHARACTER_ID,
+      data: expect.objectContaining({
+        characterId: CHARACTER_ID,
+        data: {
+          attributes: {
+            strength: 10,
+          },
+        },
+        isValid: false,
+      }),
+      version: 2,
+    });
+  });
+
   it.skip('Abed tries to select an invalid species', async () => {
     let response: AxiosResponse;
     try {
