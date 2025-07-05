@@ -2,13 +2,13 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { INITIAL_STEP, STEPS } from '@automata/state-machine';
+import { STEPS } from '@automata/state-machine';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { Test } from '@nestjs/testing';
 import { WinstonModule } from 'nest-winston';
-import * as request from 'supertest';
+import request from 'supertest';
 
 import { CharacterBuilderModule } from '../src/character-builder/character-builder.module';
 import { EVENT_TYPES, STREAM_TYPES } from '../src/character-builder/constants';
@@ -166,23 +166,24 @@ describe('Character Builder module', () => {
       tracker.on.select('events').responseOnce(getEventStream(streamRecord));
       tracker.on.insert('events').responseOnce(1);
       tracker.on.update('streams').responseOnce(1);
+      const payload = {
+        characterId: UUID,
+        data: {
+          attributes: {
+            strength: 10,
+            agility: 8,
+          },
+        },
+      };
 
       const response = await request(app.getHttpServer())
         .post('/character-builder/patch-character')
-        .send({
-          characterId: UUID,
-          data: {
-            attributes: {
-              strength: 10,
-              agility: 8,
-            },
-          },
-        });
+        .send(payload);
       expect(response.status).toEqual(HttpStatus.CREATED);
       expect(response.body).toEqual({
         data: {
-          characterId: UUID,
-          species: 'core.human',
+          ...payload,
+          isValid: false,
         },
       });
     });
