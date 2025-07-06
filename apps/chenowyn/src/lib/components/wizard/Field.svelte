@@ -34,8 +34,8 @@
 
     // Use output from `updateField` to avoid potentially evaluating constraints
     //   on stale data immediately after input.
-    const violations = evaluateField(path, nextState, SavageWorlds);
-    error = violations.length > 0 ? violations[0].reason : null;
+    const result = evaluateField(path, nextState, SavageWorlds);
+    error = result.result ? null : result.violations[0].reason;
   }
 
   function updateField(fieldPath: string, value: unknown): Record<string, unknown> {
