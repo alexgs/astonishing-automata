@@ -1,0 +1,23 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+@use '@material/button/mixins' as button;
+.pop-button {
+  $primary-color: var(--pink-9);
+
+  &.mdc-button {
+    @include button.ink-color($primary-color);
+  }
+
+  &.mdc-button--unelevated,
+  &.mdc-button--raised {
+    @include button.filled-accessible($primary-color);
+  }
+  &.mdc-button--outlined {
+    @include button.outline-color($primary-color);
+    @include button.ink-color($primary-color);
+  }
+
+  @include button.ripple-states($primary-color);
+}
