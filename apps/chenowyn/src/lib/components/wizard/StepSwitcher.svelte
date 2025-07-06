@@ -7,6 +7,7 @@
   import { Cell } from '@smui/layout-grid';
 
   import FirstStep from '$lib/components/wizard/FirstStep.svelte';
+  import DynamicStep from '$lib/components/wizard/DynamicStep.svelte';
 
   interface Props {
     characterId: string;
@@ -22,7 +23,7 @@
   <FirstStep characterId={characterId} />
 {:else if stepNames.includes(step) }
   <Cell span={12}>
-    <p>👋 Hello step ${step}</p>
+    <DynamicStep {characterId} {step} />
   </Cell>
 {:else}
   <Cell span={12}>
