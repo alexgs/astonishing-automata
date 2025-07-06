@@ -13,7 +13,7 @@
   import { writable } from 'svelte/store';
 
   import { goto } from '$app/navigation';
-  import Field from '$lib/components/Field.svelte';
+  import Field from '$lib/components/wizard/Field.svelte';
 
   interface Props {
     characterId: string;
