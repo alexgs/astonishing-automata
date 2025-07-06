@@ -3,9 +3,12 @@
   -->
 
 <script lang="ts">
+  import { SavageWorlds } from '@automata/grimoire';
   import { Cell } from '@smui/layout-grid';
   import TextField from '@smui/textfield';
   import Button from '@smui/button';
+
+  import { goto } from '$app/navigation';
   import { auth } from '$lib/clerk';
 
   interface Props {
@@ -39,12 +42,12 @@
         }),
       });
 
-      if (!response.ok) {
+      if (response.ok) {
+        await goto(`/c/${characterId}?step=${SavageWorlds.steps[0].key}`);
+      } else {
         const body = await response.json();
         throw new Error(body?.message || 'Error saving character name');
       }
-
-      // Optional: maybe transition to next screen here
     } catch (err) {
       if (err instanceof Error) {
         error = err.message || 'Unexpected error';
