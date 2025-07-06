@@ -28,7 +28,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm ci --include=dev
+        run: npm ci
         env:
           FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
 
