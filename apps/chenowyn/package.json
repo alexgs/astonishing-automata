@@ -37,6 +37,7 @@
     "@smui/layout-grid": "^8.0.0-beta.3",
     "@smui/list": "^8.0.0-beta.3",
     "@smui/radio": "^8.0.0-beta.3",
+    "@smui/textfield": "^8.0.0-beta.3",
     "@smui/top-app-bar": "^8.0.0-beta.3",
     "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/kit": "^2.16.0",

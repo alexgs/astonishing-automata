@@ -22,7 +22,7 @@
       const res = await fetch(`https://${config.apiHost}/api/v1/character-builder/start`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Ensure you have a valid auth token
+          Authorization: `Bearer ${token}`,
         },
       });
 
