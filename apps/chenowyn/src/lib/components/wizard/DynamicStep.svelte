@@ -3,14 +3,17 @@
   -->
 
 <script lang="ts">
-  import { Cell } from '@smui/layout-grid';
   import {
     type FieldDefinition,
     type GroupFieldDefinition,
     SavageWorlds,
   } from '@automata/grimoire';
-  import Field from '$lib/components/Field.svelte';
+  import Button from '@smui/button';
+  import { Cell } from '@smui/layout-grid';
   import { writable } from 'svelte/store';
+
+  import { goto } from '$app/navigation';
+  import Field from '$lib/components/Field.svelte';
 
   interface Props {
     characterId: string;
@@ -22,8 +25,10 @@
   // Create character state with default values
   const characterState = writable<Record<string, unknown>>({});
 
-  // We change steps by reloading this component, so this should be fine
-  const currentStep = SavageWorlds.steps.find(s => s.key === step) ?? { key: 'Unknown', fields: [] };
+  const currentStepIndex = $derived(SavageWorlds.steps.findIndex(s => s.key === step) ?? { key: 'Unknown', fields: [] });
+  const prevStep = $derived(SavageWorlds.steps[currentStepIndex - 1] ?? { key: 'Unknown', fields: [] });
+  const currentStep = $derived(SavageWorlds.steps[currentStepIndex]);
+  const nextStep = $derived(SavageWorlds.steps[currentStepIndex + 1] ?? { key: 'Unknown', fields: [] });
 
   function getFieldDefFromPath(path: string): FieldDefinition {
     const segments = path.split('.');
@@ -47,6 +52,21 @@
     return node as FieldDefinition;
   }
 
+  function handleNextClick() {
+    if (nextStep.key === 'Unknown') {
+      goto(`/c/${characterId}?step=done`);
+    } else {
+      goto(`/c/${characterId}?step=${nextStep.key}`);
+    }
+  }
+
+  function handlePrevClick() {
+    if (prevStep.key === 'Unknown') {
+      goto(`/c/${characterId}`);
+    } else {
+      goto(`/c/${characterId}?step=${prevStep.key}`);
+    }
+  }
 </script>
 
 <Cell span={12}>
@@ -56,4 +76,8 @@
       <Field {characterState} fieldDef={getFieldDefFromPath(path)} {path} />
     {/each}
   </form>
+  <div>
+    <Button onclick={handlePrevClick}>Prev</Button>
+    <Button onclick={handleNextClick}>Next</Button>
+  </div>
 </Cell>

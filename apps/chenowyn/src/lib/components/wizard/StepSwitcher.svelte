@@ -27,6 +27,6 @@
   </Cell>
 {:else}
   <Cell span={12}>
-    <p>❌ Step not found ${step}</p>
+    <p>❌ Step not found "{step}"</p>
   </Cell>
 {/if}
