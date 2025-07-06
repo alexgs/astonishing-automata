@@ -31,7 +31,7 @@
       }
 
       const { data } = await res.json();
-      await goto(`/wizard/${data.characterId}/${data.stepName}`);
+      await goto(`/c/${data.characterId}`);
     } catch (err) {
       console.error(err);
       alert('Failed to start a new character.');
