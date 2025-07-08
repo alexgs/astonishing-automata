@@ -14,6 +14,7 @@
 
   import { goto } from '$app/navigation';
   import Field from '$lib/components/wizard/Field.svelte';
+  import { patchCharacter } from '$lib/services/character-service';
 
   interface Props {
     characterId: string;
@@ -52,11 +53,16 @@
     return node as FieldDefinition;
   }
 
-  function handleNextClick() {
-    if (nextStep.key === 'Unknown') {
-      goto(`/c/${characterId}?step=done`);
-    } else {
-      goto(`/c/${characterId}?step=${nextStep.key}`);
+  async function handleNextClick() {
+    try {
+      await patchCharacter(characterId);
+      if (nextStep.key === 'Unknown') {
+        goto(`/c/${characterId}?step=done`);
+      } else {
+        goto(`/c/${characterId}?step=${nextStep.key}`);
+      }
+    } catch (error) {
+      console.error('Error patching character:', error);
     }
   }
 
