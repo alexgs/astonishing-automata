@@ -10,6 +10,8 @@
 
   import { goto } from '$app/navigation';
   import { auth } from '$lib/clerk';
+  import { patchCharacter } from '$lib/services/character-service';
+  import { characterState, updateField } from '$lib/stores/character-store';
 
   interface Props {
     characterId: string;
@@ -17,37 +19,23 @@
 
   const { characterId }: Props = $props()
 
-  const { session } = auth;
-
-  let name = $state('');
   let isSaving = $state(false);
   let error = $state<string | null>(null);
+
+  let name: string = $derived($characterState.name as string ?? '');
+  $inspect($characterState);
+
+  function handleInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    updateField('name', input.value);
+  }
 
   async function submitName() {
     isSaving = true;
     error = null;
-    const token = await $session?.getToken();
     try {
-      const response = await fetch('http://localhost:3000/api/v1/character-builder/patch-character', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          characterId,
-          data: {
-            name,
-          },
-        }),
-      });
-
-      if (response.ok) {
-        await goto(`/c/${characterId}?step=${SavageWorlds.steps[0].key}`);
-      } else {
-        const body = await response.json();
-        throw new Error(body?.message || 'Error saving character name');
-      }
+      await patchCharacter(characterId);
+      await goto(`/c/${characterId}?step=${SavageWorlds.steps[0].key}`);
     } catch (err) {
       if (err instanceof Error) {
         error = err.message || 'Unexpected error';
@@ -64,11 +52,15 @@
   <p>Character ID: {characterId}</p>
 </Cell>
 <Cell span={12}>
-  <TextField bind:value={name} label="Character Name" />
+  <TextField
+    bind:value={name}
+    label="Character Name"
+    oninput={handleInput}
+  />
 </Cell>
 <Cell span={12}>
   <Button disabled={isSaving} onclick={submitName}>
-    { isSaving ? 'Saving…' : 'Save Name' }
+    { isSaving ? 'Saving…' : 'Next' }
   </Button>
 </Cell>
 {#if error}
