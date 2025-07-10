@@ -9,7 +9,6 @@
   import Button from '@smui/button';
 
   import { goto } from '$app/navigation';
-  import { auth } from '$lib/clerk';
   import { patchCharacter } from '$lib/services/character-service';
   import { characterState, updateField } from '$lib/stores/character-store';
 
@@ -23,7 +22,6 @@
   let error = $state<string | null>(null);
 
   let name: string = $derived($characterState.name as string ?? '');
-  $inspect($characterState);
 
   function handleInput(event: Event) {
     const input = event.target as HTMLInputElement;

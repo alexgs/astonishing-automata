@@ -10,7 +10,6 @@ type CharacterState = Record<string, unknown>;
 export const characterState = writable<CharacterState>({});
 export const dirtyFields = writable<Set<string>>(new Set());
 
-// TODO Are we handling dotted paths correctly?
 export function updateField(key: string, value: unknown) {
   characterState.update(state => ({ ...state, [key]: value }));
   dirtyFields.update(set => {

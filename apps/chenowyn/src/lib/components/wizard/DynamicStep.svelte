@@ -10,7 +10,6 @@
   } from '@automata/grimoire';
   import Button from '@smui/button';
   import { Cell } from '@smui/layout-grid';
-  import { writable } from 'svelte/store';
 
   import { goto } from '$app/navigation';
   import Field from '$lib/components/wizard/Field.svelte';
@@ -22,9 +21,6 @@
   }
 
   const { characterId, step }: Props = $props();
-
-  // Create character state with default values
-  const characterState = writable<Record<string, unknown>>({});
 
   const currentStepIndex = $derived(SavageWorlds.steps.findIndex(s => s.key === step) ?? { key: 'Unknown', fields: [] });
   const prevStep = $derived(SavageWorlds.steps[currentStepIndex - 1] ?? { key: 'Unknown', fields: [] });
@@ -79,7 +75,7 @@
   <h2>Step: {currentStep.key}</h2>
   <form>
     {#each currentStep.fields as path (path)}
-      <Field {characterState} fieldDef={getFieldDefFromPath(path)} {path} />
+      <Field fieldDef={getFieldDefFromPath(path)} {path} />
     {/each}
   </form>
   <div>

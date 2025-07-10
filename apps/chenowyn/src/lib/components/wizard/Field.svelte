@@ -3,17 +3,15 @@
   -->
 
 <script lang="ts">
-  import { type Writable } from 'svelte/store';
-
   import { type FieldDefinition, SavageWorlds, evaluateField } from '@automata/grimoire';
+  import { characterState } from '$lib/stores/character-store';
 
   interface Props {
-    characterState: Writable<Record<string, unknown>>;
     fieldDef: FieldDefinition;
     path: string;
   }
 
-  const { characterState, fieldDef, path }: Props = $props();
+  const { fieldDef, path }: Props = $props();
 
   let error: string | null = $state(null);
 

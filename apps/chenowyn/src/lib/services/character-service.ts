@@ -39,5 +39,5 @@ export async function patchCharacter(characterId: string): Promise<void> {
   }
 
   const result = await res.json();
-  resetCharacterState(result.data);
+  resetCharacterState(result.data.data);
 }
