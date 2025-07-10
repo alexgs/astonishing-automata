@@ -2,6 +2,8 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import dlv from 'dlv';
+import set from 'lodash.set';
 import { get } from 'svelte/store';
 
 import { auth } from '$lib/clerk';
@@ -15,7 +17,8 @@ export async function patchCharacter(characterId: string): Promise<void> {
   if (dirty.size === 0) return;
 
   const payload = [...dirty].reduce((acc, key) => {
-    acc[key] = current[key];
+    const value = dlv(current, key);
+    set(acc, key, value);
     return acc;
   }, {} as Record<string, unknown>);
 

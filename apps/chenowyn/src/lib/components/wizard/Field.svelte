@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import { type FieldDefinition, SavageWorlds, evaluateField } from '@automata/grimoire';
-  import { characterState } from '$lib/stores/character-store';
+  import { getCharacterState, updateField } from '$lib/stores/character-store';
 
   interface Props {
     fieldDef: FieldDefinition;
@@ -28,38 +28,10 @@
     const input = event.target as HTMLInputElement;
     const raw = input.value;
     const value = coerceInputValue(raw);
-    const nextState = updateField(path, value);
+    updateField(path, value);
 
-    // Use output from `updateField` to avoid potentially evaluating constraints
-    //   on stale data immediately after input.
-    const result = evaluateField(path, nextState, SavageWorlds);
+    const result = evaluateField(path, getCharacterState(), SavageWorlds);
     error = result.result ? null : result.violations[0].reason;
-  }
-
-  function updateField(fieldPath: string, value: unknown): Record<string, unknown> {
-    let newState: Record<string, unknown> = {};
-
-    characterState.update((currentState) => {
-      newState = { ...currentState };
-      const segments = fieldPath.split('.');
-      const last = segments.pop();
-      if (!last) {
-        console.warn(`Invalid field path: ${fieldPath}`);
-        return newState; // No valid field to update
-      }
-
-      let target = newState;
-      for (const segment of segments) {
-        if (!(segment in target)) {
-          target[segment] = {};
-        }
-        target = target[segment] as Record<string, unknown>;
-      }
-      target[last] = value;
-      return newState;
-    });
-
-    return newState;
   }
 </script>
 

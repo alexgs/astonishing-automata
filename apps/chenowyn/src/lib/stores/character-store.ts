@@ -3,6 +3,7 @@
  */
 
 // src/lib/stores/characterStore.ts
+import set from 'lodash.set';
 import { writable, get } from 'svelte/store';
 
 type CharacterState = Record<string, unknown>;
@@ -11,7 +12,11 @@ export const characterState = writable<CharacterState>({});
 export const dirtyFields = writable<Set<string>>(new Set());
 
 export function updateField(key: string, value: unknown) {
-  characterState.update(state => ({ ...state, [key]: value }));
+  characterState.update(state => {
+    const newState = structuredClone(state);
+    set(newState, key, value);
+    return newState;
+  });
   dirtyFields.update(set => {
     const updated = new Set(set);
     updated.add(key);
