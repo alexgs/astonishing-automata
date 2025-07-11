@@ -2,7 +2,7 @@ name: Chenowyn
 
 on:
   push:
-    branches: [ "develop", "feature/aa-54-chenowyn-unit-tests" ]
+    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
 
