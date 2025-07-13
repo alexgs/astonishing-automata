@@ -3,8 +3,8 @@
   -->
 
 <script>
-import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
-import UserButton from '$lib/components/UserButton.svelte';
+  import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
+  import UserButton from '$lib/components/UserButton.svelte';
 </script>
 
 <TopAppBar style="background: transparent">

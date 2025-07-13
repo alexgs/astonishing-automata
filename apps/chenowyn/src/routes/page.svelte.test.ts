@@ -2,34 +2,54 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { render, fireEvent, screen } from '@testing-library/svelte';
-import { describe, test, expect } from 'vitest';
+import { render, fireEvent, screen, waitFor } from '@testing-library/svelte';
+import { readable } from 'svelte/store';
+import { describe, test, expect, vi } from 'vitest';
 
 import Page from './+page.svelte';
 
-describe('Page Component', () => {
-  test('renders the component', () => {
+vi.mock('$app/navigation', () => ({
+  goto: vi.fn()
+}));
+
+vi.mock('$lib/clerk', () => ({
+  auth: {
+    session: readable({
+      getToken: vi.fn(() => Promise.resolve('mock-token')),
+    }),
+  },
+}));
+
+vi.mock('$lib/config', () => ({
+  config: { apiHost: 'mock-host.test' }
+}));
+
+describe('Homepage component', () => {
+  test('renders the homepage', () => {
     render(Page);
     expect(screen.getByText('Create a new character')).toBeInTheDocument();
   });
 
-  // TODO: I can't get this test to work; it should be handled in an E2E test
-  test.skip('toggles drawer when button is clicked', async () => {
-    render(Page);
-    const toggleButton = screen.getByText('Toggle Drawer');
-    const drawer = screen.getByRole('complementary');
+  test('creates a character and navigates', async () => {
+    const fetchMock = vi.fn(() =>
+      new Promise((resolve) =>
+        setTimeout(() =>
+          resolve({
+            ok: true,
+            json: () => Promise.resolve({ data: { characterId: 'abc123' } }),
+          }), 2000)
+      )
+    );
+    global.fetch = fetchMock as typeof global.fetch;
 
-    // Initially, the drawer should be closed
-    // console.log(window.getComputedStyle(drawer));
-    expect(drawer).toHaveStyle({ display: 'none' });
-    expect(drawer).not.toBeVisible();
+    const { getByRole } = render(Page);
+    const button = getByRole('button', { name: 'Create a new character' });
 
-    // Click the button to open the drawer
-    await fireEvent.click(toggleButton);
-    expect(drawer).toBeVisible();
+    await fireEvent.click(button);
 
-    // Click the button again to close the drawer
-    await fireEvent.click(toggleButton);
-    expect(drawer).not.toBeVisible();
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      expect(button).toBeDisabled();
+    });
   });
 });

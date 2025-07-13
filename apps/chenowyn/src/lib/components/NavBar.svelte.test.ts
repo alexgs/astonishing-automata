@@ -2,19 +2,27 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { render, screen } from '@testing-library/svelte';
-import { describe, expect, test, vi } from 'vitest';
+import { render } from '@testing-library/svelte';
+import { describe, expect, vi } from 'vitest';
 
 import NavBar from './NavBar.svelte';
 
 // Mock the UserButton component
-vi.mock('$lib/components/UserButton.svelte', () => ({
-  default: () => '<div data-testid="mock-user-button"></div>',
-}));
+vi.mock('$lib/components/UserButton.svelte', async () => {
+  // @ts-expect-error -- Unresolved path to the mock component
+  // eslint-disable-next-line import/no-unresolved
+  const mod = await import('$__mocks__/$lib/components/UserButton.svelte');
+  return { default: mod.default };
+});
 
 describe('NavBar Component', () => {
-  test('renders the component', () => {
-    render(NavBar);
-    expect(screen.getByText('Automata Character Builder')).toBeInTheDocument();
+  it('renders the title', () => {
+    const { getByText } = render(NavBar);
+    expect(getByText('Automata Character Builder')).toBeInTheDocument();
+  });
+
+  it('includes the user button', () => {
+    const { getByTestId } = render(NavBar);
+    expect(getByTestId('mock-user-button')).toBeInTheDocument();
   });
 });
