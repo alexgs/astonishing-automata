@@ -67,7 +67,7 @@ vi.mock('@automata/grimoire', async () => {
   };
 });
 
-describe('DynamicStep', () => {
+describe('`DynamicStep` component', () => {
   const characterId = 'abc123';
 
   test('renders current step name and field(s)', () => {

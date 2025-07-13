@@ -29,7 +29,7 @@ const mockFieldDef: FieldDefinition = {
   type: 'number'
 };
 
-describe('Field.svelte', () => {
+describe('`Field` component', () => {
   it('renders label with path', () => {
     render(Field, { props: { fieldDef: mockFieldDef, path: 'attributes.strength' } });
     expect(screen.getByLabelText('attributes.strength')).toBeInTheDocument();
