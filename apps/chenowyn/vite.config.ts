@@ -4,6 +4,7 @@
 
 import { sveltekit } from '@sveltejs/kit/vite';
 import { svelteTesting } from '@testing-library/svelte/vite';
+import * as path from 'node:path';
 import { defineConfig } from 'vite';
 import devtoolsJson from 'vite-plugin-devtools-json';
 
@@ -11,6 +12,11 @@ export default defineConfig({
   plugins: [sveltekit(), devtoolsJson()],
   build: {
     target: 'es2022'
+  },
+  resolve: {
+    alias: {
+      '$__mocks__': path.resolve(__dirname, 'src/__mocks__'),
+    }
   },
   server: {
     allowedHosts: true,
