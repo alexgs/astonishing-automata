@@ -26,6 +26,10 @@ const mockUser: UserResource = {
 } as UserResource;
 
 describe('UserButton Component', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   test('renders the sign-in icon when user is not signed in', () => {
     render(UserButton);
     expect(screen.getByText('👤')).toBeInTheDocument();

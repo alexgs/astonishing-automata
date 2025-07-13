@@ -36,8 +36,9 @@
 </script>
 
 <div>
-  <label>{path}</label>
-  <input type="text" oninput={handleInput} />
+  <label>{path}
+    <input type="text" oninput={handleInput} />
+  </label>
   {#if error}
     <p class="text-red-600 text-sm mt-1">{error}</p>
   {/if}
