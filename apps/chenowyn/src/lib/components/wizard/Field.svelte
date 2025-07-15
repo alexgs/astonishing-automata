@@ -4,7 +4,9 @@
 
 <script lang="ts">
   import { type FieldDefinition, SavageWorlds, evaluateField } from '@automata/grimoire';
+  import TextField from '@smui/textfield';
   import { getCharacterState, updateField } from '$lib/stores/character-store';
+  import HelperText from '@smui/textfield/helper-text';
 
   interface Props {
     fieldDef: FieldDefinition;
@@ -14,6 +16,7 @@
   const { fieldDef, path }: Props = $props();
 
   let error: string | null = $state(null);
+  let value: string = $state(''); // local value tracking (optional, since store is source of truth)
 
   function coerceInputValue(raw: string): unknown {
     if (fieldDef.type === 'number') {
@@ -27,19 +30,26 @@
   function handleInput(event: Event) {
     const input = event.target as HTMLInputElement;
     const raw = input.value;
-    const value = coerceInputValue(raw);
-    updateField(path, value);
+    value = raw;
+
+    const coerced = coerceInputValue(raw);
+    updateField(path, coerced);
 
     const result = evaluateField(path, getCharacterState(), SavageWorlds);
     error = result.result ? null : result.violations[0].reason;
   }
 </script>
 
-<div>
-  <label>{path}
-    <input type="text" oninput={handleInput} />
-  </label>
-  {#if error}
-    <p class="text-red-600 text-sm mt-1">{error}</p>
-  {/if}
+<div style="margin-bottom: 1rem;">
+  <TextField
+    label={path}
+    id={path}
+    type="text"
+    value={value}
+    oninput={handleInput}
+    variant="outlined"
+    invalid={!!error}
+  >
+  </TextField>
+  <HelperText persistent>{error}</HelperText>
 </div>
