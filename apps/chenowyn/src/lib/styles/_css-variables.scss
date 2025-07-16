@@ -1,0 +1,51 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+// === This is where we export design tokens to CSS custom properties ===
+
+@use 'tokens';
+
+:root {
+  // Typography
+  --font-family-base: #{tokens.$font-family-base};
+
+  --font-size-6x: #{tokens.$font-size-6x};
+  --font-size-5x: #{tokens.$font-size-5x};
+  --font-size-4x: #{tokens.$font-size-4x};
+  --font-size-3x: #{tokens.$font-size-3x};
+  --font-size-2x: #{tokens.$font-size-2x};
+  --font-size-xl: #{tokens.$font-size-xl};
+  --font-size-lg: #{tokens.$font-size-lg};
+  --font-size-md: #{tokens.$font-size-md};
+  --font-size-sm: #{tokens.$font-size-sm};
+  --font-size-xs: #{tokens.$font-size-xs};
+
+  --font-weight-light: #{tokens.$font-weight-light};
+  --font-weight-regular: #{tokens.$font-weight-regular};
+  --font-weight-medium: #{tokens.$font-weight-medium};
+  --font-weight-heavy: #{tokens.$font-weight-heavy};
+  --font-weight-bold: #{tokens.$font-weight-bold};
+
+  --letter-spacing-6x: #{tokens.$letter-spacing-6x};
+  --letter-spacing-5x: #{tokens.$letter-spacing-5x};
+  --letter-spacing-4x: #{tokens.$letter-spacing-4x};
+  --letter-spacing-3x: #{tokens.$letter-spacing-3x};
+  --letter-spacing-2x: #{tokens.$letter-spacing-2x};
+  --letter-spacing-xl: #{tokens.$letter-spacing-xl};
+  --letter-spacing-lg: #{tokens.$letter-spacing-lg};
+  --letter-spacing-md: #{tokens.$letter-spacing-md};
+  --letter-spacing-sm: #{tokens.$letter-spacing-sm};
+  --letter-spacing-xs: #{tokens.$letter-spacing-xs};
+
+  --line-height-6x: #{tokens.$line-height-6x};
+  --line-height-5x: #{tokens.$line-height-5x};
+  --line-height-4x: #{tokens.$line-height-4x};
+  --line-height-3x: #{tokens.$line-height-3x};
+  --line-height-2x: #{tokens.$line-height-2x};
+  --line-height-xl: #{tokens.$line-height-xl};
+  --line-height-lg: #{tokens.$line-height-lg};
+  --line-height-md: #{tokens.$line-height-md};
+  --line-height-sm: #{tokens.$line-height-sm};
+  --line-height-xs: #{tokens.$line-height-xs};
+}

@@ -1,0 +1,64 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+@use 'sass:color';
+
+@use 'tokens';
+
+html,
+body {
+  background-color: tokens.$color-bg;
+  color: tokens.$color-text;
+  font-family: tokens.$font-family-base;
+}
+
+a {
+  color: #40b3ff;
+}
+
+a:visited {
+  color: color.scale(#40b3ff, $lightness: -35%);
+}
+
+h1 {
+  font-size: tokens.$font-size-6x;
+  font-weight: tokens.$font-weight-medium;
+  letter-spacing: tokens.$letter-spacing-6x;
+  line-height: tokens.$line-height-6x;
+}
+
+h2 {
+  font-size: tokens.$font-size-5x;
+  font-weight: tokens.$font-weight-medium;
+  letter-spacing: tokens.$letter-spacing-5x;
+  line-height: tokens.$line-height-5x;
+}
+
+h3 {
+  font-size: tokens.$font-size-4x;
+  font-weight: tokens.$font-weight-heavy;
+  letter-spacing: tokens.$letter-spacing-4x;
+  line-height: tokens.$line-height-4x;
+}
+
+h4 {
+  font-size: tokens.$font-size-3x;
+  font-weight: tokens.$font-weight-heavy;
+  letter-spacing: tokens.$letter-spacing-3x;
+  line-height: tokens.$line-height-3x;
+}
+
+h5 {
+  font-size: tokens.$font-size-2x;
+  font-weight: tokens.$font-weight-bold;
+  letter-spacing: tokens.$letter-spacing-2x;
+  line-height: tokens.$line-height-2x;
+}
+
+h6 {
+  font-size: tokens.$font-size-xl;
+  font-weight: tokens.$font-weight-bold;
+  letter-spacing: tokens.$letter-spacing-xl;
+  line-height: tokens.$line-height-xl;
+}
