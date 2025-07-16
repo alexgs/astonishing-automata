@@ -1,0 +1,10 @@
+@use './colors/grey' as *;
+@use './colors/pink' as *;
+@use './colors/purple' as *;
+@use './colors/sky' as *;
+
+$color-bg: $grey_2;
+$color-text: $grey_contrast;
+$color-primary: $purple_9;
+$color-secondary: $sky_8;
+$color-accent: $pink_9;
