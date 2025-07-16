@@ -1,0 +1,154 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+// === TYPOGRAPHY ===
+$font-family-base: 'Inter', system-ui, sans-serif;
+
+// Font sizes (major second)
+$font-size-6x: 2.281rem;
+$font-size-5x: 2.027rem;
+$font-size-4x: 1.802rem;
+$font-size-3x: 1.602rem;
+$font-size-2x: 1.424rem;
+$font-size-xl: 1.266rem;
+$font-size-lg: 1.125rem;
+$font-size-md: 1rem;
+$font-size-sm: 0.889rem;
+$font-size-xs: 0.79rem;
+
+// Font weights
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-heavy: 600;
+$font-weight-bold: 700;
+
+// Letter spacing
+$letter-spacing-6x: -0.02em;
+$letter-spacing-5x: -0.015em;
+$letter-spacing-4x: -0.01em;
+$letter-spacing-3x: -0.005em;
+$letter-spacing-2x: 0em;
+$letter-spacing-xl: 0.005em;
+$letter-spacing-lg: 0.01em;
+$letter-spacing-md: 0.015em;
+$letter-spacing-sm: 0.02em;
+$letter-spacing-xs: 0.025em;
+
+// Line heights
+$line-height-6x: 1.1;
+$line-height-5x: 1.15;
+$line-height-4x: 1.2;
+$line-height-3x: 1.25;
+$line-height-2x: 1.3;
+$line-height-xl: 1.35;
+$line-height-lg: 1.4;
+$line-height-md: 1.5;
+$line-height-sm: 1.6;
+$line-height-xs: 1.7;
+
+// === COLORS ===
+
+/* These colors are from [Radix Colors](https://www.radix-ui.com/colors) */
+/* Use "green" for success and "tomato" for errors. */
+/* For accents, consider "mint," "sky," or "pink." */
+
+// Purple
+$purple_1: #241e2a;
+$purple_2: #292131;
+$purple_3: #382849;
+$purple_4: #452d5b;
+$purple_5: #4e3367;
+$purple_6: #593c75;
+$purple_7: #6b498a;
+$purple_8: #885cb0;
+$purple_9: #9a5cd0;
+$purple_10: #865baf;
+$purple_11: #d39dff;
+$purple_12: #eadafc;
+
+$purple_a1: #6700f20b;
+$purple_a2: #8c21f813;
+$purple_a3: #a148ff2e;
+$purple_a4: #ab4ffe43;
+$purple_a5: #ae59fd51;
+$purple_a6: #b568fe61;
+$purple_a7: #bd76ff79;
+$purple_a8: #c07cfea5;
+$purple_a9: #ba6bfeca;
+$purple_a10: #be7bfea4;
+$purple_a11: #d39dff;
+$purple_a12: #edddfffc;
+
+$purple_contrast: #eeeeee;
+$purple_surface: #31214180;
+$purple_indicator: #9a5cd0;
+$purple_track: #9a5cd0;
+
+// Grey
+$grey_1: #202123;
+$grey_2: #27282a;
+$grey_3: #303033;
+$grey_4: #35363a;
+$grey_5: #3b3c41;
+$grey_6: #43444a;
+$grey_7: #4f5057;
+$grey_8: #656771;
+$grey_9: #71737e;
+$grey_10: #7d7f8a;
+$grey_11: #b4b5bf;
+$grey_12: #eeeef0;
+
+$grey_a1: #0022cc03;
+$grey_a2: #adc4f20b;
+$grey_a3: #d8d8fc15;
+$grey_a4: #d1dafd1d;
+$grey_a5: #d5dcfe25;
+$grey_a6: #d6dbfb30;
+$grey_a7: #dce0fc3f;
+$grey_a8: #dee4ff5c;
+$grey_a9: #e0e5ff6b;
+$grey_a10: #e3e8ff79;
+$grey_a11: #eff1ffb6;
+$grey_a12: #fdfdffee;
+
+$grey_contrast: #ffffff;
+$grey_surface: rgba(0, 0, 0, 0.05);
+$grey_indicator: #71737e;
+$grey_track: #71737e;
+
+// Pink
+$pink_1: #191117;
+$pink_2: #21121d;
+$pink_3: #37172f;
+$pink_4: #4b143d;
+$pink_5: #591c47;
+$pink_6: #692955;
+$pink_7: #833869;
+$pink_8: #a84885;
+$pink_9: #d6409f;
+$pink_10: #de51a8;
+$pink_11: #ff8dcc;
+$pink_12: #fdd1ea;
+
+// Sky
+$sky_1: #0d141f;
+$sky_2: #111a27;
+$sky_3: #112840;
+$sky_4: #113555;
+$sky_5: #154467;
+$sky_6: #1b537b;
+$sky_7: #1f6692;
+$sky_8: #197cae;
+$sky_9: #7ce2fe;
+$sky_10: #a8eeff;
+$sky_11: #75c7f0;
+$sky_12: #c2f3ff;
+
+// === SEMANTIC COLOR ROLES ===
+$color-bg: $grey_2;
+$color-text: $grey_contrast;
+$color-primary: $purple_9;
+$color-secondary: $sky_8;
+$color-accent: $pink_9;

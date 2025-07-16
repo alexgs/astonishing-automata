@@ -4,7 +4,7 @@
   import { auth } from '$lib/clerk';
   import AppContainer from '$lib/components/AppContainer.svelte';
   import NavBar from '$lib/components/NavBar.svelte';
-  import '../app.css';
+  import '$lib/styles/app.scss';
 
   auth.provideStore(auth.userStore);
 
