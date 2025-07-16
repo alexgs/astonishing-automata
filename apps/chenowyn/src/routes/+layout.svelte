@@ -15,18 +15,18 @@
 	let { children } = $props();
 </script>
 
-<style>
+<style lang="scss">
+  @use '$lib/styles/tokens' as tokens;
+
   :global(body) {
     background: transparent;
   }
 
-  /*noinspection CssReplaceWithShorthandSafely*/
   .gradient {
-    background: linear-gradient(to bottom, transparent, var(--purple-3));
-    background-color: #212121;
+    background: tokens.$color-bg linear-gradient(to bottom, transparent, tokens.$purple_3);
     height: 50vh;
     width: 100vw;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     z-index: -1;

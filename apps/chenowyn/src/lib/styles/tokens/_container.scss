@@ -1,6 +1,7 @@
 /*!
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
+@use 'sass:map';
 
 @use './breakpoints.scss' as *;
 
@@ -17,12 +18,12 @@ $container-widths: (
   margin-right: auto;
 
   @include respond(tablet) {
-    max-width: map-get($container-widths, tablet);
+    max-width: map.get($container-widths, tablet);
     padding-left: 0;
     padding-right: 0;
   }
 
   @include respond(laptop) {
-    max-width: map-get($container-widths, laptop);
+    max-width: map.get($container-widths, laptop);
   }
 }
