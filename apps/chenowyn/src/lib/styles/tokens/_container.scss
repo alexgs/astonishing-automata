@@ -1,0 +1,28 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+@use './breakpoints.scss' as *;
+
+$container-widths: (
+  tablet: 720px,
+  laptop: 1080px
+);
+
+@mixin container {
+  width: 100%;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  @include respond(tablet) {
+    max-width: map-get($container-widths, tablet);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  @include respond(laptop) {
+    max-width: map-get($container-widths, laptop);
+  }
+}

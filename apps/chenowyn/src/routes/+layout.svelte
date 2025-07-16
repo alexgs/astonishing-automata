@@ -2,8 +2,8 @@
   import { onMount } from 'svelte';
 
   import { auth } from '$lib/clerk';
-  import AppContainer from '$lib/components/AppContainer.svelte';
   import NavBar from '$lib/components/NavBar.svelte';
+  import UiContainer from '$lib/components/ui/UiContainer.svelte';
   import '$lib/styles/app.scss';
 
   auth.provideStore(auth.userStore);
@@ -37,8 +37,8 @@
 
 <NavBar />
 
-<AppContainer>
+<UiContainer>
   <main style="margin-top: 64px">
     {@render children()}
   </main>
-</AppContainer>
+</UiContainer>
