@@ -3,9 +3,6 @@
   -->
 
 <script>
-  import { Label } from '@smui/button';
-  import LayoutGrid, { Cell } from '@smui/layout-grid';
-
   import { goto } from '$app/navigation';
   import PopButton from '$lib/components/PopButton.svelte';
   import { auth } from '$lib/clerk';
@@ -41,14 +38,27 @@
   }
 </script>
 
-<style>
-  h1 {
-    margin: 0;
+<style lang="scss">
+  @use '$lib/styles/tokens';
+  @use '$lib/styles/tokens/breakpoints.scss' as *;
+
+  .header,
+  .actions {
     text-align: center;
+    margin-bottom: 1.5rem;
   }
 
-  .button-container {
-    text-align: center;
+  .character-grid {
+    display: grid;
+    gap: 1rem;
+
+    // Mobile: single column
+    grid-template-columns: 1fr;
+
+    // Tablet+: three columns
+    @include respond(tablet) {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .demo-cell {
@@ -56,29 +66,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--mdc-theme-secondary, #333);
-    color: var(--mdc-theme-on-secondary, #fff);
+    background-color: tokens.$grey_3;
+    color: tokens.$color-text;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 </style>
 
-<LayoutGrid>
-  <Cell span={12}>
+  <div class="header">
     <h1>Your Characters</h1>
-  </Cell>
-  <Cell span={12}>
-    <div class="button-container">
-      <PopButton onclick={createCharacter} disabled={loading}>
-        <Label>Create a new character</Label>
-      </PopButton>
-    </div>
-  </Cell>
-  <Cell span={4}>
+  </div>
+
+  <div class="actions">
+    <PopButton onclick={createCharacter} disabled={loading}>
+      Create a new character
+    </PopButton>
+  </div>
+
+  <div class="character-grid">
     <div class="demo-cell">Character 1</div>
-  </Cell>
-  <Cell span={4}>
     <div class="demo-cell">Character 2</div>
-  </Cell>
-  <Cell span={4}>
     <div class="demo-cell">Character 3</div>
-  </Cell>
-</LayoutGrid>
+  </div>
