@@ -5,11 +5,11 @@
 @use './colors/purple' as *;
 
 :root {
-  --btn-outline-border: #{$purple_9};
-  --btn-outline-fill: transparent;
-  --btn-outline-text: #{$purple_9};
-  --btn-outline-hover-fill: #{$purple_1};
-  --btn-outline-hover-border: #{$purple_8};
-  --btn-outline-active-fill: #{$purple_2};
-  --btn-outline-focus: #{$purple_6};
+  --btn-border: #{$purple_9};
+  --btn-fill: transparent;
+  --btn-text: #{$purple_9};
+  --btn-hover-fill: #{$purple_1};
+  --btn-hover-border: #{$purple_8};
+  --btn-active-fill: #{$purple_2};
+  --btn-focus: #{$purple_6};
 }
