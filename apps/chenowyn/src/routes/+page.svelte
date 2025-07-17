@@ -78,8 +78,12 @@
   </div>
 
   <div class="actions">
-    <UiButton onclick={createCharacter} disabled={loading}>
-      Create a new character
+    <UiButton onclick={createCharacter} disabled={loading} variant="pop">
+      {#if loading}
+        <span>Loading...</span>
+      {:else}
+        <span>Create a new character</span>
+      {/if}
     </UiButton>
   </div>
 

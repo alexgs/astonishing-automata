@@ -7,13 +7,21 @@
     disabled?: boolean;
     onclick?: (event: MouseEvent) => void;
     type?: 'button' | 'submit' | 'reset';
+    variant?: 'default' | 'pop' | 'primary';
   }
 
+  let {
+    children,
+    disabled = false,
+    onclick, type = 'button',
+    variant = 'default',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let { children, disabled = false, onclick, type = 'button' }: Props & { children?: any } = $props();
+  }: Props & { children?: any } = $props();
 </script>
 
 <style lang="scss">
+  @use '$lib/styles/tokens';
+
   .ui-button {
     appearance: none;
     font: inherit;
@@ -47,8 +55,28 @@
       background-color: #f9f9f9;
     }
   }
+
+  .variant-primary {
+    --btn-outline-border: #{tokens.$purple-9};
+    --btn-outline-fill: #{tokens.$purple-9};
+    --btn-outline-text: #fff;
+    --btn-outline-hover-fill: #{tokens.$purple-8};
+    --btn-outline-hover-border: #{tokens.$purple-7};
+    --btn-outline-active-fill: #{tokens.$purple-7};
+    --btn-outline-focus: #{tokens.$purple-6};
+  }
+
+  .variant-pop {
+    --btn-outline-border: #{tokens.$pink-9};
+    --btn-outline-fill: transparent;
+    --btn-outline-text: #{tokens.$pink-9};
+    --btn-outline-hover-fill: #{tokens.$pink-2};
+    --btn-outline-hover-border: #{tokens.$pink-7};
+    --btn-outline-active-fill: #{tokens.$pink-1};
+    --btn-outline-focus: #{tokens.$pink-6};
+  }
 </style>
 
-<button type={type} class="ui-button" {onclick} disabled={disabled}>
+<button type={type} class={`ui-button variant-${variant}`} {onclick} disabled={disabled}>
   {@render children()}
 </button>
