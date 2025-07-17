@@ -1,0 +1,16 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+@use 'sass:map';
+
+$breakpoints: (
+  tablet: 640px,
+  laptop: 1024px
+);
+
+@mixin respond($breakpoint) {
+  @media (min-width: map.get($breakpoints, $breakpoint)) {
+    @content;
+  }
+}

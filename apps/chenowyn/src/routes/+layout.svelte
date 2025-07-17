@@ -2,9 +2,9 @@
   import { onMount } from 'svelte';
 
   import { auth } from '$lib/clerk';
-  import AppContainer from '$lib/components/AppContainer.svelte';
   import NavBar from '$lib/components/NavBar.svelte';
-  import '../app.css';
+  import UiContainer from '$lib/components/ui/UiContainer.svelte';
+  import '$lib/styles/app.scss';
 
   auth.provideStore(auth.userStore);
 
@@ -15,18 +15,18 @@
 	let { children } = $props();
 </script>
 
-<style>
+<style lang="scss">
+  @use '$lib/styles/tokens' as tokens;
+
   :global(body) {
     background: transparent;
   }
 
-  /*noinspection CssReplaceWithShorthandSafely*/
   .gradient {
-    background: linear-gradient(to bottom, transparent, var(--purple-3));
-    background-color: #212121;
+    background: tokens.$color-bg linear-gradient(to bottom, transparent, tokens.$purple_3);
     height: 50vh;
     width: 100vw;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     z-index: -1;
@@ -37,8 +37,8 @@
 
 <NavBar />
 
-<AppContainer>
+<UiContainer>
   <main style="margin-top: 64px">
     {@render children()}
   </main>
-</AppContainer>
+</UiContainer>

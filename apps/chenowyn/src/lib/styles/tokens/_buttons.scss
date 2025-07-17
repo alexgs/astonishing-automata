@@ -1,0 +1,15 @@
+/*!
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+@use './colors/purple' as *;
+
+:root {
+  --btn-border: #{$purple_9};
+  --btn-fill: transparent;
+  --btn-text: #{$purple_9};
+  --btn-hover-fill: #{$purple_1};
+  --btn-hover-border: #{$purple_8};
+  --btn-active-fill: #{$purple_2};
+  --btn-focus: #{$purple_6};
+}
