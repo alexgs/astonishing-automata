@@ -4,8 +4,8 @@
 
 <script>
   import { goto } from '$app/navigation';
-  import PopButton from '$lib/components/PopButton.svelte';
   import { auth } from '$lib/clerk';
+  import UiButton from '$lib/components/ui/UiButton.svelte';
   import { config } from '$lib/config';
 
   const { session } = auth;
@@ -78,9 +78,9 @@
   </div>
 
   <div class="actions">
-    <PopButton onclick={createCharacter} disabled={loading}>
+    <UiButton onclick={createCharacter} disabled={loading}>
       Create a new character
-    </PopButton>
+    </UiButton>
   </div>
 
   <div class="character-grid">
