@@ -3,6 +3,8 @@
   -->
 
 <script lang="ts">
+  import { Button } from "bits-ui";
+
   interface Props {
     disabled?: boolean;
     onclick?: (event: MouseEvent) => void;
@@ -22,7 +24,7 @@
 <style lang="scss">
   @use '$lib/styles/tokens';
 
-  .ui-button {
+  :global(.ui-button) {
     appearance: none;
     font: inherit;
     padding: 0.5rem 1rem;
@@ -56,7 +58,7 @@
     }
   }
 
-  .variant-primary {
+  :global(.variant-primary) {
     --btn-border: #{tokens.$purple-9};
     --btn-fill: #{tokens.$purple-9};
     --btn-text: #fff;
@@ -66,7 +68,7 @@
     --btn-focus: #{tokens.$purple-6};
   }
 
-  .variant-pop {
+  :global(.variant-pop) {
     --btn-border: #{tokens.$pink-9};
     --btn-fill: transparent;
     --btn-text: #{tokens.$pink-9};
@@ -77,6 +79,6 @@
   }
 </style>
 
-<button type={type} class={`ui-button variant-${variant}`} {onclick} disabled={disabled}>
+<Button.Root type={type} class={`ui-button variant-${variant}`} {onclick} disabled={disabled}>
   {@render children()}
-</button>
+</Button.Root>
