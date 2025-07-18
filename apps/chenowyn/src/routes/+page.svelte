@@ -42,10 +42,9 @@
   @use '$lib/styles/tokens';
   @use '$lib/styles/tokens/breakpoints.scss' as *;
 
-  .header,
   .actions {
-    text-align: center;
     margin-bottom: 1.5rem;
+    text-align: center;
   }
 
   .button-text {
@@ -88,10 +87,17 @@
       }
     }
   }
+
+  .header {
+    color: tokens.$brand-muted;
+    margin-bottom: 1.5rem;
+    margin-top: calc(1.5rem + 3.75rem); // 3.75rem for the fixed navbar
+    text-align: center;
+  }
 </style>
 
   <div class="header">
-    <h1 style="color: var(--brand-muted)">Your Characters</h1>
+    <h1>Your Characters</h1>
   </div>
 
   <div class="actions">
