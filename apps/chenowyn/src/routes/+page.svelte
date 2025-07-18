@@ -48,6 +48,10 @@
     margin-bottom: 1.5rem;
   }
 
+  .button-text {
+    text-transform: uppercase;
+  }
+
   .character-grid {
     display: grid;
     gap: 1rem;
@@ -62,33 +66,58 @@
   }
 
   .demo-cell {
-    height: 248px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: tokens.$grey_3;
-    color: tokens.$color-text;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding: 2px; // controls border thickness
+    border-radius: 12px;
+    background: linear-gradient(15deg, tokens.$color-primary 0%, tokens.$color-surface 80%);
+    z-index: 0;
+
+    .inner {
+      background-color: tokens.$color-surface;
+      border-radius: 10px; // slightly smaller
+      padding: 1.5rem;
+      text-align: center;
+      color: tokens.$color-muted;
+      font-weight: 500;
+
+      .content {
+        height: 248px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 </style>
 
   <div class="header">
-    <h1>Your Characters</h1>
+    <h1 style="color: var(--brand-muted)">Your Characters</h1>
   </div>
 
   <div class="actions">
     <UiButton onclick={createCharacter} disabled={loading} variant="pop">
       {#if loading}
-        <span>Loading...</span>
+        <span class="button-text">Loading...</span>
       {:else}
-        <span>Create a new character</span>
+        <span class="button-text">Create a new character</span>
       {/if}
     </UiButton>
   </div>
 
   <div class="character-grid">
-    <div class="demo-cell">Character 1</div>
-    <div class="demo-cell">Character 2</div>
-    <div class="demo-cell">Character 3</div>
+    <div class="demo-cell">
+      <div class="inner">
+        <div class="content">Character 1</div>
+      </div>
+    </div>
+    <div class="demo-cell">
+      <div class="inner">
+        <div class="content">Character 2</div>
+      </div>
+    </div>
+    <div class="demo-cell">
+      <div class="inner">
+        <div class="content">Character 3</div>
+      </div>
+    </div>
   </div>

@@ -2,12 +2,10 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+@forward './brand-colors';
 @forward './breakpoints';
 @forward './buttons';
 @forward './container';
-@forward './colors/grey';
-@forward './colors/pink';
-@forward './colors/purple';
-@forward './colors/sky';
+@forward './colors/index';
 @forward './semantic-tokens';
 @forward './typography';

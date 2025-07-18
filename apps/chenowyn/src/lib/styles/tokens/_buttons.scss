@@ -2,14 +2,15 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-@use './colors/purple' as *;
+@use './brand-colors' as brand;
+@use './colors' as color;
 
 :root {
-  --btn-border: #{$purple_9};
+  --btn-border: #{brand.$brand-accent};
   --btn-fill: transparent;
-  --btn-text: #{$purple_9};
-  --btn-hover-fill: #{$purple_1};
-  --btn-hover-border: #{$purple_8};
-  --btn-active-fill: #{$purple_2};
-  --btn-focus: #{$purple_6};
+  --btn-text: #{brand.$brand-accent};
+  --btn-hover-fill: #{brand.$brand-accent-hover};
+  --btn-hover-border: #{brand.$brand-accent-hover};
+  --btn-active-fill: #{color.$teal_3};
+  --btn-focus: #{color.$teal_6};
 }

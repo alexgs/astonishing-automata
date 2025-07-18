@@ -3,8 +3,6 @@
   -->
 
 <script lang="ts">
-  import { Button } from "bits-ui";
-
   interface Props {
     disabled?: boolean;
     onclick?: (event: MouseEvent) => void;
@@ -24,7 +22,7 @@
 <style lang="scss">
   @use '$lib/styles/tokens';
 
-  :global(.ui-button) {
+  .ui-button {
     appearance: none;
     font: inherit;
     padding: 0.5rem 1rem;
@@ -58,27 +56,27 @@
     }
   }
 
-  :global(.variant-primary) {
-    --btn-border: #{tokens.$purple-9};
-    --btn-fill: #{tokens.$purple-9};
+  .variant-primary {
+    --btn-border: #{tokens.$brand-accent};
+    --btn-fill: #{tokens.$brand-accent};
     --btn-text: #fff;
-    --btn-hover-fill: #{tokens.$purple-8};
-    --btn-hover-border: #{tokens.$purple-7};
-    --btn-active-fill: #{tokens.$purple-7};
-    --btn-focus: #{tokens.$purple-6};
+    --btn-hover-fill: #{tokens.$teal-8};
+    --btn-hover-border: #{tokens.$teal-7};
+    --btn-active-fill: #{tokens.$teal-7};
+    --btn-focus: #{tokens.$teal-6};
   }
 
-  :global(.variant-pop) {
-    --btn-border: #{tokens.$pink-9};
+  .variant-pop {
+    --btn-border: #{tokens.$brand-accent};
     --btn-fill: transparent;
-    --btn-text: #{tokens.$pink-9};
-    --btn-hover-fill: #{tokens.$pink-2};
-    --btn-hover-border: #{tokens.$pink-7};
-    --btn-active-fill: #{tokens.$pink-1};
-    --btn-focus: #{tokens.$pink-6};
+    --btn-text: #{tokens.$brand-accent};
+    --btn-hover-fill: #{tokens.$brand-accent-hover};
+    --btn-hover-border: #{tokens.$brand-accent-hover};
+    --btn-active-fill: #{tokens.$teal-1};
+    --btn-focus: #{tokens.$teal-6};
   }
 </style>
 
-<Button.Root type={type} class={`ui-button variant-${variant}`} {onclick} disabled={disabled}>
+<button type={type} class={`ui-button variant-${variant}`} {onclick} disabled={disabled}>
   {@render children()}
-</Button.Root>
+</button>
