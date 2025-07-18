@@ -48,6 +48,10 @@
     margin-bottom: 1.5rem;
   }
 
+  .button-text {
+    text-transform: uppercase;
+  }
+
   .character-grid {
     display: grid;
     gap: 1rem;
@@ -87,15 +91,15 @@
 </style>
 
   <div class="header">
-    <h1>Your Characters</h1>
+    <h1 style="color: var(--brand-muted)">Your Characters</h1>
   </div>
 
   <div class="actions">
     <UiButton onclick={createCharacter} disabled={loading} variant="pop">
       {#if loading}
-        <span>Loading...</span>
+        <span class="button-text">Loading...</span>
       {:else}
-        <span>Create a new character</span>
+        <span class="button-text">Create a new character</span>
       {/if}
     </UiButton>
   </div>

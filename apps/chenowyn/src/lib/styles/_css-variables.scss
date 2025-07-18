@@ -7,7 +7,7 @@
 @use 'tokens';
 
 :root {
-  // Typography
+  // === TYPOGRAPHY ===
   --font-family-base: #{tokens.$font-family-base};
 
   --font-size-6x: #{tokens.$font-size-6x};
@@ -48,4 +48,11 @@
   --line-height-md: #{tokens.$line-height-md};
   --line-height-sm: #{tokens.$line-height-sm};
   --line-height-xs: #{tokens.$line-height-xs};
+
+  // === BRAND COLORS ===
+  --brand-background: #{tokens.$brand-background};
+  --brand-surface: #{tokens.$brand-surface};
+  --brand-accent: #{tokens.$brand-accent};
+  --brand-muted: #{tokens.$brand-muted};
+  --brand-border: #{tokens.$brand-border};
 }
