@@ -91,7 +91,7 @@
   .header {
     color: tokens.$brand-muted;
     margin-bottom: 1.5rem;
-    margin-top: calc(1.5rem + 3.75rem); // 3.75rem for the fixed navbar
+    margin-top: 1.5rem;
     text-align: center;
   }
 </style>

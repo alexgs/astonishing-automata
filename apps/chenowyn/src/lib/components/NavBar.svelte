@@ -23,12 +23,13 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3.75rem;
+    height: 4rem;
     background-color: tokens.$brand-surface;
     color: white;
     display: flex;
     align-items: center;
     padding: 0 1.5rem;
+    z-index: 10;
   }
 
   .user-button-container {

@@ -18,7 +18,7 @@
 <NavBar />
 
 <UiContainer>
-  <main>
+  <main style="padding-top: 4rem"><!-- 4rem for fixed navbar -->
     {@render children()}
   </main>
 </UiContainer>
