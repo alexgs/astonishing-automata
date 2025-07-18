@@ -62,14 +62,27 @@
   }
 
   .demo-cell {
-    height: 248px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: tokens.$grey_3;
-    color: tokens.$color-text;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    padding: 2px; // controls border thickness
+    border-radius: 12px;
+    background: linear-gradient(15deg, tokens.$color-primary 0%, tokens.$color-surface 80%);
+    z-index: 0;
+
+    .inner {
+      background-color: tokens.$color-surface;
+      border-radius: 10px; // slightly smaller
+      padding: 1.5rem;
+      text-align: center;
+      color: tokens.$color-muted;
+      font-weight: 500;
+
+      .content {
+        height: 248px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
   }
 </style>
 
@@ -88,7 +101,19 @@
   </div>
 
   <div class="character-grid">
-    <div class="demo-cell">Character 1</div>
-    <div class="demo-cell">Character 2</div>
-    <div class="demo-cell">Character 3</div>
+    <div class="demo-cell">
+      <div class="inner">
+        <div class="content">Character 1</div>
+      </div>
+    </div>
+    <div class="demo-cell">
+      <div class="inner">
+        <div class="content">Character 2</div>
+      </div>
+    </div>
+    <div class="demo-cell">
+      <div class="inner">
+        <div class="content">Character 3</div>
+      </div>
+    </div>
   </div>
