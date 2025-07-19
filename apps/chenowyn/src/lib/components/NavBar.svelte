@@ -23,7 +23,7 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4rem;
+    height: tokens.$navbar-height;
     background-color: tokens.$brand-surface;
     color: white;
     display: flex;

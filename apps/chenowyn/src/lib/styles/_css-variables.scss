@@ -55,4 +55,7 @@
   --brand-accent: #{tokens.$brand-accent};
   --brand-muted: #{tokens.$brand-muted};
   --brand-border: #{tokens.$brand-border};
+
+  // ===SEMANTIC TOKENS ===
+  --navbar-height: #{tokens.$navbar-height};
 }

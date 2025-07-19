@@ -18,7 +18,7 @@
 <NavBar />
 
 <UiContainer>
-  <main style="padding-top: 4rem"><!-- 4rem for fixed navbar -->
+  <main style="padding-top: var(--navbar-height)">
     {@render children()}
   </main>
 </UiContainer>
