@@ -21,7 +21,7 @@ import { PostgresService } from './postgres.service';
 @Injectable()
 export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(EventPublisherService.name);
-  private unsubscribe: () => void = () => {};
+  private unsubscribe: () => Promise<void> = async () => {};
 
   constructor(
     private readonly eventBus: EventBus,
@@ -31,7 +31,7 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleDestroy() {
     try {
-      this.unsubscribe();
+      await this.unsubscribe();
       await this.postgresService.close();
       this.logger.debug('Unsubscribed from PostgreSQL event stream.');
     } catch (error) {
@@ -67,7 +67,8 @@ export class EventPublisherService implements OnModuleInit, OnModuleDestroy {
           },
         );
 
-        this.unsubscribe = subscriptionHandle.unsubscribe;
+        this.unsubscribe =
+          subscriptionHandle.unsubscribe as () => Promise<void>;
         return;
       } catch (error) {
         this.logger.error(
