@@ -15,6 +15,7 @@
   import Field from '$lib/components/wizard/Field.svelte';
   import { patchCharacter } from '$lib/services/character-service';
   import { getCharacterState } from '$lib/stores/character-store';
+  import UiFormContainer from '$lib/components/ui/UiFormContainer.svelte';
 
   interface Props {
     characterId: string;
@@ -72,7 +73,7 @@
   }
 </script>
 
-<div>
+<UiFormContainer>
   <h2>Name: {`${getCharacterState().name} [Savage Worlds]`}</h2>
   <UiFieldGroup title={`Step: ${currentStep.key}`}>
     {#each currentStep.fields as path (path)}
@@ -83,4 +84,4 @@
     <UiButton onclick={handlePrevClick}>Prev</UiButton>
     <UiButton onclick={handleNextClick}>Next</UiButton>
   </div>
-</div>
+</UiFormContainer>

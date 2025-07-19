@@ -56,6 +56,9 @@
   --brand-muted: #{tokens.$brand-muted};
   --brand-border: #{tokens.$brand-border};
 
-  // ===SEMANTIC TOKENS ===
+  // === SEMANTIC TOKENS ===
   --navbar-height: #{tokens.$navbar-height};
+
+  // === SPACING ===
+  --space-medium: #{tokens.$space-medium};
 }

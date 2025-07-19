@@ -11,6 +11,7 @@
   import { characterState, updateField } from '$lib/stores/character-store';
   import UiTextInput from '$lib/components/ui/UiTextInput.svelte';
   import UiFieldGroup from '$lib/components/ui/UiFieldGroup.svelte';
+  import UiFormContainer from '$lib/components/ui/UiFormContainer.svelte';
 
   interface Props {
     characterId: string;
@@ -46,15 +47,17 @@
   }
 </script>
 
-<UiFieldGroup title="New Savage Worlds Character">
-  <UiTextInput
-    label="Character Name"
-    name="characterName"
-    value={name}
-    onInput={handleInput}
-    error={error}
-  />
-</UiFieldGroup>
-<UiButton disabled={isSaving} onclick={submitName}>
-  { isSaving ? 'Saving…' : 'Next' }
-</UiButton>
+<UiFormContainer>
+  <UiFieldGroup title="New Savage Worlds Character">
+    <UiTextInput
+      label="Character Name"
+      name="characterName"
+      value={name}
+      onInput={handleInput}
+      error={error}
+    />
+  </UiFieldGroup>
+  <UiButton disabled={isSaving} onclick={submitName}>
+    { isSaving ? 'Saving…' : 'Next' }
+  </UiButton>
+</UiFormContainer>
