@@ -4,13 +4,12 @@
 
 <script lang="ts">
   import { SavageWorlds } from '@automata/grimoire';
-  import { Cell } from '@smui/layout-grid';
-  import TextField from '@smui/textfield';
-  import Button from '@smui/button';
 
   import { goto } from '$app/navigation';
+  import UiButton from '$lib/components/ui/UiButton.svelte';
   import { patchCharacter } from '$lib/services/character-service';
   import { characterState, updateField } from '$lib/stores/character-store';
+  import UiTextInput from '$lib/components/ui/UiTextInput.svelte';
 
   interface Props {
     characterId: string;
@@ -46,23 +45,14 @@
   }
 </script>
 
-<Cell span={12}>
-  <p>Character ID: {characterId}</p>
-</Cell>
-<Cell span={12}>
-  <TextField
-    bind:value={name}
-    label="Character Name"
-    oninput={handleInput}
-  />
-</Cell>
-<Cell span={12}>
-  <Button disabled={isSaving} onclick={submitName}>
-    { isSaving ? 'Saving…' : 'Next' }
-  </Button>
-</Cell>
-{#if error}
-  <Cell span={12}>
-    <p style="color: red;">{error}</p>
-  </Cell>
-{/if}
+<p>Character ID: {characterId}</p>
+<UiTextInput
+  label="Character Name"
+  name="characterName"
+  value={name}
+  onInput={handleInput}
+  error={error}
+/>
+<UiButton disabled={isSaving} onclick={submitName}>
+  { isSaving ? 'Saving…' : 'Next' }
+</UiButton>

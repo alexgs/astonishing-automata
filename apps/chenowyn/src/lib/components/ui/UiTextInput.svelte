@@ -8,7 +8,7 @@
     error: string | null;
     label: string;
     name: string;
-    onInput: (value: string) => void;
+    onInput: (event: Event) => void;
     placeholder?: string;
     value: string;
   }
@@ -24,8 +24,7 @@
   }: Props = $props();
 
   function handleInput(event: Event) {
-    const target = event.target as HTMLInputElement;
-    onInput(target.value);
+    onInput(event);
   }
 </script>
 
