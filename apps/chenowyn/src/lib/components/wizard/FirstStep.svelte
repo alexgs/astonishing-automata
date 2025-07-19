@@ -57,7 +57,7 @@
       error={error}
     />
   </UiFieldGroup>
-  <UiButton disabled={isSaving} onclick={submitName}>
+  <UiButton disabled={isSaving} onclick={submitName} variant="primary">
     { isSaving ? 'Saving…' : 'Next' }
   </UiButton>
 </UiFormContainer>

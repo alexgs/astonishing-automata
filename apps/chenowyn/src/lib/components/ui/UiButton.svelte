@@ -58,13 +58,13 @@
   }
 
   .variant-primary {
-    --btn-active-fill: #{tokens.$teal-7};
+    --btn-active-fill: #{tokens.$teal-1};
     --btn-border: #{tokens.$brand-accent};
     --btn-fill: #{tokens.$brand-accent};
     --btn-focus: #{tokens.$teal-6};
-    --btn-hover-border: #{tokens.$teal-7};
-    --btn-hover-fill: #{tokens.$teal-8};
-    --btn-text: #fff;
+    --btn-hover-border: #{tokens.$brand-accent};
+    --btn-hover-fill: #{tokens.$teal-6};
+    --btn-text: #{tokens.$color-surface};
   }
 
   .variant-pop {
@@ -72,8 +72,8 @@
     --btn-border: #{tokens.$brand-accent};
     --btn-fill: transparent;
     --btn-focus: #{tokens.$teal-6};
-    --btn-hover-border: #{tokens.$brand-accent-hover};
-    --btn-hover-fill: #{tokens.$teal_4};
+    --btn-hover-border: #{tokens.$brand-accent};
+    --btn-hover-fill: #{tokens.$teal-6};
     --btn-text: #{tokens.$brand-accent};
   }
 </style>
