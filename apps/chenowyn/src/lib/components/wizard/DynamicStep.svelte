@@ -8,10 +8,9 @@
     type GroupFieldDefinition,
     SavageWorlds,
   } from '@automata/grimoire';
-  import Button from '@smui/button';
-  import { Cell } from '@smui/layout-grid';
 
   import { goto } from '$app/navigation';
+  import UiButton from '$lib/components/ui/UiButton.svelte';
   import Field from '$lib/components/wizard/Field.svelte';
   import { patchCharacter } from '$lib/services/character-service';
 
@@ -71,7 +70,7 @@
   }
 </script>
 
-<Cell span={12}>
+<div>
   <h2>Step: {currentStep.key}</h2>
   <form>
     {#each currentStep.fields as path (path)}
@@ -79,7 +78,7 @@
     {/each}
   </form>
   <div>
-    <Button onclick={handlePrevClick}>Prev</Button>
-    <Button onclick={handleNextClick}>Next</Button>
+    <UiButton onclick={handlePrevClick}>Prev</UiButton>
+    <UiButton onclick={handleNextClick}>Next</UiButton>
   </div>
-</Cell>
+</div>

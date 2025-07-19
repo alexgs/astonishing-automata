@@ -3,8 +3,6 @@
   -->
 
 <script lang="ts">
-  import LayoutGrid from '@smui/layout-grid';
-
   import StepSwitcher from '$lib/components/wizard/StepSwitcher.svelte';
 
   import type { PageProps } from './$types';
@@ -14,6 +12,4 @@
   let step = $derived(() => data.step);
 </script>
 
-<LayoutGrid>
-  <StepSwitcher characterId={characterId()} step={step()} />
-</LayoutGrid>
+<StepSwitcher characterId={characterId()} step={step()} />

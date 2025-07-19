@@ -4,7 +4,6 @@
 
 <script lang="ts">
   import { SavageWorlds } from '@automata/grimoire';
-  import { Cell } from '@smui/layout-grid';
 
   import FirstStep from '$lib/components/wizard/FirstStep.svelte';
   import DynamicStep from '$lib/components/wizard/DynamicStep.svelte';
@@ -22,11 +21,7 @@
 {#if step === null}
   <FirstStep characterId={characterId} />
 {:else if stepNames.includes(step) }
-  <Cell span={12}>
-    <DynamicStep {characterId} {step} />
-  </Cell>
+  <DynamicStep {characterId} {step} />
 {:else}
-  <Cell span={12}>
-    <p>❌ Step not found "{step}"</p>
-  </Cell>
+  <p>❌ Step not found "{step}"</p>
 {/if}
