@@ -36,6 +36,7 @@
     &:hover:not(:disabled) {
       background-color: var(--btn-hover-fill);
       border-color: var(--btn-hover-border);
+      color: var(--btn-hover-text);
     }
 
     &:focus-visible {
@@ -57,23 +58,23 @@
   }
 
   .variant-primary {
+    --btn-active-fill: #{tokens.$teal-7};
     --btn-border: #{tokens.$brand-accent};
     --btn-fill: #{tokens.$brand-accent};
-    --btn-text: #fff;
-    --btn-hover-fill: #{tokens.$teal-8};
-    --btn-hover-border: #{tokens.$teal-7};
-    --btn-active-fill: #{tokens.$teal-7};
     --btn-focus: #{tokens.$teal-6};
+    --btn-hover-border: #{tokens.$teal-7};
+    --btn-hover-fill: #{tokens.$teal-8};
+    --btn-text: #fff;
   }
 
   .variant-pop {
+    --btn-active-fill: #{tokens.$teal-1};
     --btn-border: #{tokens.$brand-accent};
     --btn-fill: transparent;
-    --btn-text: #{tokens.$brand-accent};
-    --btn-hover-fill: #{tokens.$brand-accent-hover};
-    --btn-hover-border: #{tokens.$brand-accent-hover};
-    --btn-active-fill: #{tokens.$teal-1};
     --btn-focus: #{tokens.$teal-6};
+    --btn-hover-border: #{tokens.$brand-accent-hover};
+    --btn-hover-fill: #{tokens.$teal_4};
+    --btn-text: #{tokens.$brand-accent};
   }
 </style>
 

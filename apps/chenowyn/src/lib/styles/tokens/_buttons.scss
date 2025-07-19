@@ -6,11 +6,12 @@
 @use './colors' as color;
 
 :root {
+  --btn-active-fill: #{color.$teal_3};
   --btn-border: #{brand.$brand-accent};
   --btn-fill: transparent;
-  --btn-text: #{brand.$brand-accent};
-  --btn-hover-fill: #{brand.$brand-accent-hover};
-  --btn-hover-border: #{brand.$brand-accent-hover};
-  --btn-active-fill: #{color.$teal_3};
   --btn-focus: #{color.$teal_6};
+  --btn-hover-border: #{brand.$brand-accent-hover};
+  --btn-hover-fill: #{brand.$brand-accent-hover};
+  --btn-hover-text: var(--btn-text); // fallback if not overridden
+  --btn-text: #{brand.$brand-accent};
 }
