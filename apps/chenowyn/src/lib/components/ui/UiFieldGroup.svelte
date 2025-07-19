@@ -21,7 +21,7 @@
     .group-title {
       font-size: tokens.$font-size-lg;
       font-weight: 600;
-      margin-bottom: tokens.$space-xsmall;
+      margin-bottom: tokens.$space-medium;
     }
 
     .group-description {
