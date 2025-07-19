@@ -8,12 +8,14 @@
     type GroupFieldDefinition,
     SavageWorlds,
   } from '@automata/grimoire';
-  import Button from '@smui/button';
-  import { Cell } from '@smui/layout-grid';
 
   import { goto } from '$app/navigation';
+  import UiButton from '$lib/components/ui/UiButton.svelte';
+  import UiFieldGroup from '$lib/components/ui/UiFieldGroup.svelte';
   import Field from '$lib/components/wizard/Field.svelte';
   import { patchCharacter } from '$lib/services/character-service';
+  import { getCharacterState } from '$lib/stores/character-store';
+  import UiFormContainer from '$lib/components/ui/UiFormContainer.svelte';
 
   interface Props {
     characterId: string;
@@ -71,15 +73,15 @@
   }
 </script>
 
-<Cell span={12}>
-  <h2>Step: {currentStep.key}</h2>
-  <form>
+<UiFormContainer>
+  <h2>Name: {`${getCharacterState().name} [Savage Worlds]`}</h2>
+  <UiFieldGroup layout="horizontal" title={`Step: ${currentStep.key}`}>
     {#each currentStep.fields as path (path)}
       <Field fieldDef={getFieldDefFromPath(path)} {path} />
     {/each}
-  </form>
+  </UiFieldGroup>
   <div>
-    <Button onclick={handlePrevClick}>Prev</Button>
-    <Button onclick={handleNextClick}>Next</Button>
+    <UiButton onclick={handlePrevClick}>Prev</UiButton>
+    <UiButton onclick={handleNextClick}>Next</UiButton>
   </div>
-</Cell>
+</UiFormContainer>

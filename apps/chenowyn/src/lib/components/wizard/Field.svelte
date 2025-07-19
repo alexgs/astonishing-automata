@@ -4,9 +4,8 @@
 
 <script lang="ts">
   import { type FieldDefinition, SavageWorlds, evaluateField } from '@automata/grimoire';
-  import TextField from '@smui/textfield';
+  import UiTextInput from '$lib/components/ui/UiTextInput.svelte';
   import { getCharacterState, updateField } from '$lib/stores/character-store';
-  import HelperText from '@smui/textfield/helper-text';
 
   interface Props {
     fieldDef: FieldDefinition;
@@ -40,16 +39,10 @@
   }
 </script>
 
-<div style="margin-bottom: 1rem;">
-  <TextField
-    label={path}
-    id={path}
-    type="text"
-    value={value}
-    oninput={handleInput}
-    variant="outlined"
-    invalid={!!error}
-  >
-  </TextField>
-  <HelperText persistent>{error}</HelperText>
-</div>
+<UiTextInput
+  {error}
+  label={fieldDef.key}
+  name={path}
+  onInput={handleInput}
+  {value}
+/>
