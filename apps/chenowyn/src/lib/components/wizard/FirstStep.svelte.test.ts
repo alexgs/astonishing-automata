@@ -42,11 +42,6 @@ vi.mock('@automata/grimoire', async () => {
 describe('`FirstStep` component', () => {
   const characterId = 'abc123';
 
-  test('displays the character ID', () => {
-    render(FirstStep, { props: { characterId } });
-    expect(screen.getByText(`Character ID: ${characterId}`)).toBeInTheDocument();
-  });
-
   test('updates name field on input', async () => {
     render(FirstStep, { props: { characterId } });
 

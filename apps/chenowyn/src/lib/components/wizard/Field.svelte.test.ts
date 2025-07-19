@@ -32,7 +32,7 @@ const mockFieldDef: FieldDefinition = {
 describe('`Field` component', () => {
   it('renders label with path', () => {
     render(Field, { props: { fieldDef: mockFieldDef, path: 'attributes.strength' } });
-    expect(screen.getByLabelText('attributes.strength')).toBeInTheDocument();
+    expect(screen.getByLabelText('strength')).toBeInTheDocument();
   });
 
   it('coerces input value and updates store', async () => {
@@ -40,7 +40,7 @@ describe('`Field` component', () => {
       props: { fieldDef: mockFieldDef, path: 'attributes.strength' }
     });
 
-    const input = getByLabelText('attributes.strength');
+    const input = getByLabelText('strength');
     await fireEvent.input(input, { target: { value: '12' } });
 
     const { updateField } = await import('$lib/stores/character-store');
@@ -57,7 +57,7 @@ describe('`Field` component', () => {
       props: { fieldDef: mockFieldDef, path: 'attributes.strength' }
     });
 
-    const input = getByLabelText('attributes.strength');
+    const input = getByLabelText('strength');
     await fireEvent.input(input, { target: { value: '99' } });
 
     expect(await findByText('Too strong!')).toBeInTheDocument();
