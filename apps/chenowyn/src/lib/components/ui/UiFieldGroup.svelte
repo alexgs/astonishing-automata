@@ -6,10 +6,11 @@
   interface Props {
     title?: string;
     description?: string;
+    layout?: 'vertical' | 'horizontal';
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let { children, title, description }: Props & { children?: any; } = $props();
+  let { children, description, layout = 'vertical', title }: Props & { children?: any; } = $props();
 </script>
 
 <style lang="scss">
@@ -33,7 +34,14 @@
     .field-list {
       display: flex;
       flex-direction: column;
-      gap: tokens.$space-small;
+
+      &.horizontal {
+        display: grid;
+        align-items: baseline;
+        grid-template-columns: max-content 1fr;
+        row-gap: tokens.$space-medium;
+        column-gap: tokens.$space-small;
+      }
     }
   }
 </style>
@@ -41,7 +49,7 @@
 <div class="ui-field-group">
   {#if title}<h2 class="group-title">{title}</h2>{/if}
   {#if description}<p class="group-description">{description}</p>{/if}
-  <div class="field-list">
+  <div class="field-list" class:horizontal={layout === 'horizontal'}>
     {@render children()}
   </div>
 </div>

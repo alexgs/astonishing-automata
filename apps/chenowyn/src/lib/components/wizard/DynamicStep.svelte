@@ -75,7 +75,7 @@
 
 <UiFormContainer>
   <h2>Name: {`${getCharacterState().name} [Savage Worlds]`}</h2>
-  <UiFieldGroup title={`Step: ${currentStep.key}`}>
+  <UiFieldGroup layout="horizontal" title={`Step: ${currentStep.key}`}>
     {#each currentStep.fields as path (path)}
       <Field fieldDef={getFieldDefFromPath(path)} {path} />
     {/each}

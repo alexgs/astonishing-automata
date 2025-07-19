@@ -48,7 +48,7 @@
 </script>
 
 <UiFormContainer>
-  <UiFieldGroup title="New Savage Worlds Character">
+  <UiFieldGroup layout="horizontal" title="New Savage Worlds Character">
     <UiTextInput
       label="Character Name"
       name="characterName"
