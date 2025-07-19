@@ -1,10 +1,14 @@
 @use './brand-colors' as brand;
 @use './colors' as colors;
 
+$border-radius: 0.25rem;
+
 $color-bg: brand.$brand-background;
 $color-surface: brand.$brand-surface;
 $color-text: colors.$grey_12;
 $color-muted: brand.$brand-muted;
 $color-primary: brand.$brand-accent;
+$color-border: brand.$brand-border;
+$color-danger: colors.$tomato_9;
 
 $navbar-height: 4rem;
