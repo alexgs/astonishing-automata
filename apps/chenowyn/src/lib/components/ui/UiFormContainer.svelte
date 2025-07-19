@@ -9,8 +9,8 @@
   }
 
   let {
-    maxWidth = '40rem',   // 640px
-    padding = 'var(--space-medium)',
+    maxWidth = '40rem', // 640px
+    padding = '0',
     children
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }: Props & { children?: any} = $props();

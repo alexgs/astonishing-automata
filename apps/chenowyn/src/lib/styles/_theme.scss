@@ -6,6 +6,14 @@
 
 @use 'tokens';
 
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
 html,
 body {
   background-color: tokens.$color-bg;

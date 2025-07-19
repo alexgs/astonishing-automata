@@ -60,5 +60,17 @@
   --navbar-height: #{tokens.$navbar-height};
 
   // === SPACING ===
+  --space-nano: #{tokens.$space-nano};
+  --space-micro: #{tokens.$space-micro};
+  --space-xsmall: #{tokens.$space-xsmall};
+  --space-small: #{tokens.$space-small};
   --space-medium: #{tokens.$space-medium};
+  --space-med-lg: #{tokens.$space-med-lg};
+  --space-large: #{tokens.$space-large};
+  --space-xlarge: #{tokens.$space-xlarge};
+  --space-kilo: #{tokens.$space-kilo};
+  --space-mega: #{tokens.$space-mega};
+  --space-giga: #{tokens.$space-giga};
+  --space-tera: #{tokens.$space-tera};
+  --space-peta: #{tokens.$space-peta};
 }
