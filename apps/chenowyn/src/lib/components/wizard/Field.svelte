@@ -42,6 +42,7 @@
 <UiTextInput
   {error}
   label={fieldDef.key}
+  layout="horizontal"
   name={path}
   onInput={handleInput}
   {value}

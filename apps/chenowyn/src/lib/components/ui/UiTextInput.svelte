@@ -7,6 +7,7 @@
     disabled?: boolean;
     error: string | null;
     label: string;
+    layout?: 'vertical' | 'horizontal';
     name: string;
     onInput: (event: Event) => void;
     placeholder?: string;
@@ -17,6 +18,7 @@
     disabled = false,
     error,
     label,
+    layout = 'vertical',
     name,
     onInput,
     placeholder = '',
@@ -30,20 +32,6 @@
 
 <style lang="scss">
   @use '$lib/styles/tokens';
-
-  .ui-field {
-    display: flex;
-    flex-direction: column;
-    gap: tokens.$space-small;
-  }
-
-  .ui-label {
-    display: flex;
-    flex-direction: column;
-    font-weight: 500;
-    font-size: tokens.$font-size-sm;
-    color: tokens.$color-text;
-  }
 
   input {
     margin-top: tokens.$space-xsmall;
@@ -64,15 +52,52 @@
     }
   }
 
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$space-xsmall;
+    width: 100%;
+  }
+
+  .ui-field {
+    display: flex;
+    flex-direction: column;
+    gap: tokens.$space-small;
+
+    &.horizontal {
+      flex-direction: row;
+      align-items: center;
+
+      .ui-label {
+        margin: 0;
+        min-width: 4rem;
+      }
+
+      input {
+        flex: 1;
+        margin-top: 0;
+      }
+    }
+  }
+
+  .ui-label {
+    font-weight: 500;
+    font-size: tokens.$font-size-sm;
+    color: tokens.$color-text;
+    text-align: right;
+  }
+
   .ui-error {
     font-size: tokens.$font-size-xs;
     color: tokens.$color-danger;
   }
 </style>
 
-<div class="ui-field">
+<div class="ui-field" class:horizontal={layout === 'horizontal'}>
   <label class="ui-label" for={name}>
     {label}
+  </label>
+  <div class="input-container">
     <input
       class:invalid={!!error}
       id={name}
@@ -83,9 +108,9 @@
       oninput={handleInput}
       disabled={disabled}
     />
-  </label>
-  {#if error}
-    <div class="ui-error">{error}</div>
-  {/if}
+    {#if error}
+      <div class="ui-error">{error}</div>
+    {/if}
+  </div>
 </div>
 
