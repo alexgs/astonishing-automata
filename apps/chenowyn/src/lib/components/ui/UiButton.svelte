@@ -75,6 +75,8 @@
     --btn-hover-border: #{tokens.$brand-accent};
     --btn-hover-fill: #{tokens.$teal-6};
     --btn-text: #{tokens.$brand-accent};
+
+    box-shadow: 0 0 12px #{rgba(tokens.$brand-accent, 1)};
   }
 </style>
 
