@@ -82,6 +82,6 @@
   </UiFieldGroup>
   <div>
     <UiButton onclick={handlePrevClick}>Prev</UiButton>
-    <UiButton onclick={handleNextClick}>Next</UiButton>
+    <UiButton onclick={handleNextClick} variant="primary">Next</UiButton>
   </div>
 </UiFormContainer>
