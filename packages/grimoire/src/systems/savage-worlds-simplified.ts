@@ -6,18 +6,14 @@ import type { Constraint, GameSystemDefinition } from '../types';
 
 const attributeConstraints: Constraint[] = [
   {
-    if: { this: { $in: { $var: 'dieSteps' } } },
+    if: { this: { $in: [ 4, 6, 8, 10, 12 ] } },
     then: { allowed: true, reason: 'Must be a valid die value (d4–d12).' },
   },
 ];
 
-export const savageWorlds: GameSystemDefinition = {
-  id: 'savage-worlds',
-  name: 'Savage Worlds (SWADE)',
-
-  vars: {
-    dieSteps: ['d4', 'd6', 'd8', 'd10', 'd12', 'd12+1', 'd12+2']
-  },
+export const savageWorldsSimplified: GameSystemDefinition = {
+  id: 'savage-worlds-simplified',
+  name: 'Savage Worlds (Simplified)',
 
   character: {
     attributes: {
@@ -25,53 +21,34 @@ export const savageWorlds: GameSystemDefinition = {
       fields: {
         agility: {
           key: 'agility',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
+          type: 'number',
           required: true,
           constraints: attributeConstraints,
         },
         smarts: {
           key: 'smarts',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
+          type: 'number',
           required: true,
           constraints: attributeConstraints,
         },
         spirit: {
           key: 'spirit',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
+          type: 'number',
           required: true,
           constraints: attributeConstraints,
         },
         strength: {
           key: 'strength',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
+          type: 'number',
           required: true,
           constraints: attributeConstraints,
         },
         vigor: {
           key: 'vigor',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
+          type: 'number',
           required: true,
           constraints: attributeConstraints,
         },
-        _budget: {
-          key: '_budget',
-          type: 'number', // TODO We need a way to display the total budget and how much is left
-          required: true,
-          constraints: [
-            {
-              if: { attributePointsSpent: { $gt: 5 } },
-              then: {
-                allowed: false,
-                reason: 'You may only spend 5 points across all attributes.',
-              },
-            },
-          ],
-        }
       },
     },
 
@@ -124,23 +101,6 @@ export const savageWorlds: GameSystemDefinition = {
       },
     },
   },
-
-  derived: [
-    {
-      key: 'attributePointsSpent',
-      type: 'sumPoints',
-      source: 'attributes',
-      mapping: {
-        d4: 0,
-        d6: 1,
-        d8: 2,
-        d10: 3,
-        d12: 4,
-        'd12+1': 5,
-        'd12+2': 6,
-      },
-    },
-  ],
 
   steps: [
     {
