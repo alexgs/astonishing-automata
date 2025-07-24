@@ -16,17 +16,42 @@ export const savageWorlds: GameSystemDefinition = {
   name: 'Savage Worlds (SWADE)',
 
   vars: {
-    dieSteps: ['d4', 'd6', 'd8', 'd10', 'd12', 'd12+1', 'd12+2']
+    dieCosts: {
+      d4: 0,
+      d6: 1,
+      d8: 2,
+      d10: 3,
+      d12: 4,
+      "d12+1": 5,
+      "d12+2": 6
+    },
+    dieCostLabel: {
+      d4: "d4 (0)",
+      d6: "d6 (1)",
+      d8: "d8 (2)",
+      d10: "d10 (3)",
+      d12: "d12 (4)"
+    },
+    dieSteps: ['d4', 'd6', 'd8', 'd10', 'd12', 'd12+1', 'd12+2'],
   },
 
   character: {
     attributes: {
       type: 'group',
       fields: {
+        attributeBudget: {
+          key: 'attributeBudget',
+          type: 'budget',
+          label: 'Attribute Points',
+          total: 5,
+          spent: 'attributePointsSpent',
+          message: 'You may only spend 5 points across all attributes.',
+        },
         agility: {
           key: 'agility',
           type: 'choice',
           options: { $var: 'dieSteps' },
+          optionLabels: { $var: 'dieCostLabel' },
           required: true,
           constraints: attributeConstraints,
         },
@@ -34,6 +59,7 @@ export const savageWorlds: GameSystemDefinition = {
           key: 'smarts',
           type: 'choice',
           options: { $var: 'dieSteps' },
+          optionLabels: { $var: 'dieCostLabel' },
           required: true,
           constraints: attributeConstraints,
         },
@@ -41,6 +67,7 @@ export const savageWorlds: GameSystemDefinition = {
           key: 'spirit',
           type: 'choice',
           options: { $var: 'dieSteps' },
+          optionLabels: { $var: 'dieCostLabel' },
           required: true,
           constraints: attributeConstraints,
         },
@@ -48,6 +75,7 @@ export const savageWorlds: GameSystemDefinition = {
           key: 'strength',
           type: 'choice',
           options: { $var: 'dieSteps' },
+          optionLabels: { $var: 'dieCostLabel' },
           required: true,
           constraints: attributeConstraints,
         },
@@ -55,23 +83,10 @@ export const savageWorlds: GameSystemDefinition = {
           key: 'vigor',
           type: 'choice',
           options: { $var: 'dieSteps' },
+          optionLabels: { $var: 'dieCostLabel' },
           required: true,
           constraints: attributeConstraints,
         },
-        _budget: {
-          key: '_budget',
-          type: 'number', // TODO We need a way to display the total budget and how much is left
-          required: true,
-          constraints: [
-            {
-              if: { attributePointsSpent: { $gt: 5 } },
-              then: {
-                allowed: false,
-                reason: 'You may only spend 5 points across all attributes.',
-              },
-            },
-          ],
-        }
       },
     },
 
@@ -130,15 +145,7 @@ export const savageWorlds: GameSystemDefinition = {
       key: 'attributePointsSpent',
       type: 'sumPoints',
       source: 'attributes',
-      mapping: {
-        d4: 0,
-        d6: 1,
-        d8: 2,
-        d10: 3,
-        d12: 4,
-        'd12+1': 5,
-        'd12+2': 6,
-      },
+      mapping: { $var: 'dieCosts' },
     },
   ],
 
@@ -146,6 +153,7 @@ export const savageWorlds: GameSystemDefinition = {
     {
       key: 'attributes',
       fields: [
+        'attributes.attributeBudget',
         'attributes.agility',
         'attributes.smarts',
         'attributes.spirit',
