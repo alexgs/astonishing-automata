@@ -29,6 +29,22 @@ export type BudgetFieldDefinition = {
   message?: string;
 };
 
+export type ListFieldDefinition = {
+  key: string;
+  type: 'list';
+  options: { $var: string };
+  optionLabels: { $var: string };
+  itemSchema?: Record<string, 'string' | 'number' | 'boolean'>; // optional metadata per item
+  budget?: {
+    total: number | { $var: string };
+    spent: string; // derived field key
+    message?: string;
+  };
+  constraints?: Constraint[];
+};
+
 export type FieldDefinition =
   | BaseFieldDefinition
-  | BudgetFieldDefinition;
+  | BudgetFieldDefinition
+  | ListFieldDefinition
+  ;
