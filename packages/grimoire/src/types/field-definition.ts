@@ -11,7 +11,7 @@ export type ModifierEffect = {
   reason?: string;            // Optional description for audit/UI
 };
 
-export type SpendEffect = {
+export type SelectEffect = {
   when: { [key: string]: any };  // Simple condition, e.g. { type: { $eq: 'attribute' } }
   apply: ModifierEffect;
 };
@@ -55,6 +55,7 @@ export type BudgetFieldDefinition = {
 export type ListFieldDefinition = {
   key: string;
   type: 'list';
+  uniqueKeys?: boolean; // if true, each option can only be selected once; default is `true`
   options: Record<string, unknown>[] | { $var: string };
   optionLabels?: { $var: string };
   itemSchema?: ItemSchema; // optional metadata per item
@@ -65,7 +66,7 @@ export type ListFieldDefinition = {
     message?: string;
   };
   constraints?: Constraint[];
-  selectEffects?: SpendEffect[];
+  selectEffects?: SelectEffect[];
 };
 
 export type FieldDefinition =

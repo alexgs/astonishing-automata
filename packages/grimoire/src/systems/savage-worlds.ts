@@ -179,8 +179,13 @@ export const savageWorlds: GameSystemDefinition = {
     hindranceSpends: {
       key: 'hindranceSpends',
       type: 'list',
+      uniqueKeys: false, // Allow multiple of the same spend
       options: { $var: 'hindranceSpends' },
       optionLabels: { $var: 'hindranceSpends.label' },
+      budget: {
+        total: { $var: 'hindrancePointsTaken' },
+        spent: 'hindrancePointsSpent',
+      },
       variants: {
         attributeBoost: {
           label: 'Increase Attribute',
@@ -220,7 +225,6 @@ export const savageWorlds: GameSystemDefinition = {
           schema: {},
         },
       },
-      // TODO Handle multiple spends and validate based on hindrance points
       selectEffects: [
         {
           when: { key: { $eq: 'attributeBoost' } },
@@ -293,6 +297,12 @@ export const savageWorlds: GameSystemDefinition = {
       type: 'sumPoints',
       source: 'hindrances',
       mapping: { $var: 'hindranceList.cost' },
+    },
+    {
+      key: 'hindrancePointsSpent',
+      type: 'sumPoints',
+      source: 'hindranceSpends',
+      mapping: { $var: 'hindranceSpends.cost' },
     },
   ],
 
