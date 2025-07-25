@@ -28,6 +28,7 @@ export type ConstraintViolation = {
 
 export type GameSystemDefinition = {
   id: string;
+  version: string;
   character: CharacterSchema;
   derived?: DerivedFieldDefinition[];
   name: string;

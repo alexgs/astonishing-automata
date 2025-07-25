@@ -4,6 +4,20 @@
 
 import { Constraint } from './index';
 
+export type ModifierEffect = {
+  target: string;             // e.g., 'attributes.${value}'
+  value: string;              // e.g., 'step+1', '+1', etc.
+  source?: string;            // Optional source tag
+  reason?: string;            // Optional description for audit/UI
+};
+
+export type SpendEffect = {
+  when: { [key: string]: any };  // Simple condition, e.g. { type: { $eq: 'attribute' } }
+  apply: ModifierEffect;
+};
+
+// --- FIELD DEFINITIONS ---
+
 export type BaseFieldDefinition = {
   key: string;
   constraints?: Constraint[];
@@ -32,8 +46,8 @@ export type BudgetFieldDefinition = {
 export type ListFieldDefinition = {
   key: string;
   type: 'list';
-  options: { $var: string };
-  optionLabels: { $var: string };
+  options: Record<string, unknown>[] | { $var: string };
+  optionLabels?: { $var: string };
   itemSchema?: Record<string, 'string' | 'number' | 'boolean'>; // optional metadata per item
   budget?: {
     total: number | { $var: string };
@@ -41,6 +55,7 @@ export type ListFieldDefinition = {
     message?: string;
   };
   constraints?: Constraint[];
+  spendEffects?: SpendEffect[];
 };
 
 export type FieldDefinition =

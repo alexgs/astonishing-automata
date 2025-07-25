@@ -14,6 +14,7 @@ const attributeConstraints: Constraint[] = [
 export const savageWorlds: GameSystemDefinition = {
   id: 'savage-worlds',
   name: 'Savage Worlds (SWADE)',
+  version: '1.0.0',
 
   vars: {
     dieCosts: {
@@ -166,6 +167,33 @@ export const savageWorlds: GameSystemDefinition = {
         spent: 'hindrancePointsTaken',
         message: 'You may take up to 4 points of hindrances.',
       },
+    },
+
+    hindranceSpends: {
+      key: 'hindranceSpends',
+      type: 'list',
+      options: [
+        { type: 'attribute', value: 'strength' },
+        { type: 'edge', value: 'brawny' },
+      ],
+      spendEffects: [
+        {
+          when: { type: { $eq: 'attribute' } },
+          apply: {
+            target: 'attributes.${value}',
+            value: 'step+1',
+            source: 'hindrances',
+          }
+        },
+        {
+          when: { type: { $eq: 'edge' } },
+          apply: {
+            target: 'edges.startingEdge',
+            value: '${value}',
+            source: 'hindrances',
+          },
+        },
+      ],
     },
 
     edges: {
