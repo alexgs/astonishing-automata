@@ -65,7 +65,7 @@ export type ListFieldDefinition = {
     message?: string;
   };
   constraints?: Constraint[];
-  spendEffects?: SpendEffect[];
+  selectEffects?: SpendEffect[];
 };
 
 export type FieldDefinition =

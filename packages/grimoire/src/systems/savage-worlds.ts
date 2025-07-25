@@ -17,6 +17,7 @@ export const savageWorlds: GameSystemDefinition = {
   version: '1.0.0',
 
   vars: {
+    attributeKeys: ['agility', 'smarts', 'spirit', 'strength', 'vigor'],
     dieCosts: {
       d4: 0,
       d6: 1,
@@ -96,6 +97,12 @@ export const savageWorlds: GameSystemDefinition = {
       weakWilled: { label: "Weak Willed", cost: 1 },
       young: { label: "Young", cost: 2 },
     },
+    hindranceSpends: {
+      attributeBoost: { label: 'Increase Attribute', cost: 2 },
+      edgeGain: { label: 'Gain Edge', cost: 2 },
+      skillBoost: { label: 'Increase Skill', cost: 1 },
+      startingFunds: { label: 'Starting Funds', cost: 1 },
+    },
   },
 
   character: {
@@ -172,8 +179,8 @@ export const savageWorlds: GameSystemDefinition = {
     hindranceSpends: {
       key: 'hindranceSpends',
       type: 'list',
-      options: { $var: 'hindranceSpendOptions' }, // ['attributeBoost', 'edgeGain']
-      optionLabels: { $var: 'hindranceSpendLabels' },
+      options: { $var: 'hindranceSpends' },
+      optionLabels: { $var: 'hindranceSpends.label' },
       variants: {
         attributeBoost: {
           label: 'Increase Attribute',
@@ -183,8 +190,8 @@ export const savageWorlds: GameSystemDefinition = {
               type: 'choice',
               options: { $var: 'attributeKeys' },
               required: true,
-            }
-          }
+            },
+          },
         },
         edgeGain: {
           label: 'Gain Edge',
@@ -194,11 +201,27 @@ export const savageWorlds: GameSystemDefinition = {
               type: 'choice',
               options: { $var: 'edgesList' },
               required: true,
-            }
-          }
-        }
+            },
+          },
+        },
+        skillBoost: {
+          label: 'Increase Skill',
+          schema: {
+            target: {
+              key: 'target',
+              type: 'choice',
+              options: { $var: 'skillKeys' },
+              required: true,
+            },
+          },
+        },
+        startingFunds: {
+          label: 'Starting Funds',
+          schema: {},
+        },
       },
-      spendEffects: [
+      // TODO Handle multiple spends and validate based on hindrance points
+      selectEffects: [
         {
           when: { key: { $eq: 'attributeBoost' } },
           apply: {
@@ -212,6 +235,22 @@ export const savageWorlds: GameSystemDefinition = {
           apply: {
             target: 'edges.startingEdge',
             value: '${edge}',
+            source: 'hindranceSpends',
+          },
+        },
+        {
+          when: { key: { $eq: 'skillBoost' } },
+          apply: {
+            target: 'skills.${target}',
+            value: 'points+1',
+            source: 'hindranceSpends',
+          },
+        },
+        {
+          when: { key: { $eq: 'startingFunds' } },
+          apply: {
+            target: 'funds',
+            value: '+(startingFunds*2)',
             source: 'hindranceSpends',
           },
         },
