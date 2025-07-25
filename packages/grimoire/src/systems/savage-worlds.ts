@@ -172,25 +172,47 @@ export const savageWorlds: GameSystemDefinition = {
     hindranceSpends: {
       key: 'hindranceSpends',
       type: 'list',
-      options: [
-        { type: 'attribute', value: 'strength' },
-        { type: 'edge', value: 'brawny' },
-      ],
+      options: { $var: 'hindranceSpendOptions' }, // ['attributeBoost', 'edgeGain']
+      optionLabels: { $var: 'hindranceSpendLabels' },
+      variants: {
+        attributeBoost: {
+          label: 'Increase Attribute',
+          schema: {
+            target: {
+              key: 'target',
+              type: 'choice',
+              options: { $var: 'attributeKeys' },
+              required: true,
+            }
+          }
+        },
+        edgeGain: {
+          label: 'Gain Edge',
+          schema: {
+            edge: {
+              key: 'edge',
+              type: 'choice',
+              options: { $var: 'edgesList' },
+              required: true,
+            }
+          }
+        }
+      },
       spendEffects: [
         {
-          when: { type: { $eq: 'attribute' } },
+          when: { key: { $eq: 'attributeBoost' } },
           apply: {
-            target: 'attributes.${value}',
+            target: 'attributes.${target}',
             value: 'step+1',
-            source: 'hindrances',
+            source: 'hindranceSpends'
           }
         },
         {
-          when: { type: { $eq: 'edge' } },
+          when: { key: { $eq: 'edgeGain' } },
           apply: {
             target: 'edges.startingEdge',
-            value: '${value}',
-            source: 'hindrances',
+            value: '${edge}',
+            source: 'hindranceSpends',
           },
         },
       ],

@@ -16,6 +16,15 @@ export type SpendEffect = {
   apply: ModifierEffect;
 };
 
+export type ItemSchema =
+  | Record<string, 'boolean'| 'number' | 'string' >
+  | Record<string, FieldDefinition>;
+
+export type ListVariant = {
+  label?: string;
+  schema: Record<string, FieldDefinition>;
+};
+
 // --- FIELD DEFINITIONS ---
 
 export type BaseFieldDefinition = {
@@ -48,7 +57,8 @@ export type ListFieldDefinition = {
   type: 'list';
   options: Record<string, unknown>[] | { $var: string };
   optionLabels?: { $var: string };
-  itemSchema?: Record<string, 'string' | 'number' | 'boolean'>; // optional metadata per item
+  itemSchema?: ItemSchema; // optional metadata per item
+  variants?: Record<string, ListVariant>; // `variants` takes precedence over `itemSchema`
   budget?: {
     total: number | { $var: string };
     spent: string; // derived field key
