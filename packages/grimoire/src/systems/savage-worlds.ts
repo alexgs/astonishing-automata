@@ -165,10 +165,6 @@ export const savageWorlds: GameSystemDefinition = {
       type: 'list',
       options: { $var: 'hindranceList' },
       optionLabels: { $var: 'hindranceList.label' },
-      itemSchema: {
-        cost: 'number',
-        label: 'string',
-      },
       budget: {
         total: 4,
         spent: 'hindrancePointsTaken',

@@ -16,7 +16,7 @@ export type SelectEffect = {
   apply: ModifierEffect;
 };
 
-export type ItemSchema =
+export type InputSchema =
   | Record<string, 'boolean'| 'number' | 'string' >
   | Record<string, FieldDefinition>;
 
@@ -58,7 +58,7 @@ export type ListFieldDefinition = {
   uniqueKeys?: boolean; // if true, each option can only be selected once; default is `true`
   options: Record<string, unknown>[] | { $var: string };
   optionLabels?: { $var: string };
-  itemSchema?: ItemSchema; // optional metadata per item
+  inputSchema?: InputSchema; // Input suboptions for each user selection
   variants?: Record<string, ListVariant>; // `variants` takes precedence over `itemSchema`
   budget?: {
     total: number | { $var: string };
