@@ -86,26 +86,26 @@ Expressions define how cost is calculated. They can be nested.
 const definition = {
   costMapping: {
     compare: {
-      left: { $dieCost: { $field: "level" } },
-      right: { $dieCost: { $fromOption: "linkedAttribute" } }
+      left: { $var: "dieCosts.{ $field: 'level' }" },
+      right: { $var: "dieCosts.{ $fromOption: 'linkedAttribute' }" }
     },
     mapping: [
       {
         if: { $lte: true },
-        cost: { $dieCost: { $field: "level" } }
+        cost: { $var: "dieCosts.{ $field: 'level' }" }
       },
       {
         if: { $gt: true },
         cost: {
           $add: [
-            { $dieCost: { $fromOption: "linkedAttribute" } },
+            { $var: "dieCosts.{ $fromOption: 'linkedAttribute' }" },
             {
               $mul: [
                 2,
                 {
                   $sub: [
-                    { $dieCost: { $field: "level" } },
-                    { $dieCost: { $fromOption: "linkedAttribute" } }
+                    { $var: "dieCosts.{ $field: 'level' }" },
+                    { $var: "dieCosts.{ $fromOption: 'linkedAttribute' }" }
                   ]
                 }
               ]
@@ -115,7 +115,7 @@ const definition = {
       }
     ]
   }
-}
+};
 ```
 
 ## 🛠️ Use Cases
