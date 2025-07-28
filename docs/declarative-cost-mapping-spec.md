@@ -5,7 +5,7 @@ This document defines a flexible and extensible schema pattern and expression la
 ## ✨ Schema Pattern: `costMapping`
 
 ```ts
-const defintion = {
+const definition = {
   costMapping: {
     compare: {
       left: Expression,
@@ -19,7 +19,7 @@ const defintion = {
       // More mappings...
     ]
   }
-}
+};
 ```
 
 - `compare` sets up two values to be compared.
@@ -28,7 +28,7 @@ const defintion = {
   - a `Condition` on the comparison result
   - a `cost` expression to evaluate if matched
 
-## 📊 Condition Operators
+## 📐 Condition Operators
 
 - `$eq`: equality
 - `$lt`, `$lte`, `$gt`, `$gte`: numeric comparisons
@@ -54,20 +54,23 @@ Expressions define how cost is calculated. They can be nested.
 { $div: [a, b] }
 ```
 
-### Lookup and Variables
+### Variables and Lookups
 
 ```ts
-{ $var: "dieCosts" } // retrieves a map or value
-{ $var: "dieCosts.strength" } // dotted path into nested vars
-{ $var: "nestedTable.category.2" } // arrays supported by index
+{ $var: "dieCosts.strength" }                     // dotted path
+{ $var: ["dieCosts", "strength"] }                // equivalent array form
+{ $var: "nestedTable.category.2" }                // dotted path with array index
+{ $var: ["nestedTable", "category", 2] }          // equivalent array form
+{ $var: ["dieCosts", { $field: "level" }] }       // dynamic key from user input
+{ $var: ["dieCosts", { $fromOption: "linkedAttribute" }] } // from list item metadata
 ```
 
 ### Field and Option References
 
 ```ts
-{ $field: "level" }              // value from inputSchema
+{ $field: "level" }                // value from inputSchema
 { $fromOption: "linkedAttribute" } // value from vars-defined item metadata
-{ $path: "attributes.strength" } // absolute reference in character schema
+{ $path: "attributes.strength" }   // absolute reference in character schema
 ```
 
 ## ♻ Evaluation Order
@@ -86,26 +89,26 @@ Expressions define how cost is calculated. They can be nested.
 const definition = {
   costMapping: {
     compare: {
-      left: { $var: "dieCosts.{ $field: 'level' }" },
-      right: { $var: "dieCosts.{ $fromOption: 'linkedAttribute' }" }
+      left: { $var: [ "dieCosts", { $field: "level" } ] },
+      right: { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] }
     },
     mapping: [
       {
         if: { $lte: true },
-        cost: { $var: "dieCosts.{ $field: 'level' }" }
+        cost: { $var: [ "dieCosts", { $field: "level" } ] }
       },
       {
         if: { $gt: true },
         cost: {
           $add: [
-            { $var: "dieCosts.{ $fromOption: 'linkedAttribute' }" },
+            { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] },
             {
               $mul: [
                 2,
                 {
                   $sub: [
-                    { $var: "dieCosts.{ $field: 'level' }" },
-                    { $var: "dieCosts.{ $fromOption: 'linkedAttribute' }" }
+                    { $var: [ "dieCosts", { $field: "level" } ] },
+                    { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] }
                   ]
                 }
               ]
