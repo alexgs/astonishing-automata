@@ -17,7 +17,7 @@ export type SelectEffect = {
 };
 
 export type InputSchema =
-  | Record<string, 'boolean'| 'number' | 'string' >
+  | Record<string, 'boolean' | 'number' | 'string'>
   | Record<string, FieldDefinition>;
 
 export type ListVariant = {
@@ -55,7 +55,11 @@ export type CostExpression =
   | { $sub: CostExpression[] }
   | { $mul: CostExpression[] }
   | { $div: CostExpression[] }
-  | { $var: string }             // vars.dieCosts.strength
+  | {
+      $var:
+        | string
+        | (string | { $field: string; } | { $fromOption: string; })[]
+    }
   | { $field: string }           // value from user input
   | { $fromOption: string }      // metadata from selected item
   | { $path: string };           // absolute path into character schema

@@ -279,6 +279,56 @@ export const savageWorlds: GameSystemDefinition = {
         },
       },
     },
+
+    skills: {
+      key: 'skills',
+      type: 'list',
+      uniqueKeys: true,
+      options: { $var: 'skillList' }, // TODO Creat this var (inc. `label` & `linkedAttribute`)
+      optionLabels: { $var: 'skillList.label' },
+
+      inputSchema: {
+        level: 'string' // TODO Make this a "choice" field to select die type
+      },
+
+      budget: {
+        total: 12,
+        spent: 'skillPointsSpent', // TODO Define derived field
+        message: 'You may spend up to 12 points on skills.'
+      },
+
+      costMapping: {
+        compare: {
+          left: { $var: [ "dieCosts", { $field: "level" } ] },
+          right: { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] }
+        },
+        mapping: [
+          {
+            if: { $lte: true },
+            cost: { $var: [ "dieCosts", { $field: "level" } ] }
+          },
+          {
+            if: { $gt: true },
+            cost: {
+              $add: [
+                { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] },
+                {
+                  $mul: [
+                    2,
+                    {
+                      $sub: [
+                        { $var: [ "dieCosts", { $field: "level" } ] },
+                        { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
   },
 
   derived: [
