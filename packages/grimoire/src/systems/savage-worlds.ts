@@ -103,6 +103,39 @@ export const savageWorlds: GameSystemDefinition = {
       skillBoost: { label: 'Increase Skill', cost: 1 },
       startingFunds: { label: 'Starting Funds', cost: 1 },
     },
+    skillList: {
+      academics: { label: "Academics", linkedAttribute: "smarts" },
+      athletics: { label: "Athletics", linkedAttribute: "agility" },
+      battle: { label: "Battle", linkedAttribute: "smarts" },
+      boating: { label: "Boating", linkedAttribute: "agility" },
+      commonKnowledge: { label: "Common Knowledge", linkedAttribute: "smarts" },
+      driving: { label: "Driving", linkedAttribute: "agility" },
+      electronics: { label: "Electronics", linkedAttribute: "smarts" },
+      faith: { label: "Faith", linkedAttribute: "spirit" },
+      fighting: { label: "Fighting", linkedAttribute: "agility" },
+      focus: { label: "Focus", linkedAttribute: "spirit" },
+      gambling: { label: "Gambling", linkedAttribute: "smarts" },
+      healing: { label: "Healing", linkedAttribute: "smarts" },
+      intimidation: { label: "Intimidation", linkedAttribute: "spirit" },
+      language: { label: "Language", linkedAttribute: "smarts" },
+      notice: { label: "Notice", linkedAttribute: "smarts" },
+      occult: { label: "Occult", linkedAttribute: "smarts" },
+      persuasion: { label: "Persuasion", linkedAttribute: "spirit" },
+      performance: { label: "Performance", linkedAttribute: "spirit" },
+      piloting: { label: "Piloting", linkedAttribute: "agility" },
+      psionics: { label: "Psionics", linkedAttribute: "smarts" },
+      repair: { label: "Repair", linkedAttribute: "smarts" },
+      research: { label: "Research", linkedAttribute: "smarts" },
+      riding: { label: "Riding", linkedAttribute: "agility" },
+      science: { label: "Science", linkedAttribute: "smarts" },
+      shooting: { label: "Shooting", linkedAttribute: "agility" },
+      stealth: { label: "Stealth", linkedAttribute: "agility" },
+      survival: { label: "Survival", linkedAttribute: "smarts" },
+      taunt: { label: "Taunt", linkedAttribute: "smarts" },
+      tech: { label: "Tech", linkedAttribute: "smarts" },
+      thievery: { label: "Thievery", linkedAttribute: "agility" },
+      weirdScience: { label: "Weird Science", linkedAttribute: "smarts" },
+    },
   },
 
   character: {
@@ -284,16 +317,20 @@ export const savageWorlds: GameSystemDefinition = {
       key: 'skills',
       type: 'list',
       uniqueKeys: true,
-      options: { $var: 'skillList' }, // TODO Creat this var (inc. `label` & `linkedAttribute`)
+      options: { $var: 'skillList' },
       optionLabels: { $var: 'skillList.label' },
 
       inputSchema: {
-        level: 'string' // TODO Make this a "choice" field to select die type
+        level: {
+          key: 'level',
+          type: 'choice',
+          options: { $var: 'dieSteps' },
+        },
       },
 
       budget: {
         total: 12,
-        spent: 'skillPointsSpent', // TODO Define derived field
+        spent: 'skillPointsSpent',
         message: 'You may spend up to 12 points on skills.'
       },
 
@@ -350,6 +387,12 @@ export const savageWorlds: GameSystemDefinition = {
       source: 'hindranceSpends',
       mapping: { $var: 'hindranceSpends.cost' },
     },
+    {
+      key: 'skillPointsSpent',
+      type: 'sumPoints',
+      source: 'skills',
+      mapping: { $var: 'dieCosts' },
+    },
   ],
 
   steps: [
@@ -365,12 +408,12 @@ export const savageWorlds: GameSystemDefinition = {
       ],
     },
     {
-      key: 'hindrances',
-      fields: [ 'hindrances.majorHindrance', 'hindrances.minorHindrances' ],
+      key: 'skills',
+      fields: [ 'skills' ],
     },
     {
-      key: 'edges',
-      fields: [ 'edges.startingEdge' ],
+      key: 'hindrances',
+      fields: [ 'hindrances', 'hindranceSpends' ],
     },
   ],
 };
