@@ -34,6 +34,15 @@ export const savageWorlds: GameSystemDefinition = {
       d10: "d10 (3)",
       d12: "d12 (4)"
     },
+    dieSides: {
+      d4: 4,
+      d6: 6,
+      d8: 8,
+      d10: 10,
+      d12: 12,
+      "d12+1": 13,
+      "d12+2": 14
+    },
     dieSteps: ['d4', 'd6', 'd8', 'd10', 'd12', 'd12+1', 'd12+2'],
     hindranceList: {
       allThumbs: { label: "All Thumbs", cost: 1 },
@@ -336,8 +345,8 @@ export const savageWorlds: GameSystemDefinition = {
 
       costMapping: {
         compare: {
-          left: { $var: [ "dieCosts", { $field: "level" } ] },
-          right: { $var: [ "dieCosts", { $fromOption: "linkedAttribute" } ] }
+          left: { $var: [ "dieSides", { $field: "level" } ] },
+          right: { $var: [ "dieSides", { $fromOption: "linkedAttribute" } ] }
         },
         mapping: [
           {
@@ -389,9 +398,8 @@ export const savageWorlds: GameSystemDefinition = {
     },
     {
       key: 'skillPointsSpent',
-      type: 'sumPoints',
+      type: 'sumCostMapping',
       source: 'skills',
-      mapping: { $var: 'dieCosts' },
     },
   ],
 

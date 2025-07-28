@@ -2,9 +2,20 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { CostMapping } from './field-definition';
+
 export type DerivedFieldDefinition =
+  | SumCostMapping
   | SumFieldsDerivedField
   | SumPointsDerivedField;
+
+// By default, look at the field definition for the cost mapping, but you can override it locally
+export type SumCostMapping = {
+  key: string;
+  type: "sumCostMapping";
+  source: string; // e.g. "skill"
+  costMapping?: CostMapping;
+};
 
 export type SumFieldsDerivedField = {
   key: string;
