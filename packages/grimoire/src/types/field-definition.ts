@@ -25,6 +25,41 @@ export type ListVariant = {
   schema: Record<string, FieldDefinition>;
 };
 
+// --- COST MAPPING ---
+
+export type CostMapping = {
+  compare: {
+    left: CostExpression;
+    right: CostExpression;
+  };
+  mapping: Array<{
+    if: CostCondition;
+    cost: CostExpression;
+  }>;
+};
+
+export type CostCondition =
+  | { $eq: boolean }
+  | { $lt: boolean }
+  | { $lte: boolean }
+  | { $gt: boolean }
+  | { $gte: boolean }
+  | { $in: unknown[] }
+  | { $nin: unknown[] }
+  | { $always: true };
+
+export type CostExpression =
+  | number
+  | string
+  | { $add: CostExpression[] }
+  | { $sub: CostExpression[] }
+  | { $mul: CostExpression[] }
+  | { $div: CostExpression[] }
+  | { $var: string }             // vars.dieCosts.strength
+  | { $field: string }           // value from user input
+  | { $fromOption: string }      // metadata from selected item
+  | { $path: string };           // absolute path into character schema
+
 // --- FIELD DEFINITIONS ---
 
 export type BaseFieldDefinition = {
@@ -59,12 +94,13 @@ export type ListFieldDefinition = {
   options: Record<string, unknown>[] | { $var: string };
   optionLabels?: { $var: string };
   inputSchema?: InputSchema; // Input suboptions for each user selection
-  variants?: Record<string, ListVariant>; // `variants` takes precedence over `itemSchema`
+  variants?: Record<string, ListVariant>; // `variants` takes precedence over `inputSchema`
   budget?: {
     total: number | { $var: string };
     spent: string; // derived field key
     message?: string;
   };
+  costMapping?: CostMapping;
   constraints?: Constraint[];
   selectEffects?: SelectEffect[];
 };
