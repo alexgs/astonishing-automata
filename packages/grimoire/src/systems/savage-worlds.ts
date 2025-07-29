@@ -2,14 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import type { Constraint, GameSystemDefinition } from '../types';
-
-const attributeConstraints: Constraint[] = [
-  {
-    if: { this: { $in: { $var: 'dieSteps' } } },
-    then: { allowed: true, reason: 'Must be a valid die value (d4–d12).' },
-  },
-];
+import type { GameSystemDefinition } from '../types';
 
 export const savageWorlds: GameSystemDefinition = {
   id: 'savage-worlds',
@@ -147,6 +140,20 @@ export const savageWorlds: GameSystemDefinition = {
     },
   },
 
+  startingValues: {
+    attributes: {
+      strength: { from: 'dieSteps', value: 'd4' },
+    },
+    skills: {
+      athletics: { from: 'dieSteps', value: 'd4' },
+      commonKnowledge: { from: 'dieSteps', value: 'd4' },
+      notice: { from: 'dieSteps', value: 'd4' },
+      persuasion: { from: 'dieSteps', value: 'd4' },
+      stealth: { from: 'dieSteps', value: 'd4' },
+    },
+    funds: 200,
+  },
+
   character: {
     attributes: {
       type: 'group',
@@ -161,43 +168,83 @@ export const savageWorlds: GameSystemDefinition = {
         },
         agility: {
           key: 'agility',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
-          optionLabels: { $var: 'dieCostLabel' },
+          type: 'number',
           required: true,
-          constraints: attributeConstraints,
+          selectEffect: {
+            targetField: 'attributes.agility',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+          },
+          ui: {
+            minSteps: 0,
+            maxSteps: 5,
+          },
         },
         smarts: {
           key: 'smarts',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
-          optionLabels: { $var: 'dieCostLabel' },
+          type: 'number',
           required: true,
-          constraints: attributeConstraints,
+          selectEffect: {
+            targetField: 'attributes.smarts',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+          },
+          ui: {
+            minSteps: 0,
+            maxSteps: 5,
+          },
         },
         spirit: {
           key: 'spirit',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
-          optionLabels: { $var: 'dieCostLabel' },
+          type: 'number',
           required: true,
-          constraints: attributeConstraints,
+          selectEffect: {
+            targetField: 'attributes.spirit',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+          },
+          ui: {
+            minSteps: 0,
+            maxSteps: 5,
+          },
         },
         strength: {
           key: 'strength',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
-          optionLabels: { $var: 'dieCostLabel' },
+          type: 'number',
           required: true,
-          constraints: attributeConstraints,
+          selectEffect: {
+            targetField: 'attributes.strength',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+          },
+          ui: {
+            minSteps: 0,
+            maxSteps: 5,
+          },
         },
         vigor: {
           key: 'vigor',
-          type: 'choice',
-          options: { $var: 'dieSteps' },
-          optionLabels: { $var: 'dieCostLabel' },
+          type: 'number',
           required: true,
-          constraints: attributeConstraints,
+          selectEffect: {
+            targetField: 'attributes.vigor',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+          },
+          ui: {
+            minSteps: 0,
+            maxSteps: 5,
+          },
         },
       },
     },
@@ -267,15 +314,20 @@ export const savageWorlds: GameSystemDefinition = {
         {
           when: { key: { $eq: 'attributeBoost' } },
           apply: {
-            target: 'attributes.${target}',
-            value: 'step+1',
+            targetField: 'attributes.${target}',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
             source: 'hindranceSpends'
           }
         },
         {
           when: { key: { $eq: 'edgeGain' } },
           apply: {
-            target: 'edges.startingEdge',
+            targetField: 'edges',
+            effectVerb: 'add',
+            effectType: 'value',
             value: '${edge}',
             source: 'hindranceSpends',
           },
@@ -283,16 +335,21 @@ export const savageWorlds: GameSystemDefinition = {
         {
           when: { key: { $eq: 'skillBoost' } },
           apply: {
-            target: 'skills.${target}',
-            value: 'points+1',
+            targetField: 'skills.${target}',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
             source: 'hindranceSpends',
           },
         },
         {
           when: { key: { $eq: 'startingFunds' } },
           apply: {
-            target: 'funds',
-            value: '+(startingFunds*2)',
+            targetField: 'funds',
+            effectVerb: 'increase',
+            effectType: 'value',
+            value: 'startingValues.funds',
             source: 'hindranceSpends',
           },
         },

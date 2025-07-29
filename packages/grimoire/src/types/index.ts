@@ -4,6 +4,7 @@
 
 import { DerivedFieldDefinition } from './derived-field-definition';
 import { FieldDefinition } from './field-definition';
+import { StartingValues } from './starting-values';
 
 export * from './derived-field-definition';
 export * from './field-definition';
@@ -29,6 +30,7 @@ export type ConstraintViolation = {
 export type GameSystemDefinition = {
   id: string;
   version: string;
+  startingValues: StartingValues;
   character: CharacterSchema;
   derived?: DerivedFieldDefinition[];
   name: string;

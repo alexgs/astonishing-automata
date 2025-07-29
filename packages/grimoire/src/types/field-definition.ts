@@ -4,18 +4,6 @@
 
 import { Constraint } from './index';
 
-export type ModifierEffect = {
-  target: string;             // e.g., 'attributes.${value}'
-  value: string;              // e.g., 'step+1', '+1', etc.
-  source?: string;            // Optional source tag
-  reason?: string;            // Optional description for audit/UI
-};
-
-export type SelectEffect = {
-  when: { [key: string]: any };  // Simple condition, e.g. { type: { $eq: 'attribute' } }
-  apply: ModifierEffect;
-};
-
 export type InputSchema =
   | Record<string, 'boolean' | 'number' | 'string'>
   | Record<string, FieldDefinition>;
@@ -23,6 +11,21 @@ export type InputSchema =
 export type ListVariant = {
   label?: string;
   schema: Record<string, FieldDefinition>;
+};
+
+export type ModifierEffect = {
+  targetField: string;        // e.g., 'attributes.${value}'
+  effectVerb: 'add' | 'increase' | 'decrease' | 'set';
+  effectType: 'step' | 'value';
+  effectVar?: string;         // Optional variable for steps, e.g., 'dieSteps'
+  value: number | string;     // Amount to change the target field by
+  source?: string;            // Optional source tag
+  reason?: string;            // Optional description for audit/UI
+};
+
+export type SelectEffect = {
+  when: { [key: string]: any };  // Simple condition, e.g. { type: { $eq: 'attribute' } }
+  apply: ModifierEffect;
 };
 
 // --- COST MAPPING ---
@@ -68,16 +71,18 @@ export type CostExpression =
 
 export type BaseFieldDefinition = {
   key: string;
+  type: 'boolean' | 'choice' | 'multichoice' | 'number' | 'string';
   constraints?: Constraint[];
   options?: string[] | { $var: string };
   optionLabels?: string[] | { $var: string };
   required?: boolean;
-  type: 'boolean' | 'choice' | 'multichoice' | 'number' | 'string';
-
-  // Future expansion (metadata for the UI)
-  // ui?: {
-  //   presentation?: "dice-step" | "dropdown" | "slider" | string;
-  // };
+  selectEffect?: ModifierEffect; // Shortcut for a single select effect
+  selectEffects?: SelectEffect[];
+  ui?: {
+    minSteps?: number;
+    maxSteps?: number;
+    presentation?: "dice-step" | "dropdown" | "slider" | string;
+  };
 };
 
 export type BudgetFieldDefinition = {
