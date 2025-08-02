@@ -10,6 +10,70 @@ export const savageWorlds: GameSystemDefinition = {
   version: '1.0.0',
 
   vars: {
+    ancestryList: {
+      human: {
+        label: "Human",
+        selectEffects: [
+          {
+            targetField: 'edges',
+            effectVerb: 'add',
+            effectType: 'value',
+            value: '${chosenFreeEdge}', // reference to variant form field
+            source: 'ancestry'
+          }
+        ],
+        variants: {
+          chosenFreeEdge: {
+            key: 'chosenFreeEdge',
+            type: 'choice',
+            options: { $var: 'noviceEdgeKeys' },
+            required: true
+          }
+        }
+      },
+      dwarf: {
+        label: "Dwarf",
+        selectEffects: [
+          {
+            targetField: "attributes.vigor",
+            effectVerb: "increase",
+            effectType: "step",
+            effectVar: "dieSteps",
+            value: 1,
+            source: "ancestry"
+          },
+          {
+            targetField: "pace",
+            effectVerb: "set",
+            effectType: "value",
+            value: 5,
+            source: "ancestry"
+          }
+        ]
+      },
+      elf: {
+        label: "Elf",
+        selectEffects: [
+          {
+            targetField: 'attributes.agility',
+            effectVerb: 'increase',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+            source: 'ancestry'
+          },
+          {
+            targetField: 'attributes.vigor',
+            effectVerb: 'decrease',
+            effectType: 'step',
+            effectVar: 'dieSteps',
+            value: 1,
+            source: 'ancestry'
+          }
+
+        ]
+      }
+    },
     attributeKeys: ['agility', 'smarts', 'spirit', 'strength', 'vigor'],
     dieCosts: {
       d4: 0,
@@ -722,6 +786,7 @@ export const savageWorlds: GameSystemDefinition = {
   },
 
   startingValues: {
+    ancestry: { from: 'ancestryList', value: 'human' },
     attributes: {
       agility: { from: 'dieSteps', value: 'd4' },
       smarts: { from: 'dieSteps', value: 'd4' },
@@ -742,6 +807,15 @@ export const savageWorlds: GameSystemDefinition = {
   },
 
   character: {
+    ancestry: {
+      key: "ancestry",
+      type: "choice",
+      options: { $var: "ancestryList" },
+      optionLabels: { $var: "ancestryList.label" },
+      required: true,
+      selectEffects: { $var: "ancestryList.${key}.selectEffects" }
+    },
+
     attributes: {
       type: 'group',
       fields: {
@@ -1059,6 +1133,10 @@ export const savageWorlds: GameSystemDefinition = {
   ],
 
   steps: [
+    {
+      key: 'ancestry',
+      fields: [ 'ancestry' ],
+    },
     {
       key: 'attributes',
       fields: [

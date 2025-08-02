@@ -62,7 +62,7 @@ export type BaseFieldDefinition = {
   optionLabels?: string[] | { $var: string };
   required?: boolean;
   selectEffect?: ModifierEffect; // Shortcut for a single select effect
-  selectEffects?: SelectEffect[];
+  selectEffects?: SelectEffect[] | { $var: string };
   ui?: {
     minSteps?: number;
     maxSteps?: number;
