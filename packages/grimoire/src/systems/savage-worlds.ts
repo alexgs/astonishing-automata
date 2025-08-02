@@ -37,6 +37,166 @@ export const savageWorlds: GameSystemDefinition = {
       "d12+2": 14
     },
     dieSteps: ['d4', 'd6', 'd8', 'd10', 'd12', 'd12+1', 'd12+2'],
+    edgeList: {
+      // Background Edges
+      alertness: {
+        label: "Alertness",
+        description: "+2 to Notice rolls.",
+        requirements: {}
+      },
+      ambidextrous: {
+        label: "Ambidextrous",
+        description: "No off-hand penalty.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          }
+        }
+      },
+      arcaneBackground: {
+        label: "Arcane Background",
+        description: "Gain access to a specific type of magic or psionics.",
+        requirements: {}
+      },
+      arcaneResistance: {
+        label: "Arcane Resistance",
+        description: "+2 to resist arcane abilities, and -2 to damage from arcane abilities.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd8' }
+          },
+        },
+      },
+      aristocrat: {
+        label: "Aristocrat",
+        description: "This character walks in the elite social circles of the setting.",
+        requirements: {},
+      },
+      attractive: {
+        label: "Attractive",
+        description: "+1 Persuasion and Performance rolls.",
+        requirements: {}
+      },
+      berserk: {
+        label: "Berserk",
+        description: "Berserkers become wild and nearly uncontrollable when the \"red rage\" takes them, but they are deadly killing machines as well!",
+        requirements: {},
+      },
+      brave: {
+        label: "Brave",
+        description: "+2 to Fear checks.",
+        requirements: {}
+      },
+      brawny: {
+        label: "Brawny",
+        description: "+1 Toughness and doubled load limit.",
+        requirements: {
+          attributes: {
+            strength: { $gte: 'd8' }
+          }
+        }
+      },
+      brute: {
+        label: "Brute",
+        description: "Brutes focus on core strength and fitness over coordination and flexibility.",
+        requirements: {
+          attributes: {
+            strength: { $gte: 'd8' },
+            vigor: { $gte: 'd8' },
+          }
+        }
+      },
+      charismatic: {
+        label: "Charismatic",
+        description: "One free reroll on Persuasion rolls.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd8' }
+          }
+        }
+      },
+      elan: {
+        label: "Elan",
+        description: "+2 bonus when spending a Benny on a Trait roll.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd8' }
+          }
+        }
+      },
+      fame: {
+        label: "Fame",
+        description: "This character is well-known, for better or worse.",
+        requirements: {}
+      },
+      fastHealer: {
+        label: "Fast Healer",
+        description: "+2 to natural healing rolls.",
+        requirements: {
+          attributes: {
+            vigor: { $gte: 'd8' }
+          }
+        }
+      },
+      fleetFooted: {
+        label: "Fleet-Footed",
+        description: "+2 Pace and d10 running die.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd6'
+            }
+          }
+        }
+      },
+      improvedArcaneResistance: {
+        label: "Improved Arcane Resistance",
+        description: "As Arcane Resistance, but the penalty to the arcane skill roll and damage are increased to 4.",
+        requirements: {
+          attributes: {
+            edges: {
+              arcaneResistance: true
+            },
+          },
+        },
+      },
+      linguist: {
+        label: "Linguist",
+        description: "This world-traveler has an ear for languages.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd6' }
+          }
+        }
+      },
+      luck: {
+        label: "Luck",
+        description: "Gain one extra Benny per session.",
+        requirements: {}
+      },
+      quick: {
+        label: "Quick",
+        description: "Redraw Action Card of 5 or lower.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          }
+        }
+      },
+      rich: {
+        label: "Rich",
+        description: "Start with more money and better lifestyle.",
+        requirements: {}
+      },
+      veryRich: {
+        label: "Very Rich",
+        description: "Start with even more money and lavish lifestyle.",
+        requirements: {
+          edges: {
+            rich: true
+          },
+        }
+      },
+    },
     hindranceList: {
       allThumbs: { label: "All Thumbs", cost: 1 },
       anemic: { label: "Anemic", cost: 1 },
