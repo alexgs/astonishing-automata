@@ -196,6 +196,174 @@ export const savageWorlds: GameSystemDefinition = {
           },
         }
       },
+
+      // Combat edges
+      brawler: {
+        label: "Brawler",
+        description: "+1 die type to Strength for damage with bare-handed attacks; +1 Toughness.",
+        requirements: {
+          attributes: {
+            strength: { $gte: 'd8' },
+            vigor: { $gte: 'd8' },
+          },
+        },
+      },
+      calculating: {
+        label: "Calculating",
+        description: "When his Action Card is a Five or less, he ignores up to 2 points of penalties on one action that turn, which can include Multi-Action, cover, Range, and even Wound penalties.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd8' }
+          }
+        }
+      },
+      deadShot: {
+        label: "Dead Shot",
+        description: "Double damage on a successful attack with a Raise using a ranged weapon when spending a Benny.",
+        requirements: {
+          skills: {
+            $or: {
+              athletics: { $gte: 'd8' },
+              shooting: { $gte: 'd8' }
+            },
+          }
+        }
+      },
+      extraction: {
+        label: "Extraction",
+        description: "When a character withdraws from melee, one foe doesn't get a free attack.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          }
+        }
+      },
+      feint: {
+        label: "Feint",
+        description: "When performing a Test with the Fighting skill, you can choose to make the foe resist with Smarts instead of Agility.",
+        requirements: {
+          skills: {
+            fighting: { $gte: 'd8' }
+          }
+        }
+      },
+      firstStrike: {
+        label: "First Strike",
+        description: "One free Fighting attack per turn when foe moves adjacent.",
+        requirements: {
+          skills: {
+            fighting: { $gte: 'd8' }
+          }
+        }
+      },
+      freeRunner: {
+        label: "Free Runner",
+        description: "The character moves at her full Pace on Difficult Ground when on foot. She also adds +2 to her Athletics rolls when climbing and in foot Chases.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          },
+          skills: {
+            athletics: { $gte: 'd6' }
+          }
+        }
+      },
+      hardToKill: {
+        label: "Hard to Kill",
+        description: "This adventurer may ignore his Wound penalties when making Vigor rolls to avoid Bleeding Out.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd8' }
+          }
+        },
+      },
+      ironJaw: {
+        label: "Iron Jaw",
+        description: "The character adds +2 to Soak rolls and Vigor rolls to avoid Knockout Blows.",
+        requirements: {
+          attributes: {
+            vigor: { $gte: 'd8' }
+          },
+        },
+      },
+      martialArtist: {
+        label: "Martial Artist",
+        description: "Fighting attacks are Str+d4; +1 Parry.",
+        requirements: {
+          skills: {
+            fighting: { $gte: 'd6' }
+          }
+        }
+      },
+      mightyBlow: {
+        label: "Mighty Blow",
+        description: "If your Action Card is a Joker, double the damage of your first successful Fighting attack this round.",
+        requirements: {
+          skills: {
+            fighting: { $gte: 'd8' }
+          }
+        }
+      },
+      nervesOfSteel: {
+        label: "Nerves of Steel",
+        description: "You may ignore 1 point of Wound penalties.",
+        requirements: {
+          attributes: {
+            vigor: { $gte: 'd8' }
+          }
+        }
+      },
+
+
+      steadyHands: {
+        label: "Steady Hands",
+        description: "Ignore unstable platform penalty when attacking from a moving vehicle or mount.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          }
+        }
+      },
+      sweep: {
+        label: "Sweep",
+        description: "Attack all adjacent foes at –2 penalty.",
+        requirements: {
+          skills: {
+            fighting: { $gte: 'd8' }
+          }
+        }
+      },
+      trademarkWeapon: {
+        label: "Trademark Weapon",
+        description: "+1 to Fighting or Shooting rolls with a specific weapon; +1 Parry if melee.",
+        requirements: {
+          skills: {
+            $or:{
+              fighting: { $gte: 'd8' },
+              shooting: { $gte: 'd8' },
+            },
+          },
+        },
+      },
+      twoFisted: {
+        label: "Two-Fisted",
+        description: "No multi-action penalty when attacking with a weapon in each hand.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          }
+        }
+      },
+      twoGunKid: {
+        label: "Two-Gun Kid",
+        description: "When using two one-handed ranged weapons, you may fire both at no multi-action penalty.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          }
+        }
+      },
+
     },
     hindranceList: {
       allThumbs: { label: "All Thumbs", cost: 1 },
