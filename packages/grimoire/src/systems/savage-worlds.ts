@@ -142,7 +142,11 @@ export const savageWorlds: GameSystemDefinition = {
 
   startingValues: {
     attributes: {
+      agility: { from: 'dieSteps', value: 'd4' },
+      smarts: { from: 'dieSteps', value: 'd4' },
+      spirit: { from: 'dieSteps', value: 'd4' },
       strength: { from: 'dieSteps', value: 'd4' },
+      vigor: { from: 'dieSteps', value: 'd4' },
     },
     skills: {
       athletics: { from: 'dieSteps', value: 'd4' },
@@ -357,26 +361,11 @@ export const savageWorlds: GameSystemDefinition = {
     },
 
     edges: {
-      type: 'group',
-      fields: {
-        startingEdge: {
-          key: 'startingEdge',
-          type: 'choice',
-          options: [ 'Alertness', 'Ambidextrous', 'Brawny', 'Charismatic' ],
-          constraints: [
-            {
-              if: {
-                'attributes.strength': { $lt: 8 },
-                this: { $eq: 'Brawny' },
-              },
-              then: {
-                allowed: false,
-                reason: 'Brawny requires Strength d8 or higher.',
-              },
-            },
-          ],
-        },
-      },
+      key: 'edges',
+      type: 'list',
+      options: { $var: 'edgeList' },
+      optionLabels: { $var: 'edgeList.label' },
+      constraints: { $var: 'edgeList.requirements' }
     },
 
     skills: {

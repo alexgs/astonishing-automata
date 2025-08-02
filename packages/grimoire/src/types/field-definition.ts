@@ -110,7 +110,7 @@ export type ListFieldDefinition = {
     message?: string;
   };
   costMapping?: CostMapping;
-  constraints?: Constraint[];
+  constraints?: Constraint[] | { $var: string };
   selectEffects?: SelectEffect[];
 };
 
