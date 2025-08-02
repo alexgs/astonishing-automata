@@ -364,6 +364,151 @@ export const savageWorlds: GameSystemDefinition = {
         }
       },
 
+      // Leadership edges
+      command: {
+        label: "Command",
+        description: "Add +1 to Spirit rolls to recover from being Shaken for all allies within 5\".",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd6' }
+          }
+        }
+      },
+
+      // Professional edges
+      ace: {
+        label: "Ace",
+        description: "Ignore up to 2 points of penalties when making Boating, Driving, or Piloting rolls, and rolls made to soak or avoid damage in a vehicle.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          },
+          skills: {
+            piloting: { $gte: 'd6' }
+          }
+        }
+      },
+      acrobat: {
+        label: "Acrobat",
+        description: "Add +1 to Athletics rolls made for balance or to escape bonds, and +1 to Parry.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          },
+          skills: {
+            athletics: { $gte: 'd6' }
+          }
+        }
+      },
+      assassin: {
+        label: "Assassin",
+        description: "Gain +2 to damage when making a successful and completely unsuspected attack.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' },
+            smarts: { $gte: 'd8' }
+          },
+          skills: {
+            stealth: { $gte: 'd6' },
+            fighting: { $gte: 'd6' }
+          }
+        }
+      },
+      investigator: {
+        label: "Investigator",
+        description: "Add +2 to Research and Notice rolls when looking for clues or information.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd8' }
+          },
+          skills: {
+            research: { $gte: 'd6' },
+            notice: { $gte: 'd6' }
+          }
+        }
+      },
+      jackOfAllTrades: {
+        label: "Jack-of-All-Trades",
+        description: "Once per session, gain a d6 in a Smarts-based skill you don’t have for the rest of the session.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd10' }
+          }
+        }
+      },
+      mcGyver: {
+        label: "McGyver",
+        description: "Can improvise devices without proper tools or parts using Repair or Electronics.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd8' }
+          },
+          skills: {
+            repair: { $gte: 'd6' },
+            electronics: { $gte: 'd6' }
+          }
+        }
+      },
+      mrFixIt: {
+        label: "Mr. Fix It",
+        description: "Gain +2 to Repair rolls and add +2 to minimum result when using Support with Repair.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd8' }
+          },
+          skills: {
+            repair: { $gte: 'd8' }
+          }
+        }
+      },
+      scholar: {
+        label: "Scholar",
+        description: "Gain +2 to any two Smarts-based skills of your choice (typically academics, science, occult, etc).",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd8' }
+          }
+        }
+      },
+      soldier: {
+        label: "Soldier",
+        description: "Add +1 to Athletics rolls for throwing grenades and +1 to Shooting with rifles.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          },
+          skills: {
+            shooting: { $gte: 'd6' }
+          }
+        }
+      },
+      thief: {
+        label: "Thief",
+        description: "Add +1 to Thievery and Athletics (climbing only); +2 when using a climbing kit.",
+        requirements: {
+          attributes: {
+            agility: { $gte: 'd8' }
+          },
+          skills: {
+            thievery: { $gte: 'd6' },
+            athletics: { $gte: 'd6' }
+          }
+        }
+      },
+      woodsman: {
+        label: "Woodsman",
+        description: "Add +2 to Survival and Stealth rolls in forest or jungle environments.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd6' }
+          },
+          skills: {
+            survival: { $gte: 'd6' },
+            stealth: { $gte: 'd6' }
+          }
+        }
+      }
+
     },
     hindranceList: {
       allThumbs: { label: "All Thumbs", cost: 1 },
