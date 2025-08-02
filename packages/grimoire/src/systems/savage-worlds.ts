@@ -507,8 +507,116 @@ export const savageWorlds: GameSystemDefinition = {
             stealth: { $gte: 'd6' }
           }
         }
-      }
+      },
 
+      // Social edges
+      bolster: {
+        label: "Bolster",
+        description: "As a Test, use Spirit to support others’ Spirit rolls versus Fear, Intimidation, or Taunt.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd6' }
+          }
+        }
+      },
+      commonBond: {
+        label: "Common Bond",
+        description: "The hero may give Bennies to others.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd8' }
+          }
+        }
+      },
+      connections: {
+        label: "Connections",
+        description: "The hero knows someone who can help with information or favors, once per session.",
+        requirements: {}
+      },
+      humiliate: {
+        label: "Humiliate",
+        description: "When the character uses Taunt as a Test, the target suffers a −2 to its roll to resist.",
+        requirements: {
+          skills: {
+            taunt: { $gte: 'd8' }
+          }
+        }
+      },
+      menacing: {
+        label: "Menacing",
+        description: "+2 to Intimidation rolls.",
+        requirements: {
+          skills: {
+            intimidation: { $gte: 'd8' }
+          }
+        }
+      },
+      provoke: {
+        label: "Provoke",
+        description: "When using Intimidation as a Test, the target suffers a −2 penalty to its roll to resist.",
+        requirements: {
+          skills: {
+            intimidation: { $gte: 'd8' }
+          }
+        }
+      },
+      rabbleRouser: {
+        label: "Rabble Rouser",
+        description: "Use Persuasion instead of Intimidation to Test groups.",
+        requirements: {
+          skills: {
+            persuasion: { $gte: 'd8' }
+          }
+        }
+      },
+      reliable: {
+        label: "Reliable",
+        description: "When supporting, a roll of 1 or 2 still grants a +1 bonus (instead of none).",
+        requirements: {}
+      },
+      retort: {
+        label: "Retort",
+        description: "When using Taunt as a Test and succeeding with a raise, the hero is not Distracted.",
+        requirements: {
+          skills: {
+            taunt: { $gte: 'd8' }
+          }
+        }
+      },
+      streetwise: {
+        label: "Streetwise",
+        description: "Gain +2 to Common Knowledge rolls related to the streets or underworld.",
+        requirements: {
+          attributes: {
+            smarts: { $gte: 'd6' }
+          },
+          skills: {
+            commonKnowledge: { $gte: 'd6' }
+          }
+        }
+      },
+      strongWilled: {
+        label: "Strong Willed",
+        description: "+2 bonus when using Intimidation or Taunt to Test, and to resist Tests using those skills.",
+        requirements: {
+          attributes: {
+            spirit: { $gte: 'd8' }
+          },
+          skills: {
+            intimidation: { $gte: 'd6' },
+            taunt: { $gte: 'd6' }
+          }
+        }
+      },
+      workTheRoom: {
+        label: "Work the Room",
+        description: "When using Persuasion, affect all listeners in a Medium Burst Template (if appropriate).",
+        requirements: {
+          skills: {
+            persuasion: { $gte: 'd8' }
+          }
+        }
+      }
     },
     hindranceList: {
       allThumbs: { label: "All Thumbs", cost: 1 },
