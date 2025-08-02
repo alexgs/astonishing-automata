@@ -736,6 +736,8 @@ export const savageWorlds: GameSystemDefinition = {
       persuasion: { from: 'dieSteps', value: 'd4' },
       stealth: { from: 'dieSteps', value: 'd4' },
     },
+    pace: 6,
+    size: 0,
     funds: 200,
   },
 
@@ -1024,9 +1026,35 @@ export const savageWorlds: GameSystemDefinition = {
       mapping: { $var: 'hindranceSpends.cost' },
     },
     {
+      key: 'parry',
+      type: 'computed',
+      value: {
+        $add: [
+          2,
+          {
+            $div: [
+              { $var: ['dieSides', { $field: 'skills.fighting.level' }] },
+              2
+            ]
+          }
+        ]
+      }
+    },
+    {
       key: 'skillPointsSpent',
       type: 'sumCostMapping',
       source: 'skills',
+    },
+    {
+      key: 'toughness',
+      type: 'computed',
+      value: {
+        $add: [
+          2,
+          { $div: [{ $var: ['dieSides', 'attributes.vigor'] }, 2] },
+          { $field: 'size' }
+        ]
+      }
     },
   ],
 
