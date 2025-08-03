@@ -8,6 +8,7 @@ export const savageWorlds: GameSystemDefinition = {
   id: 'savage-worlds',
   name: 'Savage Worlds (SWADE)',
   version: '1.0.0',
+  displayNameField: 'details.name',
 
   vars: {
     ancestryList: {
@@ -807,6 +808,27 @@ export const savageWorlds: GameSystemDefinition = {
   },
 
   character: {
+    details: {
+      type: 'group',
+      fields: {
+        name: {
+          key: 'name',
+          type: 'string',
+          required: true,
+        },
+        pronouns: {
+          key: 'pronouns',
+          type: 'string',
+          required: false,
+        },
+        description: {
+          key: 'description',
+          type: 'string',
+          required: false,
+        },
+      },
+    },
+
     ancestry: {
       key: "ancestry",
       type: "choice",
