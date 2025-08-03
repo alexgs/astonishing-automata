@@ -2,6 +2,13 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
+import { DerivedFieldDefinition } from './derived-field-definition';
+import { FieldDefinition } from './field-definition';
+import { StartingValues } from './starting-values';
+
+export * from './derived-field-definition';
+export * from './field-definition';
+
 export type CharacterSchema = {
   [key: string]: FieldDefinition | GroupFieldDefinition;
 };
@@ -20,19 +27,15 @@ export type ConstraintViolation = {
   reason: string;
 };
 
-export type FieldDefinition = {
-  key: string;
-  type: 'boolean' | 'choice' | 'multichoice' | 'number' | 'string';
-  required?: boolean;
-  options?: string[];
-  constraints?: Constraint[];
-};
-
 export type GameSystemDefinition = {
   id: string;
-  name: string;
+  version: string;
+  startingValues: StartingValues;
   character: CharacterSchema;
+  derived?: DerivedFieldDefinition[];
+  name: string;
   steps: StepDefinition[];
+  vars?: Record<string, any>; // E.g., { dieSteps: string[] }
 };
 
 export type GroupFieldDefinition = {
@@ -47,10 +50,11 @@ export type SimpleOperator =
   | { $lte: number }
   | { $gt: number }
   | { $gte: number }
-  | { $in: unknown[] }
+  | { $in: unknown[] | { $var: string } }
   | { $nin: unknown[] }
 
 export type StepDefinition = {
   key: string;
   fields: string[]; // List of dot-separated field paths, e.g. 'attributes.agility'
 };
+

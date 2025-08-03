@@ -33,29 +33,37 @@ export function evaluateField(
   const fieldValue = getValueAtPath(state, path);
 
   // No constraints → allowed
-  if (!fieldDef || !fieldDef.constraints || fieldDef.constraints.length === 0) {
+  if (
+    !fieldDef ||
+    !fieldDef.constraints ||
+    (Array.isArray(fieldDef.constraints) && fieldDef.constraints.length === 0)
+  ) {
     return { result: true, violations: null };
   }
 
-  const results = fieldDef.constraints.map((constraint) => {
-    const result = evaluateCondition(constraint.if, fieldValue, state);
-    const type: ConstraintType = constraint.then?.allowed === false ? 'block' : 'allow';
-    return { constraint, result, type };
-  });
+  if (Array.isArray(fieldDef.constraints)) {
+    const results = fieldDef.constraints.map((constraint) => {
+      const result = evaluateCondition(constraint.if, fieldValue, state);
+      const type: ConstraintType = constraint.then?.allowed === false ? 'block' : 'allow';
+      return { constraint, result, type };
+    });
 
-  const violations = results
-    .filter((r) =>
-      (r.type === 'allow' && !r.result) ||
-      (r.type === 'block' && r.result)
-    )
-    .map((r) => ({
-      path,
-      reason: r.constraint.then?.reason || 'Invalid value',
-    }));
+    const violations = results
+      .filter((r) =>
+        (r.type === 'allow' && !r.result) ||
+        (r.type === 'block' && r.result)
+      )
+      .map((r) => ({
+        path,
+        reason: r.constraint.then?.reason || 'Invalid value',
+      }));
 
-  if (violations.length === 0) {
-    return { result: true, violations: null };
-  } else {
-    return { result: false, violations };
+    if (violations.length === 0) {
+      return { result: true, violations: null };
+    } else {
+      return { result: false, violations };
+    }
   }
+
+  throw new Error(`Invalid constraints for field ${path}: expected an array, got ${typeof fieldDef.constraints}`);
 }

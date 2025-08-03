@@ -4,4 +4,5 @@
 
 export { evaluateField } from './evaluate-field';
 export { savageWorlds as SavageWorlds } from './systems/savage-worlds';
+export { savageWorldsSimplified as SavageWorldsSimplified } from './systems/savage-worlds-simplified';
 export * from './types';
