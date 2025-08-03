@@ -79,6 +79,7 @@ export type BudgetFieldDefinition = {
   // warnAt?: number;
   // hardLimit?: boolean;
   message?: string;
+  constraints?: Constraint[]; // Not used with this field type; included for consistency between field types
 };
 
 export type ListFieldDefinition = {

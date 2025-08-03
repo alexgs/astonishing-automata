@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import type { Constraint, GameSystemDefinition } from '../types';
+import type { Constraint } from '../types';
 
 const attributeConstraints: Constraint[] = [
   {
@@ -11,7 +11,7 @@ const attributeConstraints: Constraint[] = [
   },
 ];
 
-export const savageWorldsSimplified: GameSystemDefinition = {
+export const savageWorldsSimplified = {
   id: 'savage-worlds-simplified',
   name: 'Savage Worlds (Simplified)',
 
