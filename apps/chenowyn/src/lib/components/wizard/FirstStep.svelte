@@ -60,7 +60,7 @@
 
 <UiFormContainer>
   <UiFieldGroup layout="horizontal" title="Select System">
-    <UiComboBox {options} />
+    <UiComboBox {options} {onSelect} />
   </UiFieldGroup>
   <UiFieldGroup layout="horizontal" title="New Savage Worlds Character">
     <UiTextInput

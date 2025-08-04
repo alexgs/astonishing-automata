@@ -6,16 +6,27 @@
   import { Combobox } from "bits-ui";
 
   interface Props {
-    options: { label: string; value: string }[];
     disabled?: boolean;
+    onSelect: (value: string) => void;
+    options: { label: string; value: string }[];
+    placeholder?: string;
   }
 
   let {
-    options,
     disabled = false,
+    onSelect,
+    options,
+    placeholder = "Select an option",
   }: Props = $props();
 
   let searchValue = $state("");
+  let value: string | undefined = $state(undefined);
+
+  $effect(() => {
+    if (value !== undefined) {
+      onSelect(value);
+    }
+  });
 
   const filteredItems = $derived.by(() => {
     if (searchValue === "") return options;
@@ -34,12 +45,13 @@
 </script>
 
 <Combobox.Root
+  bind:value
   {disabled}
   type="single"
   items={options}
   onOpenChange={handleOpenChange}
 >
-  <Combobox.Input oninput={handleInput} />
+  <Combobox.Input oninput={handleInput} {placeholder} />
   <Combobox.Trigger>Open</Combobox.Trigger>
   <Combobox.Portal>
     <Combobox.Content>
