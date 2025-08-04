@@ -9,9 +9,10 @@
   import UiButton from '$lib/components/ui/UiButton.svelte';
   import { patchCharacter } from '$lib/services/character-service';
   import { characterState, updateField } from '$lib/stores/character-store';
-  import UiTextInput from '$lib/components/ui/UiTextInput.svelte';
+  import UiComboBox from '$lib/components/ui/UiComboBox.svelte';
   import UiFieldGroup from '$lib/components/ui/UiFieldGroup.svelte';
   import UiFormContainer from '$lib/components/ui/UiFormContainer.svelte';
+  import UiTextInput from '$lib/components/ui/UiTextInput.svelte';
 
   interface Props {
     characterId: string;
@@ -45,9 +46,22 @@
       isSaving = false;
     }
   }
+
+  const options = [
+    { label: 'System 1', value: 'system1' },
+    { label: 'System 2', value: 'system2' },
+    { label: 'System 3', value: 'system3' }
+  ];
+
+  function onSelect(system: string) {
+    console.log(`>> Selected system: ${system}`);
+  }
 </script>
 
 <UiFormContainer>
+  <UiFieldGroup layout="horizontal" title="Select System">
+    <UiComboBox {options} />
+  </UiFieldGroup>
   <UiFieldGroup layout="horizontal" title="New Savage Worlds Character">
     <UiTextInput
       label="Character Name"
