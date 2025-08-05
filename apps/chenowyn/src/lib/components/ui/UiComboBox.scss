@@ -1,0 +1,33 @@
+/*
+ * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
+ */
+
+@use 'sass:color';
+@use '$lib/styles/tokens';
+
+.ui-combobox-content {
+  background: tokens.$brand-surface;
+  border: 1px solid tokens.$brand-border;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  transform: translateX(1rem) translateY(1rem);
+  width: 241px;
+
+  //[data-highlighted] {
+  //  background: pink;
+  //  color: black;
+  //}
+
+  .item {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: tokens.$brand-muted;
+    font-size: 0.875rem;
+    cursor: pointer;
+
+    &:hover {
+      background: color.scale(tokens.$brand-surface, $lightness: 10%);
+      color: white;
+    }
+  }
+}
