@@ -4,6 +4,9 @@
 
 <script lang="ts">
   import { Combobox } from 'bits-ui';
+
+  import { resizeObserver } from '$lib/actions/resize-observer.svelte';
+
   import './UiComboBox.scss';
 
   interface Props {
@@ -22,6 +25,7 @@
 
   let searchValue = $state('');
   let value: string | undefined = $state(undefined);
+  let width = $state(0);
 
   $effect(() => {
     if (value !== undefined) {
@@ -43,6 +47,14 @@
   function handleOpenChange(newOpen: boolean) {
     if (!newOpen) searchValue = '';
   }
+
+  const handleResize = (rect: DOMRectReadOnly) => {
+    width = rect.width;
+  };
+
+  const style = $derived.by(() => {
+    return `--combobox-width: ${width}px;`;
+  });
 </script>
 
 <!-- Some styles are scoped (below); others are global (sibling .scss file) -->
@@ -97,7 +109,10 @@
   }
 </style>
 
-<div class="ui-combobox">
+<div
+  use:resizeObserver={handleResize}
+  class="ui-combobox"
+>
   <Combobox.Root
     bind:value
     {disabled}
@@ -121,16 +136,18 @@
     </div>
     <Combobox.Portal>
       <Combobox.Content class="ui-combobox-content">
-        {#each filteredItems as item, i (i + item.value)}
-          <Combobox.Item {...item} class="item">
-            {#snippet children({ selected })}
-              {item.label}
-              {selected ? "✅" : ""}
-            {/snippet}
-          </Combobox.Item>
-        {:else}
-          <span class="empty-message">No results found</span>
-        {/each}
+        <div {style}>
+          {#each filteredItems as item, i (i + item.value)}
+            <Combobox.Item {...item} class="item">
+              {#snippet children({ selected })}
+                {item.label}
+                {selected ? "✅" : ""}
+              {/snippet}
+            </Combobox.Item>
+          {:else}
+            <span class="empty-message">No results found</span>
+          {/each}
+        </div>
       </Combobox.Content>
     </Combobox.Portal>
   </Combobox.Root>
