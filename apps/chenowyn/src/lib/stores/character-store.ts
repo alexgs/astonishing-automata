@@ -36,3 +36,13 @@ export function getCharacterState(): CharacterState {
 export function getDirtyFields(): Set<string> {
   return get(dirtyFields);
 }
+
+export function getDisplayName(): string {
+  const state = get(characterState);
+  // TODO Eventually we'll need to be able to look this up based on the game system
+  const details = state.details as { name?: string };
+  if (!details || !details.name) {
+    return 'Unnamed';
+  }
+  return details.name;
+}

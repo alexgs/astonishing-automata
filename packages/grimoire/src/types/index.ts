@@ -41,6 +41,7 @@ export type GameSystemDefinition = {
 
 export type GroupFieldDefinition = {
   type: 'group';
+  label?: string;
   fields: { [key: string]: FieldDefinition };
 };
 
@@ -57,5 +58,6 @@ export type SimpleOperator =
 export type StepDefinition = {
   key: string;
   fields: string[]; // List of dot-separated field paths, e.g. 'attributes.agility'
+  label?: string;
 };
 

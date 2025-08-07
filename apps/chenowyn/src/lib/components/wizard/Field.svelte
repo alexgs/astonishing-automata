@@ -41,7 +41,7 @@
 
 <UiTextInput
   {error}
-  label={fieldDef.key}
+  label={fieldDef.label ?? fieldDef.key}
   name={path}
   onInput={handleInput}
   {value}

@@ -57,6 +57,7 @@ export type CostCondition =
 export type BaseFieldDefinition = {
   key: string;
   type: 'boolean' | 'choice' | 'multichoice' | 'number' | 'string';
+  label?: string;
   constraints?: Constraint[];
   options?: string[] | { $var: string };
   optionLabels?: string[] | { $var: string };
@@ -85,6 +86,7 @@ export type BudgetFieldDefinition = {
 export type ListFieldDefinition = {
   key: string;
   type: 'list';
+  label?: string;
   uniqueKeys?: boolean; // if true, each option can only be selected once; default is `true`
   options: Record<string, unknown>[] | { $var: string };
   optionLabels?: { $var: string };

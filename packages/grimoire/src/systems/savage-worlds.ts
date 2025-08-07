@@ -814,16 +814,19 @@ export const savageWorlds: GameSystemDefinition = {
         name: {
           key: 'name',
           type: 'string',
+          label: 'Name',
           required: true,
         },
         pronouns: {
           key: 'pronouns',
           type: 'string',
+          label: 'Pronouns',
           required: false,
         },
         description: {
           key: 'description',
           type: 'string',
+          label: 'Description',
           required: false,
         },
       },
@@ -1155,6 +1158,15 @@ export const savageWorlds: GameSystemDefinition = {
   ],
 
   steps: [
+    {
+      key: 'details',
+      label: 'Character Details',
+      fields: [
+        'details.name',
+        'details.pronouns',
+        'details.description',
+      ],
+    },
     {
       key: 'ancestry',
       fields: [ 'ancestry' ],
