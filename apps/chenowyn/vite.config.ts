@@ -35,6 +35,8 @@ export default defineConfig({
           include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
           exclude: ['src/lib/server/**'],
           setupFiles: ['./vitest-setup-unit.ts'], // optional
+          css: true,
+          deps: { inline: [/bits-ui/] },
         },
       },
       {

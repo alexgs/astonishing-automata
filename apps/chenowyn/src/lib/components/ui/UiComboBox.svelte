@@ -136,7 +136,7 @@
     </div>
     <Combobox.Portal>
       <Combobox.Content class="ui-combobox-content">
-        <div {style}>
+        <div {style} data-testid="combobox-items">
           {#each filteredItems as item, i (i + item.value)}
             <Combobox.Item {...item} class="item">
               {#snippet children({ selected })}

@@ -18,3 +18,9 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+
+// jsdom doesn’t have it; Bits UI tries to call it during focus/roving focus.
+Object.defineProperty(window.HTMLElement.prototype, 'scrollIntoView', {
+  value: vi.fn(),
+  writable: true,
+});
