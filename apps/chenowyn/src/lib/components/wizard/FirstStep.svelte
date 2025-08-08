@@ -8,8 +8,8 @@
   import { goto } from '$app/navigation';
   import UiButton from '$lib/components/ui/UiButton.svelte';
   import { patchCharacter } from '$lib/services/character-service';
-  import { characterState, updateField } from '$lib/stores/character-store';
-  import UiTextInput from '$lib/components/ui/UiTextInput.svelte';
+  import { updateField } from '$lib/stores/character-store';
+  import UiComboBox from '$lib/components/ui/UiComboBox.svelte';
   import UiFieldGroup from '$lib/components/ui/UiFieldGroup.svelte';
   import UiFormContainer from '$lib/components/ui/UiFormContainer.svelte';
 
@@ -21,13 +21,6 @@
 
   let isSaving = $state(false);
   let error = $state<string | null>(null);
-
-  let name: string = $derived($characterState.name as string ?? '');
-
-  function handleInput(event: Event) {
-    const input = event.target as HTMLInputElement;
-    updateField('name', input.value);
-  }
 
   async function submitName() {
     isSaving = true;
@@ -45,19 +38,24 @@
       isSaving = false;
     }
   }
+
+  const options = [
+    { label: 'Savage Worlds', value: 'savage-worlds' },
+  ];
+
+  function onSelect(system: string) {
+    updateField('systemId', system);
+  }
 </script>
 
 <UiFormContainer>
-  <UiFieldGroup layout="horizontal" title="New Savage Worlds Character">
-    <UiTextInput
-      label="Character Name"
-      name="characterName"
-      value={name}
-      onInput={handleInput}
-      error={error}
-    />
+  <UiFieldGroup layout="horizontal" title="Select System">
+    <UiComboBox {options} {onSelect} />
   </UiFieldGroup>
   <UiButton disabled={isSaving} onclick={submitName} variant="primary">
     { isSaving ? 'Saving…' : 'Next' }
   </UiButton>
+  {#if error}
+    <div class="error-message">{error}</div>
+  {/if}
 </UiFormContainer>

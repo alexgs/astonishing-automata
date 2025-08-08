@@ -14,7 +14,10 @@
   import UiFieldGroup from '$lib/components/ui/UiFieldGroup.svelte';
   import Field from '$lib/components/wizard/Field.svelte';
   import { patchCharacter } from '$lib/services/character-service';
-  import { getCharacterState } from '$lib/stores/character-store';
+  import {
+    getCharacterState,
+    getDisplayName,
+  } from '$lib/stores/character-store';
   import UiFormContainer from '$lib/components/ui/UiFormContainer.svelte';
 
   interface Props {
@@ -53,6 +56,7 @@
 
   async function handleNextClick() {
     try {
+      console.log(getCharacterState()); // TODO Remove
       await patchCharacter(characterId);
       if (nextStep.key === 'Unknown') {
         goto(`/c/${characterId}?step=done`);
@@ -64,7 +68,8 @@
     }
   }
 
-  function handlePrevClick() {
+  async function handlePrevClick() {
+    await patchCharacter(characterId);
     if (prevStep.key === 'Unknown') {
       goto(`/c/${characterId}`);
     } else {
@@ -74,8 +79,8 @@
 </script>
 
 <UiFormContainer>
-  <h2>Name: {`${getCharacterState().name} [Savage Worlds]`}</h2>
-  <UiFieldGroup layout="horizontal" title={`Step: ${currentStep.key}`}>
+  <h2>Name: {`${getDisplayName()} [Savage Worlds]`}</h2>
+  <UiFieldGroup layout="horizontal" title={`Step: ${currentStep.label ?? currentStep.key}`}>
     {#each currentStep.fields as path (path)}
       <Field fieldDef={getFieldDefFromPath(path)} {path} />
     {/each}

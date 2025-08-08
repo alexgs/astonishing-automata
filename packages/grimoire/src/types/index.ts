@@ -29,17 +29,19 @@ export type ConstraintViolation = {
 
 export type GameSystemDefinition = {
   id: string;
+  name: string;
   version: string;
+  displayNameField?: string; // e.g., 'name', 'handle', 'callsign'
   startingValues: StartingValues;
   character: CharacterSchema;
   derived?: DerivedFieldDefinition[];
-  name: string;
   steps: StepDefinition[];
   vars?: Record<string, any>; // E.g., { dieSteps: string[] }
 };
 
 export type GroupFieldDefinition = {
   type: 'group';
+  label?: string;
   fields: { [key: string]: FieldDefinition };
 };
 
@@ -56,5 +58,6 @@ export type SimpleOperator =
 export type StepDefinition = {
   key: string;
   fields: string[]; // List of dot-separated field paths, e.g. 'attributes.agility'
+  label?: string;
 };
 
