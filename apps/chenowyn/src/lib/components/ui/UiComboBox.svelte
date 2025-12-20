@@ -123,7 +123,7 @@
     <div class="input-wrapper">
       <Combobox.Input oninput={handleInput} {placeholder}>
         {#snippet child({ props })}
-          <input {...props} class="input" />
+          <input {...props} class="input" value={searchValue} />
         {/snippet}
       </Combobox.Input>
       <Combobox.Trigger>

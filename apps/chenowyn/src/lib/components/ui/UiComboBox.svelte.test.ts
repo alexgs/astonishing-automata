@@ -2,7 +2,7 @@
  * Copyright 2025 Phillip Gates-Shannon. All rights reserved. Licensed under the Elastic License 2.0 (ELv2).
  */
 
-import { render, screen, within, waitFor } from '@testing-library/svelte';
+import { render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
@@ -82,5 +82,67 @@ describe('UiComboBox', () => {
     expect(await screen.findByText('Apple')).toBeInTheDocument();
     expect(screen.getByText('Apricot')).toBeInTheDocument();
     expect(screen.queryByText('Banana')).not.toBeInTheDocument();
+  });
+
+  it('shows empty state when no results match', async () => {
+    const { input, trigger } = setup();
+    await openList(trigger);
+
+    await userEvent.clear(input);
+    await userEvent.type(input, 'zzz');
+    expect(await screen.findByText('No results found')).toBeInTheDocument();
+  });
+
+  it('selects an option via mouse and calls onSelect with value', async () => {
+    const { trigger, onSelect } = setup();
+    onSelect.mockReset();
+    await openList(trigger);
+
+    await userEvent.click(screen.getByText('Blueberry'));
+    // your snippet renders a "✅" when selected; not required for this assert, but nice to have:
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith('blueberry');
+  });
+
+  it('selects via keyboard (ArrowDown + Enter) and fires onSelect once', async () => {
+    const { input, trigger, onSelect } = setup();
+    onSelect.mockReset();
+    await openList(trigger);
+
+    // focus input and navigate
+    input.focus();
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    // Arrow-down selects the second item (Apricot)
+    expect(onSelect).toHaveBeenCalledWith('apricot');
+  });
+
+  it('clears the search when the list closes (handleOpenChange)', async () => {
+    const { input, trigger } = setup();
+    await openList(trigger);
+
+    await userEvent.type(input, 'ap');
+    // close by toggling the trigger
+    await userEvent.click(trigger);
+
+    // When closed, the onOpenChange(false) should reset searchValue = ''
+    // Re-open and ensure full list is back (Banana present).
+    await openList(trigger);
+    expect(screen.getByText('Banana')).toBeInTheDocument();
+
+    // Also verify the actual input is cleared
+    expect(input.value).toBe('');
+  });
+
+  it('respects the disabled prop (input and trigger not interactive)', async () => {
+    // @ts-expect-error -- doesn't recognize `disabled` as a valid prop
+    const { input, trigger } = setup({ disabled: true });
+
+    expect(input).toBeDisabled();
+    expect(trigger).toBeDisabled();
+
+    // Attempts to open should not show options
+    await userEvent.click(trigger);
+    expect(screen.queryByText('Apple')).not.toBeInTheDocument();
   });
 });
